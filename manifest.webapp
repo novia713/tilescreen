@@ -1,0 +1,32 @@
+{
+  "name": "Tilescreen",
+  "description": "An tiled homescreen for FirefoxOS",
+  "launch_path": "/index.html",
+  "type": "certified",
+  "role": "homescreen",
+  "developer": {
+    "name": "leandro713",
+    "url": "https://github.com/novia713/"
+  },
+  "permissions": {
+    "webapps-manage":{}
+  },
+  "locales": {
+    "en-US": {
+      "name": "Tilescreen",
+      "description": "An tiled homescreen for FirefoxOS"
+    }
+  },
+  "default_locale": "en-US",
+  "icons": {
+    "128":   "/style/icons/tilescreen.png",
+    "60":  "/style/icons/tilescreen60.png",
+    "48":  "/style/icons/tilescreen48.png",
+    "32":  "/style/icons/tilescreen32.png",
+    "30":  "/style/icons/tilescreen30.png",
+    "16":  "/style/icons/tilescreen16.png"
+  },
+  "orientation": "portrait-primary",
+  "activities": {},
+  "messages": []
+}

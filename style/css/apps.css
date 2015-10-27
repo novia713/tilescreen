@@ -1,0 +1,77 @@
+html, body { height: 100%; }
+
+body {margin: 0;}
+
+#apps {
+    background: #000;
+    overflow-y:scroll;
+}
+
+#pill{
+    background: #2C393B;
+}
+
+
+#city{
+    font-size:2rem;
+    color: white;
+    font-size:40px;
+    margin: 5%;
+    vertical-align: middle;
+    text-shadow: 2px 2px 2px #B2F2FF;
+    float:left
+}
+
+#weather_desc{
+    float:right;
+    color: white;
+}
+
+#time {
+    text-align:center;
+    color:white;
+    margin-top: 30%;
+}
+
+
+.appname {
+    color:whitesmoke;
+    font-size:14px;
+    position: relative;
+    overflow:hidden;
+    z-index: 1;
+}
+
+.tile {
+    display: inline-block;
+    height: 108px;
+    width: 39%;
+    padding: 4%;
+    margin: 4px 4px;
+    text-align: right;
+    float:left;
+}
+
+.name {
+    color: white;
+    margin: 5%;
+    vertical-align: middle;
+    text-shadow: 1px 1px 1px #000;
+    text-align: right;
+}
+
+#scrollbar {
+    margin-top:10%;
+    float: right;
+}
+
+#menu_settings {
+    display:none;
+}
+
+#settings {
+    float:right;
+    font-size:29px;
+    margin-right:-10%;
+    margin-top:3%;
+}
