@@ -6,7 +6,7 @@
   "role": "homescreen",
   "developer": {
     "name": "leandro713",
-    "url": "https://github.com/novia713/"
+    "url": "https://github.com/novia713/tilescreen"
   },
   "permissions": {
     "webapps-manage":{}
