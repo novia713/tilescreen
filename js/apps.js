@@ -1,10 +1,27 @@
-/*
+/**
+ *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
+ *          .·' H O M E S C R E E N S F O R A L L'·.  by leandro713
+ *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
+ *
  * Tilescreen
  * (c) leandro@leandro.org
  * GPL v3 license
  * v. 20160111
  *
- * @todo default icon if not found
+ * @author      leandro713 <leandro@leandro.org>
+ * @copyright   leandro713 - 2016
+ * @link        https://github.com/novia713/tilescreen
+ * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
+ * @version     1.1
+ * @date        20160111
+ *
+ * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
+ * @thanks      to @CodingFree for his tireless support and benevolent friendship
+ * @todo
+ *      - show wifi network name and telephony provider name
+ *      - show weather
+ *      - show missed calls
+ *      - default icon if not found
  */
 
 
