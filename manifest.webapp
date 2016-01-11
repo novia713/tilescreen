@@ -2,14 +2,16 @@
   "name": "Tilescreen",
   "description": "An tiled homescreen for FirefoxOS",
   "launch_path": "/index.html",
-  "type": "certified",
+  "type": "privileged",
   "role": "homescreen",
   "developer": {
     "name": "leandro713",
     "url": "https://github.com/novia713/tilescreen"
   },
   "permissions": {
-    "webapps-manage":{}
+    "homescreen-webapps-manage":{
+        "description": "Required for manage icon apps in homescreen"
+     }
   },
   "locales": {
     "en-US": {
@@ -28,5 +30,6 @@
   },
   "orientation": "portrait-primary",
   "activities": {},
-  "messages": []
+  "messages": [],
+  "version": "1.1"
 }

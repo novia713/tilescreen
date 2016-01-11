@@ -2,7 +2,9 @@
  * Tilescreen
  * (c) leandro@leandro.org
  * GPL v3 license
- * v. 20151027
+ * v. 20160111
+ *
+ * @todo default icon if not found
  */
 
 
@@ -11,18 +13,22 @@ requirejs.config({
     baseUrl: "js",
     paths: {
         'jQuery': ['jquery-2.1.4.min'],
-        'underscore': ['underscore-min']
+        'ramdajs': ['ramda.min']
     },
     shim: {
-        'underscore': {
-            exports: '_',
-            deps: ['jQuery']
+        'ramdajs': {
+            exports: 'R'
         }
     }
 });
 
-require(["jQuery", 'underscore'], function(jQuery, _) {
+require(["jQuery", 'ramdajs'], function(jQuery, R) {
 
+    const apps_2_exclude = [
+        "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
+        "Legacy Home Screen", "Wallpaper", "Default Theme",
+        "Built-in Keyboard", "Bluetooth Manager", "Communications",
+        "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
 
     var parent = $('#apps');
     var iconMap = new WeakMap();
@@ -53,25 +59,51 @@ require(["jQuery", 'underscore'], function(jQuery, _) {
         }
     };
 
+    /**
+     * Prints set up message
+     */
+     var print_msg = function () {
+        var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
+            txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
+        parent.html(txt_msg);
+     };
+
 
     /**
      * Renders the icon to the container.
      */
     var render = function(icon) {
-        var name = icon.app.manifest.name;
-        var wordname = name.split(" ");
-        var firstchar = name.charAt(0);
+
+        if (!icon.manifest.icons) return;
+
+            // guards
+            if( R.contains ( icon.manifest.name, apps_2_exclude ))  return;
+            if (icon.manifest.role == "homescreen")                 return;
+            if (icon.manifest.role == "addon")                      return;
+            //end guards
+
+            var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
 
 
-        /* tile generation*/
-        var tile = document.createElement('div');
-        tile.className = 'tile';
-        tile.className += ' icon_' + wordname[0];
-        tile.style.background = get_color(name) + ' url(' + icon.icon + ') 49% no-repeat';
+            icon_image.then ( function ( img ) {
 
-        $('#apps').append(tile);
-        iconMap.set(tile, icon);
-        /* end tile generation*/
+                var name = icon.manifest.name;
+                var wordname = name.split(" ");
+                var firstchar = name.charAt(0);
+
+                /* tile generation*/
+                var tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.className += ' icon_' + wordname[0];
+                tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 49% no-repeat';
+
+                $('#apps').append(tile);
+                iconMap.set(tile, icon);
+                /* end tile generation*/
+            });
+
+            if (typeof icon_image == undefined) return;
+
     }
 
     /* fires up the painting */
@@ -80,10 +112,28 @@ require(["jQuery", 'underscore'], function(jQuery, _) {
             /**
              * Fetch all apps and render them.
              */
-            FxosApps.all().then(icons => {
-                icons.forEach(render);
+            var myApps = new Promise((resolve, reject) => {
+                    var request = navigator.mozApps.mgmt.getAll();
 
+                    request.onsuccess = (e) => {
+                      for (var app of request.result) {
+                        render( app );
+                      }
+                    };
+
+                    request.onerror = (e) => {
+                      console.error('Error calling getAll: ' + request.error.name);
+                      resolve();
+                    };
             });
+
+            myApps.then(
+                function (v) {
+
+                }, function(v){
+                    print_msg();
+                }
+            );
     } //end start
 
 
