@@ -39,11 +39,11 @@ requirejs.config({
     }
 });
 
-require(["jQuery", 'ramdajs'], function(jQuery, R) {
+require(["jQuery", 'ramdajs'], (jQuery, R) => {
 
     const apps_2_exclude = [
         "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
-        "Legacy Home Screen", "Wallpaper", "Default Theme",
+        "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
         "Built-in Keyboard", "Bluetooth Manager", "Communications",
         "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
 
@@ -52,7 +52,7 @@ require(["jQuery", 'ramdajs'], function(jQuery, R) {
 
 
     //colores
-    var get_color = function(app) {
+    var get_color = app => {
         var obj_color = {};
         obj_color.Communications = "#B2F2FF"; //green 5F9B0A
         obj_color.Calendar = "#FF4E00"; //orange
@@ -79,7 +79,7 @@ require(["jQuery", 'ramdajs'], function(jQuery, R) {
     /**
      * Prints set up message
      */
-     var print_msg = function () {
+     var print_msg = () => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
         parent.html(txt_msg);
@@ -89,9 +89,9 @@ require(["jQuery", 'ramdajs'], function(jQuery, R) {
     /**
      * Renders the icon to the container.
      */
-    var render = function(icon) {
+    var render = icon => {
 
-        if (!icon.manifest.icons) return;
+            if (!icon.manifest.icons) return;
 
             // guards
             if( R.contains ( icon.manifest.name, apps_2_exclude ))  return;
@@ -102,9 +102,9 @@ require(["jQuery", 'ramdajs'], function(jQuery, R) {
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
 
 
-            icon_image.then ( function ( img ) {
+            icon_image.then ( img => {
 
-                var name = icon.manifest.name;
+                var name = icon.manifest.name; console.log(name);
                 var wordname = name.split(" ");
                 var firstchar = name.charAt(0);
 
@@ -124,7 +124,7 @@ require(["jQuery", 'ramdajs'], function(jQuery, R) {
     }
 
     /* fires up the painting */
-    var start = function() {
+    var start = () => {
             $('.tile').remove();
             /**
              * Fetch all apps and render them.
@@ -145,9 +145,9 @@ require(["jQuery", 'ramdajs'], function(jQuery, R) {
             });
 
             myApps.then(
-                function (v) {
+                v => {
 
-                }, function(v){
+                }, v => {
                     print_msg();
                 }
             );
