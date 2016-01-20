@@ -12,7 +12,7 @@
  * @copyright   leandro713 - 2016
  * @link        https://github.com/novia713/tilescreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @version     1.2b
+ * @version     1.2
  * @date        20160120
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
@@ -147,7 +147,6 @@ require(['ramdajs'], ( R ) => {
 
     /* fires up the painting */
     var start = () => {
-            //document.getElementsByClassName('tile').remove();
 
             /**
              * Fetch all apps and render them.
@@ -187,7 +186,7 @@ require(['ramdajs'], ( R ) => {
             var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);
             var index     = R.keys ( R.filter( R.propEq("label", classname ), storage ));
 
-            // we add 1 to value of that icon ...
+            // we add 1 to value of that icon in localStorage ...
             storage[index].order +=1;
             localStorage.setItem( "storage", JSON.stringify( storage ));
 
@@ -202,7 +201,6 @@ require(['ramdajs'], ( R ) => {
               if (b.dataset.order == undefined) a.dataset.order = 0;
 
               if (a.dataset.order > b.dataset.order)
-
                     return -1;
                   else if (a.dataset.order < b.dataset.order)
                     return 1;
@@ -220,7 +218,7 @@ require(['ramdajs'], ( R ) => {
             }
 
             R.forEach(print_tile, [].slice.call(new_roster));
-            // end saving use of icon in localstorage
+            // end reordering incons by usage
 
             i.launch();
         }
