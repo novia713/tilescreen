@@ -80,12 +80,9 @@ require(['ramdajs'], ( R ) => {
         } else {
             //random hex color;
 
-            var letters = 'ABCDE'.split('');
-            var color = '#';
-            for (var i=0; i<3; i++ ) {
-                color += letters[Math.floor(Math.random() * letters.length)];
-            }
-            return color;
+            return '#'+'0123456789abcdef'.split('').map(function(v,i,a){ return i>5 ? null : a[Math.floor(Math.random()*16)] }).join('');
+
+
 
         }
     };
