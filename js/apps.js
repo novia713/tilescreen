@@ -6,14 +6,14 @@
  * Tilescreen
  * (c) leandro@leandro.org
  * GPL v3 license
- * v. 20160120
+ * v. 20160121
  *
  * @author      leandro713 <leandro@leandro.org>
  * @copyright   leandro713 - 2016
  * @link        https://github.com/novia713/tilescreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @version     1.2
- * @date        20160120
+ * @version     1.3
+ * @date        20160121
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
@@ -59,24 +59,34 @@ require(['ramdajs'], ( R ) => {
     var get_color = app => {
         var obj_color = {};
         obj_color.Communications = "#B2F2FF"; //green 5F9B0A
-        obj_color.Calendar = "#FF4E00"; //orange
-        obj_color['E-Mail'] = "#FF4E00"; //orange
+        obj_color.Calendar    = "#FF4E00"; //orange
+        obj_color['E-Mail']   = "#FF4E00"; //orange
         obj_color['FM Radio'] = "#2C393B"; //grey
-        obj_color.Camera = "#00AACC"; //blue
-        obj_color.Clock = "#333333"; //warm grey
-        obj_color.Gallery = "#00AACC"; //blue
+        obj_color.Camera      = "#00AACC"; //blue
+        obj_color.Clock       = "#333333"; //warm grey
+        obj_color.Gallery     = "#00AACC"; //blue
         obj_color.Marketplace = "#00AACC"; //blue
-        obj_color.Browser = "#00AACC"; //blue
-        obj_color.Messages = "#5F9B0A"; //green
-        obj_color.Video = "#CD6723"; //brick
-        obj_color.Music = "#CD6723"; //brick
-        obj_color.Settings = "#EAEAE7"; //ivory
+        obj_color.Browser     = "#00AACC"; //blue
+        obj_color.Messages    = "#5F9B0A"; //green
+        obj_color.Video       = "#CD6723"; //brick
+        obj_color.Music       = "#CD6723"; //brick
+        obj_color.Settings    = "#EAEAE7"; //ivory
+
+        obj_color.Twitter     = "#c0deed";
+        obj_color.Facebook    = "#3b5998";
 
         if (obj_color[app]) {
             return obj_color[app];
         } else {
             //random hex color;
-            return '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+            var letters = 'ABCDE'.split('');
+            var color = '#';
+            for (var i=0; i<3; i++ ) {
+                color += letters[Math.floor(Math.random() * letters.length)];
+            }
+            return color;
+
         }
     };
 
@@ -117,7 +127,6 @@ require(['ramdajs'], ( R ) => {
                 tile.className = 'tile';
                 tile.className += ' icon_' + wordname[0];
                 tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 49% no-repeat';
-
                 document.getElementById('apps').appendChild(tile);
                 iconMap.set(tile, icon);
                 /* end tile generation*/
@@ -179,7 +188,7 @@ require(['ramdajs'], ( R ) => {
     window.addEventListener('click', ev => {
 
         if ( typeof storage == "string" ) storage = JSON.parse( storage );
-        var i = iconMap.get(ev.target);
+        var i = iconMap.get( ev.target );
 
         if (i) {
 
@@ -201,14 +210,14 @@ require(['ramdajs'], ( R ) => {
               if (b.dataset.order == undefined) a.dataset.order = 0;
 
               if (a.dataset.order > b.dataset.order)
-                    return -1;
-                  else if (a.dataset.order < b.dataset.order)
-                    return 1;
-                  else
-                    return 0;
+                return -1;
+              else if (a.dataset.order < b.dataset.order)
+                return  1;
+              else
+                return  0;
             }
 
-            var new_roster = [].slice.call( document.getElementById("apps").childNodes ).sort(compare);
+            var new_roster = [].slice.call( document.getElementById( "apps" ).childNodes ).sort( compare );
 
             // printing
             document.getElementById('apps').innerHTML = "";
@@ -217,7 +226,7 @@ require(['ramdajs'], ( R ) => {
                 document.getElementById('apps').appendChild( e );
             }
 
-            R.forEach(print_tile, [].slice.call(new_roster));
+            R.forEach( print_tile, [].slice.call( new_roster ) );
             // end reordering incons by usage
 
             i.launch();
