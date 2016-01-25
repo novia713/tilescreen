@@ -42,20 +42,26 @@ requirejs.config({
 
 require(['ramdajs'], ( R ) => {
 
-    const apps_2_exclude = [
-        "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
-        "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
-        "Built-in Keyboard", "Bluetooth Manager", "Communications",
-        "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
+    /*
+     *  counter
+     */
+    var create_counter = function() {
+        var i = 0;
+        var increment = function (n = 1) {
+            return i += n;
+        };
 
-    var parent = document.getElementById('apps');
-    var iconMap = new WeakMap();
-    var usage = [];
-    var i = 0;
-    var storage = null;
+        var get_val = function () {
+            return i;
+        };
 
+        return {
+            increment : increment,
+            get_val   : get_val
+        };
+    }
 
-    //colores
+    // colors
     var get_color = app => {
         var obj_color = {};
         obj_color.Communications = "#B2F2FF"; //green 5F9B0A
@@ -89,7 +95,7 @@ require(['ramdajs'], ( R ) => {
      var print_msg = () => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
-            parent.innerHTML(txt_msg);
+        document.getElementById('apps').innerHTML = txt_msg;
      };
 
 
@@ -126,7 +132,7 @@ require(['ramdajs'], ( R ) => {
 
 
                 // array for storing it in JSON for using records
-                var item = { "label": wordname[0], "index": i, "order": 0 };
+                var item = { "label": wordname[0], "index": counter.get_val(), "order": 0 };
                 storage = localStorage.getItem("storage");
 
                 if ( !storage ) {
@@ -135,12 +141,12 @@ require(['ramdajs'], ( R ) => {
                     localStorage.setItem( "storage", JSON.stringify( storage ));
                 } else  {
                     var data = JSON.parse(storage);
-                    data[i] =  item;
+                    data[counter.get_val()] =  item;
                     localStorage.setItem( "storage", JSON.stringify( data ));
                 }
 
+                counter.increment();
 
-                ++i;
             });
 
             if (typeof icon_image == undefined) return;
@@ -227,7 +233,16 @@ require(['ramdajs'], ( R ) => {
     }); //end window event 'click', document.getElementsByClassName('tile'));
 
 
+    const apps_2_exclude = [
+        "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
+        "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
+        "Built-in Keyboard", "Bluetooth Manager", "Communications",
+        "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
 
+    var iconMap = new WeakMap();
+    var usage = [];
+    var storage = null;
+    var counter = create_counter();
 
 
     // 3, 2, 1 ...
