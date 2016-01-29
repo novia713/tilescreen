@@ -43,7 +43,7 @@ requirejs.config({
 
 require(['ramdajs', 'fxos_icons'], ( R ) => {
     //CONFIG
-    only_big = 1;
+    only_big = 0;
     //CONFIG
 
     const apps_2_exclude = [
