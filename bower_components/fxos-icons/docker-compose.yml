@@ -1,0 +1,5 @@
+fxos-icons:
+  build: .
+  volumes:
+    - .:/fxos-icons
+  command: bin/build.sh

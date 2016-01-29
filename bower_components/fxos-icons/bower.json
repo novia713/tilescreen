@@ -1,0 +1,33 @@
+{
+  "name": "fxos-icons",
+  "homepage": "https://github.com/fxos-components/fxos-icons",
+  "authors": [
+    "Wilson Page <wilsonpage@me.com>"
+  ],
+  "main": [
+    "fxos-icons.js",
+    "fxos-icons.css",
+    "fonts/fxos-icons.ttf",
+    "docker-compose.yml",
+    "fxos-icons-embedded.css",
+    "bidi-helper.css"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "!.jshintrc",
+    "node_modules",
+    "bower_components",
+    "templates",
+    "images",
+    "test",
+    "tests",
+    "index.html",
+    "create-svg-icon-set-file.py",
+    "Gruntfile.js",
+    "Dockerfile",
+    "bin",
+    "README.md",
+    "package.json"
+  ]
+}
