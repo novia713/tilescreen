@@ -44,8 +44,9 @@ requirejs.config({
 require(['ramdajs', 'fxos_icons'], ( R ) => {
     //CONFIG
     only_big = 0;
+    b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
+    
     //CONFIG
-
     const apps_2_exclude = [
         "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
         "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
@@ -61,7 +62,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
     var smalls = [];
     if (only_big != true)
-        smalls = [ 3 ,4 ,5 ,6 ,8 ,9 ,10 ,11 ];
+        smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10];
 
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
@@ -69,8 +70,35 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     var i = 0;
     var storage = null;
     var date = new Date();
+    
+    /* set initial styles for sizes */
+        var add_style = function(css_string){
+            var head = document.head || document.getElementsByTagName('head')[0],
+                style = document.createElement('style');
 
+            style.type = 'text/css';
+            if (style.styleSheet){
+              style.styleSheet.cssText = css_string;
+            } else {
+              style.appendChild(document.createTextNode(css_string));
+            }
 
+            head.appendChild(style);    
+        }
+        tile_width_1 = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
+        tile_width_2 = (window.innerWidth / 2).toFixed(0) - 8;
+        tile_width_4 = (window.innerWidth / 4).toFixed(0) - 8;
+    
+        add_style('.tile { width: '  + tile_width_2 +'px; height: '  + tile_width_2 +'px; }');
+        add_style('.small { width: ' + tile_width_4 +'px!important; height: ' + tile_width_4 +'px!important}');
+    
+    /* set initial styles for colors */
+        if (b_transparency == 1){
+            add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
+        }else{
+            add_style('#apps { background-color: #000;}');
+        }
+    
     //colores
     var get_color = app => {
         var obj_color = {};
@@ -148,12 +176,17 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         var battery = navigator.battery;
         if (battery) {
             var batterylevel = Math.round(battery.level * 100) + "%";
-            tile.innerHTML += "<i data-icon='battery-8' data-l10n-id='battery-8'></i>" + batterylevel + "";
+            var batterylevel_10 = Math.round(battery.level * 10) + "%";
+            if (batterylevel_10 > 10) batterylevel_10 = 10;
+            tile.innerHTML += "<i data-icon='battery-"+batterylevel_10+"' data-l10n-id='battery-"+batterylevel_10+"' style='display:inline-block;line-height:0.8em;'> " + batterylevel + "</i>";
         }
 
         function success(pos) {
           var crd = pos.coords;
-          tile.innerHTML += "<small style='float:left;'><i data-icon='location' data-l10n-id='location'></i>" + crd.latitude + ", " + crd.longitude + "</small>";
+          tile.innerHTML += "<small style='display:block;position:relative;padding-left:30px;text-align:right;'>"
+                          + "   <i data-icon='location' data-l10n-id='location' style='position:absolute;top:0;left:0;'></i>" 
+                          +     crd.latitude + "<br />" + crd.longitude 
+                          + "</small>";
         };
 
         function error(err) {
@@ -163,13 +196,8 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         navigator.geolocation.getCurrentPosition(success, error, geoptions);
 
         tile.id        = 'hour_tile';
-        tile.innerHTML += "<div id='worded'>" + get_numeric_day() + " <span id='weekday'>"+ get_worded_day() + "</span></div>";
+        tile.innerHTML += "<div id='worded'><span class='weekday'>"+ get_worded_day() + "</span> <span class='monthday'>" + get_numeric_day() + "</span></div>";
         tile.style     = "background-color:orange;";
-
-
-
-
-
 
         parent.insertBefore(tile, parent.children[1]);
      };
@@ -178,7 +206,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         var get_rid_small = function (e) {
             e.classList.remove("small");
-
+            
             x = Array.prototype.indexOf.call(e.parentNode.childNodes,e) +1;
             if ( is_small( x ) > -1 ) {
                 e.classList.add("small");
@@ -187,8 +215,8 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         R.forEach( get_rid_small, [].slice.call( document.getElementsByClassName("tile")) );
         hour_tile();
+        
      };
-
 
     /**
      * Renders the icon to the container.
@@ -219,12 +247,31 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                 /* tile generation*/
                 var tile = document.createElement('div');
                 tile.className = 'tile';
-                tile.className += ' icon_' + wordname[0];
-                tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 49% no-repeat';
+                
+                    /* tile icon */
+                    var tile_ic = document.createElement('div');
+                    tile_ic.className = 'tile_ic';
+                    tile_ic.style.background = 'transparent url(' + window.URL.createObjectURL( img ) + ') no-repeat';
+                    tile_ic.setAttribute('rel', wordname[0]);
+                    
+                    tile.appendChild(tile_ic);
+                    
+                    /* tile background */
+                    var tile_bg = document.createElement('div');
+                    tile_bg.className = 'tile_bg';
+                    if (b_transparency != 1)
+                        tile_bg.style.backgroundColor = get_color(name);
+                    else
+                        tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                    
+                    tile.appendChild(tile_bg);
+                    
                 document.getElementById('apps').appendChild(tile);
-                iconMap.set(tile, icon);
+                
+                /* we associate the tile_ic to the firefox OS icon, because the tile_ic is who get the 'click' event, not the tile container */
+                iconMap.set(tile_ic, icon); 
+                
                 /* end tile generation*/
-
 
                 // array for storing it in JSON for using records
                 var item = { "label": wordname[0], "index": i, "order": 0 };
@@ -247,6 +294,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                     tile.className += " small";
                     //tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 12% no-repeat';
                 }
+                
             });
 
             if (typeof icon_image == undefined) return;
@@ -268,6 +316,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
                       // hic sunt render leones
                       R.forEach( render, request.result );
+                      
                     };
 
                     request.onerror = (e) => {
@@ -275,7 +324,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                       resolve();
                     };
             });
-
+            
             myApps.then(
                 v => {
 
@@ -293,11 +342,12 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         if ( typeof storage == "string" ) storage = JSON.parse( storage );
         var i = iconMap.get( ev.target );
-
+        
         if (i) {
-
-            var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);
-            var index     = R.keys ( R.filter( R.propEq("label", classname ), storage ));
+            
+            /*var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);*/
+            var rel = ev.originalTarget.getAttribute('rel');
+            var index     = R.keys ( R.filter( R.propEq("label", rel ), storage ));
 
             // we add 1 to value of that icon in localStorage ...
             storage[index].order +=1;
