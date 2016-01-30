@@ -246,13 +246,19 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
                 /* tile generation*/
                 var tile = document.createElement('div');
-                tile.id = 'icon_' + wordname[0];
                 tile.className = 'tile';
-                tile.className += ' ' + tile.id;
                 
+                    /* tile icon */
+                    var tile_ic = document.createElement('div');
+                    tile_ic.className = 'tile_ic';
+                    tile_ic.style.background = 'transparent url(' + window.URL.createObjectURL( img ) + ') no-repeat';
+                    tile_ic.setAttribute('rel', wordname[0]);
+                    
+                    tile.appendChild(tile_ic);
+                    
                     /* tile background */
                     var tile_bg = document.createElement('div');
-                    tile_bg.className = "tile_bg";
+                    tile_bg.className = 'tile_bg';
                     if (b_transparency != 1)
                         tile_bg.style.backgroundColor = get_color(name);
                     else
@@ -260,16 +266,11 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                     
                     tile.appendChild(tile_bg);
                     
-                    /* tile icon */
-                    var tile_ic = document.createElement('div');
-                    tile_ic.className = "tile_ic";
-                    tile_ic.style.background = 'transparent url(' + window.URL.createObjectURL( img ) + ') no-repeat';
-                    
-                    tile.appendChild(tile_ic);
-                    
                 document.getElementById('apps').appendChild(tile);
                 
-                iconMap.set(tile, icon);
+                /* we associate the tile_ic to the firefox OS icon, because the tile_ic is who get the 'click' event, not the tile container */
+                iconMap.set(tile_ic, icon); 
+                
                 /* end tile generation*/
 
                 // array for storing it in JSON for using records
@@ -341,11 +342,12 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         if ( typeof storage == "string" ) storage = JSON.parse( storage );
         var i = iconMap.get( ev.target );
-
+        
         if (i) {
-
-            var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);
-            var index     = R.keys ( R.filter( R.propEq("label", classname ), storage ));
+            
+            /*var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);*/
+            var rel = ev.originalTarget.getAttribute('rel');
+            var index     = R.keys ( R.filter( R.propEq("label", rel ), storage ));
 
             // we add 1 to value of that icon in localStorage ...
             storage[index].order +=1;
