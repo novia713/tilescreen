@@ -11,7 +11,16 @@
   "permissions": {
     "homescreen-webapps-manage":{
         "description": "Required for manage icon apps in homescreen"
-     }
+     },
+     "device-storage:pictures":{ "access": "readwrite" },
+        "mobileid": {},
+        "mobilenetwork": {},
+        "mobileconnection": {},
+        "open-remote-window": {},
+        "telephony": {},
+        "wifi-manage": {},
+        "phonenumberservice": {},
+        "geolocation": {}
   },
   "locales": {
     "en-US": {
@@ -31,5 +40,5 @@
   "orientation": "portrait-primary",
   "activities": {},
   "messages": [],
-  "version": "1.3"
+  "version": "1.4"
 }

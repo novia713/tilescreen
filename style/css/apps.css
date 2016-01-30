@@ -52,6 +52,13 @@ body {margin: 0;}
     float:left;
 }
 
+.small {
+    display: inline-block;
+    height: 50% !important;
+    width: 10%;
+    padding: 6%;
+}
+
 .name {
     color: white;
     margin: 5%;
@@ -74,4 +81,8 @@ body {margin: 0;}
     font-size:29px;
     margin-right:-10%;
     margin-top:3%;
+}
+
+#worded {
+    font-size: 2rem;
 }
