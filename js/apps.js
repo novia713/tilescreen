@@ -85,12 +85,12 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
             head.appendChild(style);    
         }
-        tile_width_1 = window.innerWidth;
+        tile_width_1 = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
         tile_width_2 = (window.innerWidth / 2).toFixed(0) - 8;
         tile_width_4 = (window.innerWidth / 4).toFixed(0) - 8;
     
-        add_style('.tile { height: '  + tile_width_2 +'px}');
-        add_style('.small { height: ' + tile_width_4 +'px!important}');
+        add_style('.tile { width: '  + tile_width_2 +'px; height: '  + tile_width_2 +'px; }');
+        add_style('.small { width: ' + tile_width_4 +'px!important; height: ' + tile_width_4 +'px!important}');
     
     /* set initial styles for colors */
         if (b_transparency == 1){
@@ -198,7 +198,6 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         tile.id        = 'hour_tile';
         tile.innerHTML += "<div id='worded'><span class='weekday'>"+ get_worded_day() + "</span> <span class='monthday'>" + get_numeric_day() + "</span></div>";
         tile.style     = "background-color:orange;";
-        tile.style.height = tile_width_2 + 'px';
 
         parent.insertBefore(tile, parent.children[1]);
      };
