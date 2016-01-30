@@ -61,7 +61,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
     var smalls = [];
     if (only_big != true)
-        smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10 ];
+        smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
 
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
@@ -90,13 +90,6 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         add_style('.tile { width: '  + tile_width_2 +'px; height: '  + tile_width_2 +'px; }');
         add_style('.small { width: ' + tile_width_4 +'px!important; height: ' + tile_width_4 +'px!important}');
-
-    /* set initial styles for colors */
-        if (b_transparency == 1){
-            add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
-        }else{
-            add_style('#apps { background-color: #000;}');
-        }
 
     //colores
     var get_color = app => {
@@ -164,6 +157,14 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         return weekday[date.getDay()];
      };
 
+     var show_options = function () {
+         document.getElementById("hour_tile").innerHTML = "";
+         document.getElementById("hour_tile").innerHTML = (b_transparency == 1)?
+            "<div id='hide_trans'>hide transparency</div>" :
+            "<div id='set_trans' >set transparency</div>"  ;
+
+     };
+
      var print_dock = function () {
 
         var storage = JSON.parse( localStorage.getItem(  "storage"));
@@ -182,7 +183,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         dock.innerHTML = "";
         var sortByUsage = R.sortBy(R.prop("order"));
         R.forEach ( print_tiles_in_minidock, R.take (4,  R.reverse(sortByUsage( storage ))));
-     }
+     };
 
      var hour_tile = function() {
         var oldtile = document.getElementById("hour_tile");
@@ -300,9 +301,9 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
-                    if (b_transparency != 1)
+                    if (b_transparency != 1) {
                         tile_bg.style.backgroundColor = get_color(name);
-                    else
+                    }else
                         tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
 
                     tile.appendChild(tile_bg);
@@ -339,11 +340,16 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
             });
 
             if (typeof icon_image == undefined) return;
-
     }
 
     /* fires up the painting */
     var start = () => {
+
+        if (b_transparency == 1){
+            add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
+        }else{
+            add_style('#apps { background-color: #000;}');
+        }
 
             /**
              * Fetch all apps and render them.
@@ -391,7 +397,6 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
             /*var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);*/
 
             var rel       = this_tile.getAttribute('rel');
-            //CHECKME: is keys(object) or object.index ???
             var index     =  R.filter( R.propEq("label", rel ), storage )[0].index;
 
             // we add 1 to value of that icon in localStorage ...
@@ -405,6 +410,24 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
             i.launch();
             print_dock();
         }
+
+
+        // options
+        if (this_tile.id == "worded" || this_tile.id == "hour_tile") {
+            show_options();
+        }
+
+        if (this_tile.id == "hide_trans") {
+            b_transparency = 0;
+            start();
+        }
+
+        if (this_tile.id == "set_trans") {
+            b_transparency = 1;
+            start();
+        }
+        // end options
+
     }); //end window event 'click', document.getElementsByClassName('tile'));
 
 
