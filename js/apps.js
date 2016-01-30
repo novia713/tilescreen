@@ -4,7 +4,8 @@
  *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
  *
  * Tilescreen
- * (c) leandro@leandro.org
+ * (c)  leandro@leandro.org,
+ *      sergio.cero@gmail.com
  * GPL v3 license
  *
  * @author      leandro713 <leandro@leandro.org>
@@ -60,9 +61,6 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
 
     var smalls = [];
-    if (only_big != true)
-        smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
-
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
     var usage = [];
@@ -163,6 +161,9 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
          document.getElementById("hour_tile").innerHTML = (b_transparency == 1)?
             "<div id='hide_trans'>hide transparency</div>" :
             "<div id='set_trans' >set transparency</div>"  ;
+         document.getElementById("hour_tile").innerHTML += (only_big == 1)?
+            "<div id='show_small'>show small icons</div>" :
+            "<div id='only_big'  >only big icons</div>"  ;
 
      };
 
@@ -236,22 +237,6 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         tile.style     = "background-color:orange;";
 
         parent.insertBefore(tile, parent.children[1]);
-     };
-
-     var resize = function () {
-
-        var get_rid_small = function (e) {
-            e.classList.remove("small");
-
-            x = Array.prototype.indexOf.call( e.parentNode.childNodes,e ) +1;
-            if ( is_small( x ) > -1 ) {
-                e.classList.add("small");
-            }
-        };
-
-        R.forEach( get_rid_small, [].slice.call( document.getElementsByClassName("tile")) );
-        hour_tile();
-
      };
 
     /**
@@ -355,11 +340,15 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     /* fires up the painting */
     var start = () => {
 
+        i = 0;
         if (b_transparency == 1){
             add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
         }else{
             add_style('#apps { background-color: #000;}');
         }
+
+        if (only_big != true)
+            smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
 
             /**
              * Fetch all apps and render them.
@@ -436,10 +425,26 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
             b_transparency = 1;
             start();
         }
+
+        if (this_tile.id == "only_big") {
+            only_big = 1;
+            R.forEach(removeSmall, document.getElementsByClassName("tile"));
+            start();
+        }
+
+        if (this_tile.id == "show_small") {
+            only_big = 0;
+            start();
+        }
+
         // end options
 
     }); //end window event 'click', document.getElementsByClassName('tile'));
 
+
+    var removeSmall = function (el) { console.log();
+        el.classList.remove("small")
+    }
 
     // 3, 2, 1 ...
     start();
