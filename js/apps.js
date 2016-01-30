@@ -84,12 +84,13 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
             head.appendChild(style);
         }
-        tile_width_1 = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
-        tile_width_2 = (window.innerWidth / 2).toFixed(0) - 8;
-        tile_width_4 = (window.innerWidth / 4).toFixed(0) - 8;
+        width_1_col = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
+        width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
+        width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
 
-        add_style('.tile { width: '  + tile_width_2 +'px; height: '  + tile_width_2 +'px; }');
-        add_style('.small { width: ' + tile_width_4 +'px!important; height: ' + tile_width_4 +'px!important}');
+        add_style('.tile { width: '  + width_2_col +'px; height: '  + width_2_col +'px; }');
+        add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
+        add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;} .t_4_1 .tile{margin-left:0px;margin-right:8px;}');
 
     //colores
     var get_color = app => {
@@ -169,15 +170,22 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         var storage = JSON.parse( localStorage.getItem(  "storage"));
         var dock    = document.getElementById("dock");
+        dock.className  = "tile t_4_1";
 
         var print_tiles_in_minidock =  item  => {
             var div_copy = document.getElementById(item.label).cloneNode(true);
-            var container = document.createElement("div");
+            var tile = document.createElement("div");
 
-            container.className  = "tile";
-            container.className += "small";
-            container.appendChild( div_copy  );
-            dock.appendChild(  container  );
+            tile.className  = "tile small";
+            tile.appendChild( div_copy  );
+
+                    /* tile background */
+                    var tile_bg = document.createElement('div');
+                    tile_bg.className = 'tile_bg';
+                    tile_bg.style.backgroundColor = '#000';
+                    tile.appendChild(tile_bg);
+
+            dock.appendChild(  tile  );
         };
 
         dock.innerHTML = "";
@@ -301,10 +309,12 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
+
                     if (b_transparency != 1) {
                         tile_bg.style.backgroundColor = get_color(name);
                     }else
                         tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
+
 
                     tile.appendChild(tile_bg);
 
