@@ -11,8 +11,8 @@
  * @copyright   leandro713 - 2016
  * @link        https://github.com/novia713/tilescreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @version     1.42
- * @date        20160127
+ * @version     1.4.21
+ * @date        20160130
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
@@ -43,9 +43,8 @@ requirejs.config({
 
 require(['ramdajs', 'fxos_icons'], ( R ) => {
     //CONFIG
-    only_big = 0;
-    b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
-    
+    var only_big       = 0;
+    var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
     //CONFIG
     const apps_2_exclude = [
         "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
@@ -62,7 +61,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
     var smalls = [];
     if (only_big != true)
-        smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10];
+        smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10 ];
 
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
@@ -70,7 +69,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     var i = 0;
     var storage = null;
     var date = new Date();
-    
+
     /* set initial styles for sizes */
         var add_style = function(css_string){
             var head = document.head || document.getElementsByTagName('head')[0],
@@ -83,22 +82,22 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
               style.appendChild(document.createTextNode(css_string));
             }
 
-            head.appendChild(style);    
+            head.appendChild(style);
         }
         tile_width_1 = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
         tile_width_2 = (window.innerWidth / 2).toFixed(0) - 8;
         tile_width_4 = (window.innerWidth / 4).toFixed(0) - 8;
-    
+
         add_style('.tile { width: '  + tile_width_2 +'px; height: '  + tile_width_2 +'px; }');
         add_style('.small { width: ' + tile_width_4 +'px!important; height: ' + tile_width_4 +'px!important}');
-    
+
     /* set initial styles for colors */
         if (b_transparency == 1){
             add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
         }else{
             add_style('#apps { background-color: #000;}');
         }
-    
+
     //colores
     var get_color = app => {
         var obj_color = {};
@@ -165,6 +164,26 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         return weekday[date.getDay()];
      };
 
+     var print_dock = function () {
+
+        var storage = JSON.parse( localStorage.getItem(  "storage"));
+        var dock    = document.getElementById("dock");
+
+        var print_tiles_in_minidock =  item  => {
+            var div_copy = document.getElementById(item.label).cloneNode(true);
+            var container = document.createElement("div");
+
+            container.className  = "tile";
+            container.className += "small";
+            container.appendChild( div_copy  );
+            dock.appendChild(  container  );
+        };
+
+        dock.innerHTML = "";
+        var sortByUsage = R.sortBy(R.prop("order"));
+        R.forEach ( print_tiles_in_minidock, R.take (4,  R.reverse(sortByUsage( storage ))));
+     }
+
      var hour_tile = function() {
         var oldtile = document.getElementById("hour_tile");
         if ( oldtile )
@@ -182,11 +201,19 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         }
 
         function success(pos) {
+          /*
+           * Postponed until v.1.6
+           * show here info weather based on geoloc data
+           * -------------------------------------------
+           *
           var crd = pos.coords;
           tile.innerHTML += "<small style='display:block;position:relative;padding-left:30px;text-align:right;'>"
-                          + "   <i data-icon='location' data-l10n-id='location' style='position:absolute;top:0;left:0;'></i>" 
-                          +     crd.latitude + "<br />" + crd.longitude 
+                          + "   <i data-icon='location' data-l10n-id='location' style='position:absolute;top:0;left:0;'></i>"
+                          +     crd.latitude + "<br />" + crd.longitude
                           + "</small>";
+           *
+           *
+           */
         };
 
         function error(err) {
@@ -206,8 +233,8 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         var get_rid_small = function (e) {
             e.classList.remove("small");
-            
-            x = Array.prototype.indexOf.call(e.parentNode.childNodes,e) +1;
+
+            x = Array.prototype.indexOf.call( e.parentNode.childNodes,e ) +1;
             if ( is_small( x ) > -1 ) {
                 e.classList.add("small");
             }
@@ -215,7 +242,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
         R.forEach( get_rid_small, [].slice.call( document.getElementsByClassName("tile")) );
         hour_tile();
-        
+
      };
 
     /**
@@ -241,21 +268,35 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
             icon_image.then ( img => {
 
                 var name = icon.manifest.name;
+
+                // Callscreen icon
+                /* @FIXME: no funciona bien :(
+                 * this app is different, so this icon needs a custom launch url
+                 * @todo: refactor this in an outer named function
+                 * icon: http://www.iconarchive.com/show/firefox-os-icons-by-vcferreira/dialer-icon.html
+                 *
+                 */
+                //if (name == "Callscreen"){
+                //    icon.target ="app://communications.gaiamobile.org/manifest.webapp-dialer";
+                //}
+
+                // end callscreen
                 var wordname = name.split(" ");
                 var firstchar = name.charAt(0);
 
                 /* tile generation*/
                 var tile = document.createElement('div');
                 tile.className = 'tile';
-                
+
                     /* tile icon */
                     var tile_ic = document.createElement('div');
                     tile_ic.className = 'tile_ic';
                     tile_ic.style.background = 'transparent url(' + window.URL.createObjectURL( img ) + ') no-repeat';
                     tile_ic.setAttribute('rel', wordname[0]);
-                    
+                    tile_ic.id = wordname[0];
+
                     tile.appendChild(tile_ic);
-                    
+
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
@@ -263,14 +304,14 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                         tile_bg.style.backgroundColor = get_color(name);
                     else
                         tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
-                    
+
                     tile.appendChild(tile_bg);
-                    
+
                 document.getElementById('apps').appendChild(tile);
-                
+
                 /* we associate the tile_ic to the firefox OS icon, because the tile_ic is who get the 'click' event, not the tile container */
-                iconMap.set(tile_ic, icon); 
-                
+                iconMap.set(tile_ic, icon);
+
                 /* end tile generation*/
 
                 // array for storing it in JSON for using records
@@ -294,7 +335,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                     tile.className += " small";
                     //tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 12% no-repeat';
                 }
-                
+
             });
 
             if (typeof icon_image == undefined) return;
@@ -316,7 +357,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
                       // hic sunt render leones
                       R.forEach( render, request.result );
-                      
+
                     };
 
                     request.onerror = (e) => {
@@ -324,7 +365,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                       resolve();
                     };
             });
-            
+
             myApps.then(
                 v => {
 
@@ -340,14 +381,18 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
     window.addEventListener('click', ev => {
 
+        var this_tile = ev.originalTarget;
+
         if ( typeof storage == "string" ) storage = JSON.parse( storage );
         var i = iconMap.get( ev.target );
-        
+
         if (i) {
-            
+
             /*var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);*/
-            var rel = ev.originalTarget.getAttribute('rel');
-            var index     = R.keys ( R.filter( R.propEq("label", rel ), storage ));
+
+            var rel       = this_tile.getAttribute('rel');
+            //CHECKME: is keys(object) or object.index ???
+            var index     =  R.filter( R.propEq("label", rel ), storage )[0].index;
 
             // we add 1 to value of that icon in localStorage ...
             storage[index].order +=1;
@@ -355,53 +400,13 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
 
             // transpose storage value to DOM elements
-            ev.target.dataset.order = storage[index].order;
-
-            // sorting
-            var compare = function (a, b) {
-
-              if (a.dataset.order == undefined) a.dataset.order = 0;
-              if (b.dataset.order == undefined) a.dataset.order = 0;
-
-              if (a.dataset.order > b.dataset.order)
-                return -1;
-              else if (a.dataset.order < b.dataset.order)
-                return  1;
-              else
-                return  0;
-            }
-
-            var new_roster = [].slice.call( document.getElementById( "apps" ).childNodes ).sort( compare );
-
-            // printing
-            document.getElementById('apps').innerHTML = "";
-
-            var print_tile = e => {
-                document.getElementById('apps').appendChild( e );
-            }
-
-            R.forEach( print_tile, [].slice.call( new_roster ) );
-            // end reordering incons by usage
-
-            resize();
+            this_tile.dataset.order = storage[index].order;
 
             i.launch();
+            print_dock();
         }
     }); //end window event 'click', document.getElementsByClassName('tile'));
-/*
-console.log("4");
-var pics = navigator.getDeviceStorage('pictures');
-var cursor = pics.enumerate();
 
-
-cursor.onsuccess = function () {
-  //var file = this.result;
-  //return file.name;
-}
-*/
-
-//console.log(navigator.mozWifiManager.connectionInformation);
-//console.log(navigator.mozWifiManager.connection);
 
     // 3, 2, 1 ...
     start();
