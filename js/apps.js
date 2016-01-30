@@ -94,9 +94,9 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     
     /* set initial styles for colors */
         if (b_transparency == 1){
-            add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
+            add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); } .tile_bg{opacity:0.65;} ');
         }else{
-            add_style('#apps { background-color: #000;}');
+            add_style('#apps { background-color: #000;}  .tile_bg{opacity:1;}');
         }
     
     //colores
@@ -259,10 +259,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
-                    if (b_transparency != 1)
-                        tile_bg.style.backgroundColor = get_color(name);
-                    else
-                        tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                    tile_bg.style.backgroundColor = get_color(name);
                     
                     tile.appendChild(tile_bg);
                     
