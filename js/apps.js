@@ -4,16 +4,15 @@
  *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
  *
  * Tilescreen
- * (c)  leandro@leandro.org,
- *      sergio.cero@gmail.com
+ * (c)  [ leandro@leandro.org, sergio.cero@gmail.com ]
  * GPL v3 license
  *
  * @author      leandro713 <leandro@leandro.org>
  * @copyright   leandro713 - 2016
  * @link        https://github.com/novia713/tilescreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @version     1.4.21
- * @date        20160130
+ * @version     1.4.22
+ * @date        20160131
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
@@ -33,20 +32,27 @@ requirejs.config({
     baseUrl: "js",
     paths: {
         'ramdajs': ['ramda.min'],
+        'uitls': "utils",
         'fxos_icons': "../bower_components/fxos-icons/fxos-icons"
+
     },
     shim: {
         'ramdajs': {
             exports: 'R'
+        },
+        'utils': {
+            exports: 'U'
         }
     }
 });
 
-require(['ramdajs', 'fxos_icons'], ( R ) => {
+require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
+
     //CONFIG
     var only_big       = 0;
     var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
     //CONFIG
+
     const apps_2_exclude = [
         "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
         "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
@@ -68,63 +74,6 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     var storage = null;
     var date = new Date();
 
-    /* set initial styles for sizes */
-        var add_style = function(css_string){
-            var head = document.head || document.getElementsByTagName('head')[0],
-                style = document.createElement('style');
-
-            style.type = 'text/css';
-            if (style.styleSheet){
-              style.styleSheet.cssText = css_string;
-            } else {
-              style.appendChild(document.createTextNode(css_string));
-            }
-
-            head.appendChild(style);
-        }
-        width_1_col = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
-        width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
-        width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
-
-        add_style('.tile { width: '  + width_2_col +'px; height: '  + width_2_col +'px; }');
-        add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
-        add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;} .t_4_1 .tile{margin-left:0px;margin-right:8px;}');
-
-    //colores
-    var get_color = app => {
-        var obj_color = {};
-        obj_color.Communications = "#B2F2FF"; //green 5F9B0A
-        obj_color.Calendar    = "#FF4E00"; //orange
-        obj_color['E-Mail']   = "#FF4E00"; //orange
-        obj_color['FM Radio'] = "#2C393B"; //grey
-        obj_color.Camera      = "#00AACC"; //blue
-        obj_color.Clock       = "#333333"; //warm grey
-        obj_color.Gallery     = "#00AACC"; //blue
-        obj_color.Marketplace = "#00AACC"; //blue
-        obj_color.Browser     = "#00AACC"; //blue
-        obj_color.Messages    = "#5F9B0A"; //green
-        obj_color.Video       = "#CD6723"; //brick
-        obj_color.Music       = "#CD6723"; //brick
-        obj_color.Settings    = "#EAEAE7"; //ivory
-
-        obj_color.Twitter     = "#c0deed";
-        obj_color.Facebook    = "#3b5998";
-
-        if (obj_color[app]) {
-            return obj_color[app];
-        } else {
-            //random hex color;
-
-            var letters = 'ABCDE'.split('');
-            var color = '#';
-            for (var i=0; i<3; i++ ) {
-                color += letters[Math.floor(Math.random() * letters.length)];
-            }
-            return color;
-
-        }
-    };
-
     /**
      * Prints set up message
      */
@@ -132,66 +81,6 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
             parent.innerHTML = txt_msg;
-     };
-
-     var is_small = function (pos) {
-         return R.indexOf(pos, smalls);
-     };
-
-
-     var get_numeric_day = function() {
-        return date.getDay();
-     };
-
-     var get_worded_day = function() {
-        var weekday = new Array(7);
-        weekday[0]=  "SUN";
-        weekday[1] = "MON";
-        weekday[2] = "TUE";
-        weekday[3] = "WED";
-        weekday[4] = "THU";
-        weekday[5] = "FRI";
-        weekday[6] = "SAT";
-
-        return weekday[date.getDay()];
-     };
-
-     var show_options = function () {
-         document.getElementById("hour_tile").innerHTML = "";
-         document.getElementById("hour_tile").innerHTML = (b_transparency == 1)?
-            "<div id='hide_trans'>hide transparency</div>" :
-            "<div id='set_trans' >set transparency</div>"  ;
-         document.getElementById("hour_tile").innerHTML += (only_big == 1)?
-            "<div id='show_small'>show small icons</div>" :
-            "<div id='only_big'  >only big icons</div>"  ;
-
-     };
-
-     var print_dock = function () {
-
-        var storage = JSON.parse( localStorage.getItem(  "storage"));
-        var dock    = document.getElementById("dock");
-        dock.className  = "tile t_4_1";
-
-        var print_tiles_in_minidock =  item  => {
-            var div_copy = document.getElementById(item.label).cloneNode(true);
-            var tile = document.createElement("div");
-
-            tile.className  = "tile small";
-            tile.appendChild( div_copy  );
-
-                    /* tile background */
-                    var tile_bg = document.createElement('div');
-                    tile_bg.className = 'tile_bg';
-                    tile_bg.style.backgroundColor = '#000';
-                    tile.appendChild(tile_bg);
-
-            dock.appendChild(  tile  );
-        };
-
-        dock.innerHTML = "";
-        var sortByUsage = R.sortBy(R.prop("order"));
-        R.forEach ( print_tiles_in_minidock, R.take (4,  R.reverse(sortByUsage( storage ))));
      };
 
      var hour_tile = function() {
@@ -227,13 +116,13 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
         };
 
         function error(err) {
-          console.warn('ERROR(' + err.code + '): ' + err.message);
+          console.warn('ERROR (' + err.code + '): ' + err.message);
         };
 
         navigator.geolocation.getCurrentPosition(success, error, geoptions);
 
         tile.id        = 'hour_tile';
-        tile.innerHTML += "<div id='worded'><span class='weekday'>"+ get_worded_day() + "</span> <span class='monthday'>" + get_numeric_day() + "</span></div>";
+        tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( date )) + "</span> <span class='monthday'>" + date.getDate() + "</span></div>";
         tile.style     = "background-color:orange;";
 
         parent.insertBefore(tile, parent.children[1]);
@@ -252,7 +141,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
             if (icon.manifest.role == "addon")                      return;
             //end guards
 
-            if ( is_small( i ) > -1 ) {
+            if ( U.is_small( i, R, smalls ) > -1 ) {
                 var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
             }else{
                 var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
@@ -296,7 +185,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
                     tile_bg.className = 'tile_bg';
 
                     if (b_transparency != 1) {
-                        tile_bg.style.backgroundColor = get_color(name);
+                        tile_bg.style.backgroundColor = U.get_color(name);
                     }else
                         tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
 
@@ -327,9 +216,9 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
 
                 ++i;
 
-                if ( is_small( i ) > -1 )  {
+                if ( U.is_small( i, R, smalls ) > -1 )  {
                     tile.className += " small";
-                    //tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 12% no-repeat';
+                    //tile.style.background = U.get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 12% no-repeat';
                 }
 
             });
@@ -341,10 +230,21 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     var start = () => {
 
         i = 0;
+
+        width_1_col = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
+        width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
+        width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
+
+        U.add_style('.tile { width: '  + width_2_col +'px; height: '  + width_2_col +'px; }');
+        U.add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
+        U.add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;} .t_4_1 .tile{margin-left:0px;margin-right:8px;}');
+
+
+
         if (b_transparency == 1){
-            add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
+            U.add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
         }else{
-            add_style('#apps { background-color: #000;}');
+            U.add_style('#apps { background-color: #000;}');
         }
 
         if (only_big != true)
@@ -381,7 +281,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     } //end start
 
     window.addEventListener('devicelight', ev => {
-        console.log(ev.value);
+        //console.log(ev.value);
     });
 
     window.addEventListener('click', ev => {
@@ -407,13 +307,13 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
             this_tile.dataset.order = storage[index].order;
 
             i.launch();
-            print_dock();
+            U.print_dock( R );
         }
 
 
         // options
         if (this_tile.id == "worded" || this_tile.id == "hour_tile") {
-            show_options();
+            U.show_options(b_transparency, only_big);
         }
 
         if (this_tile.id == "hide_trans") {
@@ -442,7 +342,7 @@ require(['ramdajs', 'fxos_icons'], ( R ) => {
     }); //end window event 'click', document.getElementsByClassName('tile'));
 
 
-    var removeSmall = function (el) { console.log();
+    var removeSmall = function (el) {
         el.classList.remove("small")
     }
 
