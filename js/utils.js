@@ -118,7 +118,9 @@ var  U = {
      },
 
      ajax: url => {
+
         var xmlhttp;
+
         xmlhttp = new XMLHttpRequest({ mozSystem: true });
 
         xmlhttp.onreadystatechange = function() {
@@ -141,12 +143,20 @@ var  U = {
      },
 
      parse_weather_xml: (xml) => {
+
+        var d = new Date();
+        var is_night = (d.getHours() > 20 )?
+                "is_night=1;":
+                "";
+        var url_4_weather_icon;
+
         var parser = new DOMParser();
         var xmlDoc = parser.parseFromString( xml ,"text/xml");
-        // U.log( xmlDoc.getElementsByTagName("symbol")[0].getAttribute("id") );
+        var weather_icon   =  xmlDoc.getElementsByTagName("symbol")[0].getAttribute("number");
+        url_4_weather_icon = "http://api.yr.no/weatherapi/weathericon/1.1/?symbol=" + weather_icon + ";" + is_night + "content_type=image/png";
 
         document.getElementById("weather-info").innerHTML =
-            xmlDoc.getElementsByTagName("symbol")[0].getAttribute("id") + " " +
+            "<img src='"+ url_4_weather_icon +"'/>" + " " +
             xmlDoc.getElementsByTagName("location")[0].childNodes[1].getAttribute("value") + "&deg;";
      }
 

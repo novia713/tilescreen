@@ -100,6 +100,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
               /*
                * show here info weather based on geoloc data
                * http://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema
+               * http://api.yr.no/weatherapi/weathericon/1.1/documentation
                * -------------------------------------------
                */
                 var weather_info =
