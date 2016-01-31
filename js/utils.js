@@ -115,6 +115,39 @@ var  U = {
          }
 
         head.appendChild(style);
+     },
+
+     ajax: url => {
+        var xmlhttp;
+        xmlhttp = new XMLHttpRequest({ mozSystem: true });
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+               if(xmlhttp.status == 200){
+                   //U.log( xmlhttp.responseText  );
+                   U.parse_weather_xml( xmlhttp.responseText );
+               }
+               else if(xmlhttp.status == 400) {
+                    U.log('There was an error 400')
+               }
+               else {
+                   U.log('code: ' + xmlhttp.status)
+               }
+            }
+        }
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+     },
+
+     parse_weather_xml: (xml) => {
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString( xml ,"text/xml");
+        // U.log( xmlDoc.getElementsByTagName("symbol")[0].getAttribute("id") );
+
+        document.getElementById("weather-info").innerHTML =
+            xmlDoc.getElementsByTagName("symbol")[0].getAttribute("id") + " " +
+            xmlDoc.getElementsByTagName("location")[0].childNodes[1].getAttribute("value") + "&deg;";
      }
 
 };

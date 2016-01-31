@@ -39,15 +39,9 @@ requirejs.config({
 
     },
     shim: {
-        'ramdajs': {
-            exports: 'R'
-        },
-        'utils': {
-            exports: 'U'
-        },
-        'tilejs': {
-            exports: 'Tile'
-        }
+        'ramdajs': {  exports: 'R' },
+        'utils'  : {  exports: 'U' },
+        'tilejs' : {  exports: 'Tile' }
     }
 });
 
@@ -64,17 +58,9 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         "Built-in Keyboard", "Bluetooth Manager", "Communications",
         "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
 
-    var geoptions = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    };
-
-
-    var smalls = [];
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
-    var usage = [];
+    var usage = smalls = [];
     var i = 0;
     var storage = null;
     var date = new Date();
@@ -102,34 +88,36 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             var batterylevel = Math.round(battery.level * 100) + "%";
             var batterylevel_10 = Math.round(battery.level * 10) + "%";
             if (batterylevel_10 > 10) batterylevel_10 = 10;
-            tile.innerHTML += "<i data-icon='battery-"+batterylevel_10+"' data-l10n-id='battery-"+batterylevel_10+"' style='display:inline-block;line-height:0.8em;'> " + batterylevel + "</i>";
+            tile.innerHTML += "<i data-icon='battery-"+batterylevel_10+"' data-l10n-id='battery-"+batterylevel_10+"' style='display:inline-block;line-height:0.8em;' class='battery'> " + batterylevel + "</i>";
         }
 
+        tile.id        = 'hour_tile';
+        tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( date )) + "</span> <span class='monthday'>" + date.getDate() + "</span></div>";
+        tile.style     = "background-color:orange;";
+
+        //TODO: refactor all this in aux
         function success(pos) {
-          /*
-           * Postponed until v.1.6
-           * show here info weather based on geoloc data
-           * -------------------------------------------
-           *
-          var crd = pos.coords;
-          tile.innerHTML += "<small style='display:block;position:relative;padding-left:30px;text-align:right;'>"
-                          + "   <i data-icon='location' data-l10n-id='location' style='position:absolute;top:0;left:0;'></i>"
-                          +     crd.latitude + "<br />" + crd.longitude
-                          + "</small>";
-           *
-           *
-           */
+              /*
+               * show here info weather based on geoloc data
+               * http://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema
+               * -------------------------------------------
+               */
+                var weather_info =
+                        U.ajax("http://api.yr.no/weatherapi/locationforecast/1.9/?lat="+ pos.coords.latitude +";lon=" + pos.coords.longitude);
+                document.getElementById("hour_tile").innerHTML
+                            // TODO: css this, please
+                              += "<span  id='weather-info' style='display:block;position:relative;padding-left:30px;text-align:right;'>"
+                              + ""
+                              + "</span>";
+
         };
 
         function error(err) {
           console.warn('ERROR (' + err.code + '): ' + err.message);
         };
 
-        navigator.geolocation.getCurrentPosition(success, error, geoptions);
+        navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
 
-        tile.id        = 'hour_tile';
-        tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( date )) + "</span> <span class='monthday'>" + date.getDate() + "</span></div>";
-        tile.style     = "background-color:orange;";
 
         parent.insertBefore(tile, parent.children[1]);
         Tile( tile );

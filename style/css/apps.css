@@ -115,3 +115,8 @@ body {margin: 0;}
     font-weight: normal;
     font-style: italic;
 }
+
+#weather-info {
+    text-align: left !important;
+    padding-left: 0px !important;
+}

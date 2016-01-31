@@ -20,7 +20,8 @@
         "telephony": {},
         "wifi-manage": {},
         "phonenumberservice": {},
-        "geolocation": {}
+        "geolocation": {},
+        "systemXHR": {}
   },
   "locales": {
     "en-US": {
