@@ -33,7 +33,9 @@ requirejs.config({
     paths: {
         'ramdajs': ['ramda.min'],
         'uitls': "utils",
+        'tilejs' : "tileJs",
         'fxos_icons': "../bower_components/fxos-icons/fxos-icons"
+
 
     },
     shim: {
@@ -42,11 +44,14 @@ requirejs.config({
         },
         'utils': {
             exports: 'U'
+        },
+        'tilejs': {
+            exports: 'Tile'
         }
     }
 });
 
-require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
+require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
     //CONFIG
     var only_big       = 0;
@@ -86,7 +91,8 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
      var hour_tile = function() {
         var oldtile = document.getElementById("hour_tile");
         if ( oldtile )
-            parent.removeChild(oldtile);
+            parent.removeChild( oldtile );
+
         var tile       = document.createElement('div');
         tile.className = 'tile';
         tile.innerHTML = "";
@@ -126,6 +132,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
         tile.style     = "background-color:orange;";
 
         parent.insertBefore(tile, parent.children[1]);
+        Tile( tile );
      };
 
     /**
@@ -221,6 +228,8 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                     //tile.style.background = U.get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 12% no-repeat';
                 }
 
+                Tile( tile );
+
             });
 
             if (typeof icon_image == undefined) return;
@@ -278,6 +287,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                     print_msg();
                 }
             );
+
     } //end start
 
     window.addEventListener('devicelight', ev => {
@@ -313,7 +323,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         // options
         if (this_tile.id == "worded" || this_tile.id == "hour_tile") {
-            U.show_options(b_transparency, only_big);
+           U.show_options(b_transparency, only_big);
         }
 
         if (this_tile.id == "hide_trans") {
