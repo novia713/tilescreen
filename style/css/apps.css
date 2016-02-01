@@ -1,10 +1,17 @@
+    /* == set box-sizing to border-box == */
+
+    *, *:before, *:after { box-sizing: inherit;}
+    html { box-sizing: border-box;}
+
 html, body { height: 100%; }
 
 body {margin: 0;}
 
 #apps {
-    background: #000;
     overflow-y:scroll;
+    color: #fff;
+    color: rgba(255,255,255,0.85);
+    background-color: #000;
 }
 
 #pill{
@@ -44,20 +51,64 @@ body {margin: 0;}
 
 .tile {
     display: inline-block;
-    height: 108px;
-    width: 39%;
-    padding: 4%;
+    position:relative;
+    padding: 2%;
     margin: 4px 4px;
     text-align: right;
     float:left;
+    border-radius:2px;
+    overflow: hidden;
+    z-index:1;
 }
-
+.tile_bg{
+    z-index: -2;
+    display:block;
+    position:absolute; top:0; left:0;
+    width:100%;
+    height:100%;
+    border-radius: 2px;
+}
+    #dock .tile_bg{
+        /* background-color: #000; */
+        background-color: linear-gradient(0deg, #444 0%, #000 52%, #666 100%)
+    }
+    
+.tile_ic{
+    z-index: -1;
+    display:block;
+    position:absolute; top:0; left:0;
+    width:100%;
+    height:100%;
+    border-radius: 2px;
+    background-size: 60%!important;
+    background-position: center center!important;
+}
 .small {
     display: inline-block;
-    height: 50% !important;
-    width: 10%;
-    padding: 6%;
+    padding: 3%;
 }
+
+.bt{
+    background-color: rgba(255,255,255,0.3);
+    color: #fff;
+    border-radius:1.2em;
+    text-align:center;
+    margin-bottom: 0.5rem;
+    padding: 0.2rem 0;
+    cursor: pointer;
+}
+
+    /* ==== STYLES WHEN ACTIVATED TRANSPARENCY MODE ==== */
+
+    #apps.transparent{
+        background-color: rgba(0,0,0,0.1);
+    }
+    #apps.transparent .tile_bg{
+        opacity: 0.5;
+    }
+
+
+
 
 .name {
     color: white;
@@ -83,6 +134,17 @@ body {margin: 0;}
     margin-top:3%;
 }
 
-#worded {
-    font-size: 2rem;
+#worded .weekday{
+    font-size: 1rem;
+    font-weight: normal;
+}
+#worded .monthday{
+    font-size: 5rem;
+    font-weight: normal;
+    font-style: italic;
+}
+
+#weather-info {
+    text-align: left !important;
+    padding-left: 0px !important;
 }

@@ -20,12 +20,25 @@
         "telephony": {},
         "wifi-manage": {},
         "phonenumberservice": {},
-        "geolocation": {}
+        "geolocation": {},
+        "systemXHR": {}
   },
   "locales": {
     "en-US": {
       "name": "Tilescreen",
       "description": "An tiled homescreen for FirefoxOS"
+    },
+    "es-ES": {
+      "name": "Tilescreen",
+      "description": "Un escritorio tipo mosaico para FirefoxOS"
+    },
+    "es-MX": {
+      "name": "Tilescreen",
+      "description": "Un escritorio tipo mosaico para FirefoxOS"
+    },
+    "ca": {
+      "name": "Tilescreen",
+      "description": "Un escriptori tipus mosaic per a FirefoxOS"
     }
   },
   "default_locale": "en-US",
@@ -40,5 +53,5 @@
   "orientation": "portrait-primary",
   "activities": {},
   "messages": [],
-  "version": "1.4"
+  "version": "1.4.22"
 }
