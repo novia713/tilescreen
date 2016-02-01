@@ -52,11 +52,16 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
     //CONFIG
 
+/*
     const apps_2_exclude = [
         "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
         "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
         "Built-in Keyboard", "Bluetooth Manager", "Communications",
         "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
+*/
+    const HIDDEN_ROLES = [
+        'system', 'input', 'homescreen', 'theme', 'addon', 'langpack'
+        ];
 
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
@@ -132,9 +137,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             if (!icon.manifest.icons) return;
 
             // guards
-            if( R.contains ( icon.manifest.name, apps_2_exclude ))  return;
-            if (icon.manifest.role == "homescreen")                 return;
-            if (icon.manifest.role == "addon")                      return;
+            if ( R.contains ( icon.manifest.role, HIDDEN_ROLES ))  return;
             //end guards
 
             if ( U.is_small( i, R, smalls ) > -1 ) {
