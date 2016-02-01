@@ -11,6 +11,7 @@ body {margin: 0;}
     overflow-y:scroll;
     color: #fff;
     color: rgba(255,255,255,0.85);
+    background-color: #000;
 }
 
 #pill{
@@ -67,6 +68,10 @@ body {margin: 0;}
     height:100%;
     border-radius: 2px;
 }
+    #dock .tile_bg{
+        background-color: #000;
+    }
+    
 .tile_ic{
     z-index: -1;
     display:block;
@@ -81,6 +86,28 @@ body {margin: 0;}
     display: inline-block;
     padding: 3%;
 }
+
+.bt{
+    background-color: rgba(255,255,255,0.3);
+    color: #fff;
+    border-radius:1.2em;
+    text-align:center;
+    margin-bottom: 0.5rem;
+    padding: 0.2rem 0;
+    cursor: pointer;
+}
+
+    /* ==== STYLES WHEN ACTIVATED TRANSPARENCY MODE ==== */
+
+    #apps.transparent{
+        background-color: rgba(0,0,0,0.1);
+    }
+    #apps.transparent .tile_bg{
+        opacity: 0.5;
+    }
+
+
+
 
 .name {
     color: white;

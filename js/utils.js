@@ -57,7 +57,6 @@ var  U = {
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
-                    tile_bg.style.backgroundColor = '#000';
                     tile.appendChild(tile_bg);
 
             dock.appendChild(  tile  );
@@ -76,11 +75,11 @@ var  U = {
 
          document.getElementById("hour_tile").innerHTML = "";
          document.getElementById("hour_tile").innerHTML = (b_transparency == 1)?
-            "<div id='hide_trans'>hide transparency</div>" :
-            "<div id='set_trans' >set transparency</div>"  ;
+            "<div id='hide_trans' class='bt'>hide transparency</div>" :
+            "<div id='set_trans' class='bt'>set transparency</div>"  ;
          document.getElementById("hour_tile").innerHTML += (only_big == 1)?
-            "<div id='show_small'>show small icons</div>" :
-            "<div id='only_big'  >only big icons</div>"  ;
+            "<div id='show_small' class='bt'>show small icons</div>" :
+            "<div id='only_big' class='bt'>only big icons</div>"  ;
 
      },
 
