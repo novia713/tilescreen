@@ -150,7 +150,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
             icon_image.then ( img => {
 
-                var name = icon.manifest.name; if (name == "Communications")
+                var name = icon.manifest.name;
 
                 // Callscreen icon
                 /* @FIXME: no funciona bien :(
@@ -163,12 +163,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                  * TODO: Communication apps includes Contacts, which is not handle by now
                  */
 
-
-                // TODO: delete me
-                if (name == "Communications") {
-
-
-                }
+//console.log(icon.manifest.entry_points);
 
                 // end callscreen
                 var wordname = name.split(" ");
