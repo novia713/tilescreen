@@ -311,6 +311,10 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
 
             // Callscreen, so dirty :S
+            /*
+             * after 1 feb 2016 Callscreen well be decoupled, so this will not be neccessary no more :)
+             *
+             */
             var entry = null;
             if (i.manifest.name == "Communications")
                 entry = "dialer";
