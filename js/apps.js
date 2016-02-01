@@ -314,7 +314,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             this_tile.dataset.order = storage[index].order;
 
             i.launch();
-            U.print_dock( R );
+            U.print_dock( R, iconMap );
         }
 
 

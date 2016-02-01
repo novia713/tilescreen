@@ -41,7 +41,7 @@ var  U = {
     },
 
 
-    print_dock: ( R ) => {
+    print_dock: ( R, iconMap ) => {
 
         var storage = JSON.parse( localStorage.getItem(  "storage"));
         var dock    = document.getElementById("dock");
