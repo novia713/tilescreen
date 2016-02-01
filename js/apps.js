@@ -1,3 +1,4 @@
+'use strict'
 /**
  *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
  *          .·' H O M E S C R E E N S F O R A L L'·.  by leandro713
@@ -49,7 +50,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
     //CONFIG
     var only_big       = 0;
-    var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
+    var b_transparency = 0; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
     //CONFIG
 
 /*
@@ -63,11 +64,14 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
-    var usage = smalls = [];
+    var usage = [];
+    var smalls = [];
     var i = 0;
     var storage = null;
     var date = new Date();
-    var width_1_col = width_2_col = width_4_col = 0;
+    var width_1_col = 0;
+    var width_2_col = 0;
+    var width_4_col = 0;
 
     /**
      * Prints set up message
@@ -109,9 +113,9 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                */
                 var weather_info =
                         U.ajax("http://api.yr.no/weatherapi/locationforecast/1.9/?lat="+ pos.coords.latitude +";lon=" + pos.coords.longitude);
-                document.getElementById("hour_tile").innerHTML
+                document.getElementById("hour_tile").innerHTML +=
                             // TODO: css this, please
-                              += "<span  id='weather-info' style='display:block;position:relative;padding-left:30px;text-align:right;'>"
+                                "<span  id='weather-info' style='display:block;position:relative;padding-left:30px;text-align:right;'>"
                               + ""
                               + "</span>";
 
@@ -184,6 +188,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                     tile.appendChild(tile_ic);
 
                     /* tile background */
+                    // FIXME: esto funciona, pero en algun momento después se sobreescribe .... porque el fondo no se hace transparente al poner b_transparency = 1
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
 
@@ -191,7 +196,6 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                         tile_bg.style.backgroundColor = U.get_color(name);
                     }else
                         tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
-
 
                     tile.appendChild(tile_bg);
 

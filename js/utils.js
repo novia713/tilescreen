@@ -145,7 +145,7 @@ var  U = {
      parse_weather_xml: xml => {
 
         var d = new Date();
-        var is_night = (d.getHours() > 20 )?
+        var is_night = (d.getHours() > 20 || d.getHours() < 9)?
                 "is_night=1;":
                 "";
         var url_4_weather_icon;
