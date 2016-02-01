@@ -59,9 +59,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         "Built-in Keyboard", "Bluetooth Manager", "Communications",
         "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
 */
-    const HIDDEN_ROLES = [
-        'system', 'input', 'homescreen', 'theme', 'addon', 'langpack'
-        ];
+    const HIDDEN_ROLES = [ 'system', 'input', 'homescreen', 'theme', 'addon', 'langpack' ];
 
     var parent = document.getElementById('apps');
     var iconMap = new WeakMap();
@@ -146,10 +144,9 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                 var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
             }
 
-
             icon_image.then ( img => {
 
-                var name = icon.manifest.name;
+                var name = icon.manifest.name; if (name == "Communications")
 
                 // Callscreen icon
                 /* @FIXME: no funciona bien :(
@@ -158,9 +155,10 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                  * icon: http://www.iconarchive.com/show/firefox-os-icons-by-vcferreira/dialer-icon.html
                  *
                  */
-                //if (name == "Callscreen"){
-                //    icon.target ="app://communications.gaiamobile.org/manifest.webapp-dialer";
-                //}
+                // Dialer icon [this is ugly & dirty :(]
+                if (name == "Communications") {
+                    icon.manifest.launch_path = "app://communications.gaiamobile.org/dialer/index.html#keyboard-view";
+                }
 
                 // end callscreen
                 var wordname = name.split(" ");
@@ -174,6 +172,12 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                     var tile_ic = document.createElement('div');
                     tile_ic.className = 'tile_ic';
                     tile_ic.style.background = 'transparent url(' + window.URL.createObjectURL( img ) + ') no-repeat';
+
+                    // Callscreen icon [ doing things like this is cheese ]
+                    if (name == "Communications") {
+                        tile_ic.style.background = 'transparent url(/img/dialer-icon.png) no-repeat';
+                    }
+
                     tile_ic.setAttribute('rel', wordname[0]);
                     tile_ic.id = wordname[0];
 
@@ -286,7 +290,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         //console.log(ev.value);
     });
 
-    window.addEventListener('click', ev => {
+    window.addEventListener('click', ev => { U.log(ev.target);
 
         var this_tile = ev.originalTarget;
 
@@ -331,6 +335,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         if (this_tile.id == "only_big") {
             only_big = 1;
             R.forEach(removeSmall, document.getElementsByClassName("tile"));
+            R.forEach(addSmall, document.getElementsByClassName("in-dock"));
             start();
         }
 
@@ -346,6 +351,10 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
     var removeSmall = function (el) {
         el.classList.remove("small")
+    }
+
+    var addSmall = function (el) {
+        el.className += " small";
     }
 
     // 3, 2, 1 ...

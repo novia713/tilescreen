@@ -51,7 +51,7 @@ var  U = {
             var div_copy = document.getElementById(item.label).cloneNode(true);
             var tile = document.createElement("div");
 
-            tile.className  = "tile small";
+            tile.className  = "tile small in-dock";
             tile.appendChild( div_copy  );
 
                     /* tile background */
