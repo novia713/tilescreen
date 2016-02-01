@@ -223,6 +223,16 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                     tile.classList.add("small");
                 }
 
+
+                // initial dock
+                if (4 == i || 3 == i || 2 == i || 9 == i){
+                    var firsts_dock = tile.cloneNode(true);
+                    firsts_dock.className  = "tile small in-dock";
+                    document.getElementById("dock").appendChild(firsts_dock);
+                }
+
+                //end initial dock
+
                 Tile( tile );
 
             });
@@ -234,16 +244,16 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     var start = () => {
 
         i = 0;
-        
+
         /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
         var apps = document.getElementById('apps');
-        
+
         /* empty #apps and add #dock */
-        apps.innerHTML = ''; 
+        apps.innerHTML = '';
             var dock = document.createElement('div');
             dock.id = 'dock';
             apps.appendChild(dock);
-       
+
         /* transparency mode */
         apps.classList.remove('transparent');
         if (b_transparency == 1){
@@ -286,7 +296,6 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
             U.add_initial_styles();
 
-
     } //end start
 
     window.addEventListener('devicelight', ev => { console.log(ev.target);
@@ -315,13 +324,17 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
 
             // Callscreen, so dirty :S
+            /*
+             * after 1 feb 2016 Callscreen well be decoupled, so this will not be neccessary no more :)
+             *
+             */
             var entry = null;
             if (i.manifest.name == "Communications")
                 entry = "dialer";
             //TODO; handle launch contacts
 
             i.launch(entry);
-            U.print_dock( R, iconMap );
+            U.print_dock( R, iconMap, document );
         }
 
 
@@ -359,11 +372,11 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
 
     var removeSmall = function (el) {
-        el.classList.remove("small")
+        el.classList.remove("small");
     }
 
     var addSmall = function (el) {
-        el.classList.add("small")
+        el.classList.add("small");
     }
 
     // 3, 2, 1 ...

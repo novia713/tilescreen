@@ -41,13 +41,14 @@ var  U = {
     },
 
 
-    print_dock: ( R, iconMap ) => {
+    print_dock: ( R, iconMap, document ) => {
 
         var storage = JSON.parse( localStorage.getItem(  "storage"));
         var dock    = document.getElementById("dock");
         dock.className  = "tile t_4_1";
 
-        var print_tiles_in_minidock =  item  => {
+        var print_tiles_in_minidock =  item  => { //onsole.log(  document.childNodes[1].childNodes[3].childNodes[1].childNodes );return;
+
             var div_copy = document.getElementById(item.label).cloneNode(true);
             var tile = document.createElement("div");
 
