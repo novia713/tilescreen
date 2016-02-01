@@ -160,6 +160,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                  *
                  *
                  * CAUTION: callscreen is an standalone app from 1 feb 2016
+                 * TODO: Communication apps includes Contacts, which is not handle by now
                  */
 
 
@@ -313,7 +314,14 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             // transpose storage value to DOM elements
             this_tile.dataset.order = storage[index].order;
 
-            i.launch();
+
+            // Callscreen, so dirty :S
+            var entry = null;
+            if (i.manifest.name == "Communications")
+                entry = "dialer";
+            //TODO; handle launch contacts
+
+            i.launch(entry);
             U.print_dock( R, iconMap );
         }
 
