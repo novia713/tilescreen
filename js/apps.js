@@ -189,14 +189,9 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                     tile.appendChild(tile_ic);
 
                     /* tile background */
-                    // FIXME: esto funciona, pero en algun momento después se sobreescribe .... porque el fondo no se hace transparente al poner b_transparency = 1
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
-
-                    if (b_transparency != 1) {
-                        tile_bg.style.backgroundColor = U.get_color(name);
-                    }else
-                        tile_bg.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                    tile_bg.style.backgroundColor = U.get_color(name);
 
                     tile.appendChild(tile_bg);
 
@@ -239,11 +234,12 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     var start = () => {
 
         i = 0;
-
+        
+        /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
+        var apps = document.getElementById('apps');
+        apps.classList.remove('transparent');
         if (b_transparency == 1){
-            U.add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
-        }else{
-            U.add_style('#apps { background-color: #000;}');
+            apps.classList.add('transparent');
         }
 
 
