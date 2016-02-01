@@ -284,7 +284,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             );
 
 
-            U.add_initial_styles( window, width_1_col, width_2_col, width_4_col );
+            U.add_initial_styles();
 
 
     } //end start

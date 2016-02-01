@@ -159,15 +159,15 @@ var  U = {
             xmlDoc.getElementsByTagName("location")[0].childNodes[1].getAttribute("value") + "&deg;";
      },
 
-     add_initial_styles: (window, width_1_col, width_2_col, width_4_col ) => {
+     add_initial_styles: () => {
 
-        width_1_col =  window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
-        width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
-        width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
-
+        var width_1_col =  window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
+        var width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
+        var width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
+        /*console.log('-- add_initial_styles');*/
         U.add_style('.tile { width: '  + width_2_col +'px; height: '  + width_2_col +'px; }');
         U.add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
-        U.add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;} .t_4_1 .tile{margin-left:0px;margin-right:8px;}');
+        U.add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;}');
 
      }
 

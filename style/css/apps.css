@@ -3,12 +3,13 @@
     *, *:before, *:after { box-sizing: inherit;}
     html { box-sizing: border-box;}
 
-html, body { height: 100%; }
+html, body { height: 100%; overflow-x: hidden;}
 
 body {margin: 0;}
 
 #apps {
     overflow-y:scroll;
+    overflow-x: hidden;
     color: #fff;
     color: rgba(255,255,255,0.85);
     background-color: #000;
@@ -60,6 +61,10 @@ body {margin: 0;}
     overflow: hidden;
     z-index:1;
 }
+
+    /* this will change once we develop the new grid system... so it's temporal */
+    .t_4_1 .tile{ margin-left:0px; margin-right:8px; }  
+
 .tile_bg{
     z-index: -2;
     display:block;
@@ -70,7 +75,7 @@ body {margin: 0;}
 }
     #dock .tile_bg{
         /* background-color: #000; */
-        background-color: linear-gradient(0deg, #444 0%, #000 52%, #666 100%)
+        background: linear-gradient(0deg, #444 0%, #000 50%, #666 100%)
     }
     
 .tile_ic{
