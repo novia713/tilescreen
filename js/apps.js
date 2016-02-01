@@ -237,6 +237,14 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         
         /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
         var apps = document.getElementById('apps');
+        
+        /* empty #apps and add #dock */
+        apps.innerHTML = ''; 
+            var dock = document.createElement('div');
+            dock.id = 'dock';
+            apps.appendChild(dock);
+       
+        /* transparency mode */
         apps.classList.remove('transparent');
         if (b_transparency == 1){
             apps.classList.add('transparent');
