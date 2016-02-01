@@ -158,10 +158,15 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                  * @todo: refactor this in an outer named function
                  * icon: http://www.iconarchive.com/show/firefox-os-icons-by-vcferreira/dialer-icon.html
                  *
+                 *
+                 * CAUTION: callscreen is an standalone app from 1 feb 2016
                  */
-                // Dialer icon [this is ugly & dirty :(]
+
+
+                // TODO: delete me
                 if (name == "Communications") {
-                    icon.manifest.launch_path = "app://communications.gaiamobile.org/dialer/index.html#keyboard-view";
+
+
                 }
 
                 // end callscreen
@@ -178,7 +183,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                     tile_ic.style.background = 'transparent url(' + window.URL.createObjectURL( img ) + ') no-repeat';
 
                     // Callscreen icon [ doing things like this is cheese ]
-                    if (name == "Communications") {
+                    if (name == "Communications") { //should be Callscreen
                         tile_ic.style.background = 'transparent url(/img/dialer-icon.png) no-repeat';
                     }
 
@@ -284,7 +289,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
     } //end start
 
-    window.addEventListener('devicelight', ev => {
+    window.addEventListener('devicelight', ev => { console.log(ev.target);
         //console.log(ev.value);
     });
 
@@ -296,8 +301,6 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         var i = iconMap.get( ev.target );
 
         if (i) {
-
-            /*var classname = R.replace("icon_", "", R.split( " ", ev.originalTarget.className)[1]);*/
 
             var rel       = this_tile.getAttribute('rel');
             var index     =  R.filter( R.propEq("label", rel ), storage )[0].index;
