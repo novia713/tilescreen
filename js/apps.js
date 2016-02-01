@@ -67,6 +67,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     var i = 0;
     var storage = null;
     var date = new Date();
+    var width_1_col = width_2_col = width_4_col = 0;
 
     /**
      * Prints set up message
@@ -132,9 +133,8 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
      */
     var render = icon => {
 
-            if (!icon.manifest.icons) return;
-
             // guards
+            if (!icon.manifest.icons) return;
             if ( R.contains ( icon.manifest.role, HIDDEN_ROLES ))  return;
             //end guards
 
@@ -220,8 +220,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                 ++i;
 
                 if ( U.is_small( i, R, smalls ) > -1 )  {
-                    tile.className += " small";
-                    //tile.style.background = U.get_color(name) + ' url(' + window.URL.createObjectURL(  img ) + ') 12% no-repeat';
+                    tile.classList.add("small");
                 }
 
                 Tile( tile );
@@ -236,23 +235,14 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
         i = 0;
 
-        width_1_col = window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
-        width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
-        width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
-
-        U.add_style('.tile { width: '  + width_2_col +'px; height: '  + width_2_col +'px; }');
-        U.add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
-        U.add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;} .t_4_1 .tile{margin-left:0px;margin-right:8px;}');
-
-
-
         if (b_transparency == 1){
             U.add_style('#apps { background-color: transparent; background-color: rgba(0,0,0,0.1); }');
         }else{
             U.add_style('#apps { background-color: #000;}');
         }
 
-        if (only_big != true)
+
+        if (only_big != 1)
             smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
 
             /**
@@ -284,13 +274,17 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                 }
             );
 
+
+            U.add_initial_styles( window, width_1_col, width_2_col, width_4_col );
+
+
     } //end start
 
     window.addEventListener('devicelight', ev => {
         //console.log(ev.value);
     });
 
-    window.addEventListener('click', ev => { U.log(ev.target);
+    window.addEventListener('click', ev => {
 
         var this_tile = ev.originalTarget;
 
@@ -322,6 +316,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
            U.show_options(b_transparency, only_big);
         }
 
+        // TODO:  make me a switch, please
         if (this_tile.id == "hide_trans") {
             b_transparency = 0;
             start();
@@ -354,7 +349,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     }
 
     var addSmall = function (el) {
-        el.className += " small";
+        el.classList.add("small")
     }
 
     // 3, 2, 1 ...
