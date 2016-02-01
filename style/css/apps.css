@@ -69,7 +69,8 @@ body {margin: 0;}
     border-radius: 2px;
 }
     #dock .tile_bg{
-        background-color: #000;
+        /* background-color: #000; */
+        background-color: linear-gradient(0deg, #444 0%, #000 52%, #666 100%)
     }
     
 .tile_ic{
