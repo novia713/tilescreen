@@ -21,7 +21,10 @@
         "wifi-manage": {},
         "phonenumberservice": {},
         "geolocation": {},
-        "systemXHR": {}
+        "systemXHR": {},
+        "camera": {
+            "description": "Required for accessing cameras on the device."
+          }
   },
   "locales": {
     "en-US": {

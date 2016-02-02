@@ -301,7 +301,10 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
     window.addEventListener('click', ev => {
-        setTimeout(function(){ event_click(ev); }, 500);}
+        setTimeout(function(){
+            event_click(ev);
+        }, 500);}
+
     );
 
     var event_click = ev => {
@@ -392,7 +395,25 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
     // 3, 2, 1 ...
     start();
+    U.call_setup_tile_every_full_hour();
 
+/*
+ *
+var options = {
+  camera: navigator.mozCameras.getListOfCameras()[0]
+};
 
+function onSuccess( camera ) {
+  var capabilities = camera.capabilities;
+
+  if (capablities.flashModes.indexOf('on') > -1) {
+    camera.flashMode = 'on';
+  }
+};
+
+navigator.mozCameras.getCamera(options, onSuccess)
+*
+*
+*/
 
 });
