@@ -63,7 +63,7 @@ body {margin: 0;}
 }
 
     /* this will change once we develop the new grid system... so it's temporal */
-    .t_4_1 .tile{ margin-left:0px; margin-right:8px; }  
+    .t_4_1 .tile{ margin-left:0px; margin-right:8px; }
 
 .tile_ic{
     z-index: -1;
@@ -93,7 +93,7 @@ body {margin: 0;}
         transition: 0s;
         border-radius: 3px;
     }
-/*    
+/*
     .tile_ic:after {
         content: "";
         background: orange;
@@ -113,7 +113,7 @@ body {margin: 0;}
         opacity: 1;
         transition: 0s
     }
-*/    
+*/
 .tile_bg{
     z-index: -2;
     display:block;
@@ -145,11 +145,11 @@ body {margin: 0;}
         background-color:transparent;
         cursor:pointer;
     }
-    
+
     #dock .tile_bg{
         background: linear-gradient(0deg, #444 0%, #000 50%, #666 100%)
     }
-    
+
 .small {
     display: inline-block;
     padding: 3%;
@@ -255,7 +255,6 @@ body {margin: 0;}
             }
             #popup li img{
                 display:inline-block;
-                position:absolute; top:3;left: 10px;
+                position:absolute; top:3px;left: 10px;
                 max-height:1.5em;
             }
-    
