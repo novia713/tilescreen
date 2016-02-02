@@ -393,7 +393,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     U.call_setup_tile_every_full_hour();
 
 
-
+console.log(  navigator.mozWifiManager.connection  );
 
 
 });
