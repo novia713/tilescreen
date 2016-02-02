@@ -47,15 +47,15 @@ var  U = {
         var dock    = document.getElementById("dock");
         dock.className  = "tile t_4_1";
 
-        var print_tiles_in_minidock =  item  => { //console.log(  document.childNodes[1].childNodes[3].childNodes[1].childNodes );return;
+        var print_tiles_in_minidock =  item  => {
 
             var tile = document.createElement("div");
             tile.className  = "tile small in-dock";
-            
+
                     /* tile icon */
                     var tile_ic = document.getElementById(item.label).cloneNode(true);
                     tile.appendChild( tile_ic  );
-            
+
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
@@ -84,7 +84,7 @@ var  U = {
             div_options.innerHTML += (only_big == 1)?
                 "<div id='show_small' class='bt'>show small icons</div>" :
                 "<div id='only_big' class='bt'>only big icons</div>"  ;
-        
+
         document.getElementById("setup-tile").innerHTML = '';
         document.getElementById("setup-tile").appendChild(div_options);
 
@@ -123,7 +123,7 @@ var  U = {
         head.appendChild(style);
      },
 
-     ajax: url => {
+     ajax: (url, mode) => {
 
         var xmlhttp;
 
@@ -133,7 +133,24 @@ var  U = {
             if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
                if(xmlhttp.status == 200){
                    //U.log( xmlhttp.responseText  );
-                   U.parse_weather_xml( xmlhttp.responseText );
+                   if ("weather" == mode)
+                    U.parse_weather_xml( xmlhttp.responseText );
+                   if ("city" == mode){
+                    var data = JSON.parse(xmlhttp.responseText);
+                    var address = data.results[0];
+                    /*
+                     * 1 - street
+                     * 2 - neighborhood
+                     * 3 - locality
+                     * 4 - administrative area
+                     * 5 - country
+                     * 6 - postal code
+                     */
+                    var neighborhood = address.address_components[2].short_name;
+                    var postal_code  = address.address_components[6].short_name;
+                    if (neighborhood && postal_code > 0)
+                        document.getElementById("setup-tile-location").innerHTML = postal_code +" "+ neighborhood;
+                   }
                }
                else if(xmlhttp.status == 400) {
                     U.log('There was an error 400')
@@ -185,21 +202,21 @@ var  U = {
         var div_popup = document.createElement('div');
         div_popup.id = 'popup';
 
-            div_popup.innerHTML = "<div class='close_bt'><span onclick='U.close_select_app();'>x</span></div>" ;
+            div_popup.innerHTML = "<div class='close_bt'><span class='x_close_bt'>x</span></div>" ;
             div_popup.innerHTML += "<h2>Select an app for this tile</h2>";
             div_popup.innerHTML += "<ul>" ;
             for (var ii=0; ii<30; ii++)
                 div_popup.innerHTML += "    <li><img src='' /> app " + ii + "</li>" ;
             div_popup.innerHTML += "</ul>" ;
-        
+
         var body = document.body || document.getElementByTagName('body')[0];
         body.appendChild(div_popup);
-        
+
     },
-    
+
     close_select_app: () => {
         var body = document.body || document.getElementByTagName('body')[0];
         var div_popup = document.getElementById("popup");
-        var garbage = body.removeChild(div_popup);        
+        var garbage = body.removeChild(div_popup);
     }
 };

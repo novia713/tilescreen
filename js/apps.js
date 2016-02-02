@@ -18,7 +18,6 @@
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
  * @todo
- *      - order icons by use [done]
  *      - show tile with date data
  *      - show wifi network name and telephony provider name
  *      - show weather
@@ -91,7 +90,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         var tile       = document.createElement('div');
         tile.id        = 'setup-tile';
         tile.className = 'tile';
-        tile.innerHTML = "";
+        tile.innerHTML = "<span id='setup-tile-location' class='location'></span>";
 
         /* tile background */
             var tile_bg = document.createElement('div');
@@ -120,9 +119,11 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                * http://api.yr.no/weatherapi/weathericon/1.1/documentation
                * -------------------------------------------
                */
-                var weather_info = U.ajax("http://api.yr.no/weatherapi/locationforecast/1.9/?lat="+ pos.coords.latitude +";lon=" + pos.coords.longitude);
+                var weather_info = U.ajax("http://api.yr.no/weatherapi/locationforecast/1.9/?lat="+ pos.coords.latitude +";lon=" + pos.coords.longitude, "weather");
                 document.getElementById("setup-tile").innerHTML += "<div id='weather-info'></div>";
 
+                // city name
+                U.ajax( 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true', "city" );
         };
 
         function errorGeoLoc(err) {
@@ -373,6 +374,12 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         }
 
         // end options
+
+
+        // button close → onclick() is not allowed by CSP FirefoxOS policy
+        if ( this_tile.classList[0] == "x_close_bt") {
+            U.close_select_app();
+        }
 
     }; //end window event 'click', document.getElementsByClassName('tile'));
 
