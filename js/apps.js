@@ -12,8 +12,8 @@
  * @copyright   leandro713 - 2016
  * @link        https://github.com/novia713/tilescreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @version     1.4.22
- * @date        20160131
+ * @version     1.5
+ * @date        20160202
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
@@ -83,7 +83,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
      };
 
      var build_setup_tile = function() {
-         
+
         var oldtile = document.getElementById("setup-tile");
         if ( oldtile )
             parent.removeChild( oldtile );
@@ -97,7 +97,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             var tile_bg = document.createElement('div');
             tile_bg.className = 'tile_bg';
             tile.appendChild(tile_bg);
-                    
+
         /* battery level */
             var battery = navigator.battery;
             if (battery) {
@@ -107,7 +107,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                 tile.innerHTML += "<i data-icon='battery-"+batterylevel_10+"' data-l10n-id='battery-"+batterylevel_10+"' style='display:inline-block;line-height:0.8em;' class='battery'> "
                                     + batterylevel + "</i>";
             }
-            
+
         /* date */
             tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( date )) + "</span>"
                             + " <span class='monthday'>" + date.getDate() + "</span></div>";
@@ -237,16 +237,15 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         i = 0;
 
         /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
-        var apps = document.getElementById('apps');
 
         /* empty #apps and add #dock */
-        apps.innerHTML = '';
+        parent.innerHTML = '';
             var dock = document.createElement('div');
             dock.id = 'dock';
             apps.appendChild(dock);
 
         /* transparency mode */
-        apps.classList.remove('transparent');
+        parent.classList.remove('transparent');
         if (b_transparency == 1){
             apps.classList.add('transparent');
         }
@@ -298,7 +297,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         var tile_rel = ev.originalTarget.getAttribute('rel');
         U.show_select_app();
     });
-    
+
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
     window.addEventListener('click', ev => {
         setTimeout(function(){ event_click(ev); }, 500);}
@@ -312,7 +311,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         if ( typeof storage == "string" ) storage = JSON.parse( storage );
 
         if (iconMap[rel]){
-            
+
             var i = iconMap[rel];
             var index     =  R.filter( R.propEq("label", rel ), storage )[0].index;
 
