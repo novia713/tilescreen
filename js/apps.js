@@ -30,23 +30,21 @@ requirejs.config({
     paths: {
         'ramdajs': ['ramda.min'],
         'uitls': "utils",
-        'tilejs' : "tileJs",
         'fxos_icons': "../bower_components/fxos-icons/fxos-icons"
 
 
     },
     shim: {
         'ramdajs': {  exports: 'R' },
-        'utils'  : {  exports: 'U' },
-        'tilejs' : {  exports: 'Tile' }
+        'utils'  : {  exports: 'U' }
     }
 });
 
-require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
+require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
     //CONFIG
     var only_big       = 0;
-    var b_transparency = 0; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
+    var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
     //CONFIG
 
 /*
@@ -131,7 +129,6 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
 
         parent.insertBefore(tile, parent.children[1]);
-        Tile( tile );
      };
 
     /**
@@ -221,8 +218,6 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                 }
 
                 //end initial dock
-
-                Tile( tile );
 
             });
 
@@ -397,23 +392,8 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     start();
     U.call_setup_tile_every_full_hour();
 
-/*
- *
-var options = {
-  camera: navigator.mozCameras.getListOfCameras()[0]
-};
 
-function onSuccess( camera ) {
-  var capabilities = camera.capabilities;
 
-  if (capablities.flashModes.indexOf('on') > -1) {
-    camera.flashMode = 'on';
-  }
-};
 
-navigator.mozCameras.getCamera(options, onSuccess)
-*
-*
-*/
 
 });
