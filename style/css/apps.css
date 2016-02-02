@@ -109,7 +109,7 @@ body {margin: 0;}
     }
     #weather-info {
         line-height: 1.5rem;
-        position:relative;
+        position:absolute; bottom:0;
         padding-left:27px;
         text-align:left;
     }
@@ -117,6 +117,9 @@ body {margin: 0;}
             display:inline-block;
             position: absolute; top:0; left:0;
             max-height:1.5rem;
+        }
+        #weather-info em{
+            opacity: 0.6;
         }
     #setup-tile .options{
         padding:0px;

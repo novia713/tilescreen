@@ -161,9 +161,12 @@ var  U = {
         var weather_icon   =  xmlDoc.getElementsByTagName("symbol")[0].getAttribute("number");
         url_4_weather_icon = "http://api.yr.no/weatherapi/weathericon/1.1/?symbol=" + weather_icon + ";" + is_night + "content_type=image/png";
 
+        var now = new Date();
+
         document.getElementById("weather-info").innerHTML =
             "<img src='"+ url_4_weather_icon +"'/>" + " " +
-            xmlDoc.getElementsByTagName("location")[0].childNodes[1].getAttribute("value") + "&deg;";
+            xmlDoc.getElementsByTagName("location")[0].childNodes[1].getAttribute("value") + "&deg;"
+            + " &nbsp; <em>" +  ('0'+now.getHours()).substr(-2) + ":" + ('0'+now.getMinutes()).substr(-2) + "</em>";
      },
 
      add_initial_styles: () => {
