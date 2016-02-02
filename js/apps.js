@@ -330,8 +330,8 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
              * after 1 feb 2016 Callscreen well be decoupled, so this will not be neccessary no more :)
              *
              */
-            var entry = null;
-            if (i.manifest.name == "Communications")
+            var entry = null; ;
+            if ( i.manifest.name == "Communications" && i.manifest.entry_points )
                 entry = "dialer";
             //TODO; handle launch contacts
 
