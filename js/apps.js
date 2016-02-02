@@ -1,4 +1,5 @@
 'use strict'
+
 /**
  *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
  *          .·' H O M E S C R E E N S F O R A L L'·.  by leandro713
@@ -66,6 +67,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     var width_1_col = 0;
     var width_2_col = 0;
     var width_4_col = 0;
+    var gugle_key = "AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0";
 
     /**
      * Prints set up message
@@ -118,7 +120,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                 document.getElementById("setup-tile").innerHTML += "<div id='weather-info'></div>";
 
                 // city name
-                U.ajax( 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true', "city" );
+                U.ajax( 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true&key='+ gugle_key, "city" );
         };
 
         function errorGeoLoc(err) {
@@ -284,7 +286,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
     } //end start
 
-    window.addEventListener('devicelight', ev => { console.log(ev.target);
+    window.addEventListener('devicelight', ev => {
         //console.log(ev.value);
     });
 
@@ -391,9 +393,12 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     // 3, 2, 1 ...
     start();
     U.call_setup_tile_every_full_hour();
-
-
+/*
+console.log("hola");
 console.log(  navigator.mozWifiManager.connection  );
-
-
+if (navigator.mozWifiManager.connection.status == "connected"){
+    var network_name = navigator.mozWifiManager.connection.network.ssid;
+    console.log(network_name);
+}
+*/
 });
