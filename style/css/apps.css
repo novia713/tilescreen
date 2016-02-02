@@ -76,7 +76,26 @@ body {margin: 0;}
     background-position: center center!important;
     cursor:pointer;
 }
+    .tile_ic:after {
+        content: "";
+        background: #90EE90;
+        display: block;
+        position: absolute;
+        padding-top: 300%;
+        padding-left: 350%;
+        margin-left: -20px!important;
+        margin-top: -120%;
+        opacity: 0;
+        transition: all 0.8s
+    }
 
+    .tile_ic:active:after {
+        padding: 0;
+        margin: 0;
+        opacity: 1;
+        transition: 0s
+    }
+    
 .tile_bg{
     z-index: -2;
     display:block;
@@ -85,8 +104,28 @@ body {margin: 0;}
     height:100%;
     border-radius: 2px;
 }
+    #setup-tile .tile_bg{
+        background: linear-gradient(0deg, #c00 0%, #f00 50%, orange 100%);
+    }
+    #weather-info {
+        line-height: 1.5rem;
+        position:relative;
+        padding-left:27px;
+        text-align:left;
+    }
+        #weather-info img{
+            display:inline-block;
+            position: absolute; top:0; left:0;
+            max-height:1.5rem;
+        }
+    #setup-tile .options{
+        padding:0px;
+        height:100%;
+        background-color:transparent;
+        cursor:pointer;
+    }
+    
     #dock .tile_bg{
-        /* background-color: #000; */
         background: linear-gradient(0deg, #444 0%, #000 50%, #666 100%)
     }
     
@@ -149,9 +188,4 @@ body {margin: 0;}
     font-size: 5rem;
     font-weight: normal;
     font-style: italic;
-}
-
-#weather-info {
-    text-align: left !important;
-    padding-left: 0px !important;
 }

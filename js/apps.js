@@ -82,50 +82,54 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             parent.innerHTML = txt_msg;
      };
 
-     var hour_tile = function() {
-        var oldtile = document.getElementById("hour_tile");
+     var build_setup_tile = function() {
+         
+        var oldtile = document.getElementById("setup-tile");
         if ( oldtile )
             parent.removeChild( oldtile );
 
         var tile       = document.createElement('div');
+        tile.id        = 'setup-tile';
         tile.className = 'tile';
         tile.innerHTML = "";
 
-        var battery = navigator.battery;
-        if (battery) {
-            var batterylevel = Math.round(battery.level * 100) + "%";
-            var batterylevel_10 = Math.round(battery.level * 10) + "%";
-            if (batterylevel_10 > 10) batterylevel_10 = 10;
-            tile.innerHTML += "<i data-icon='battery-"+batterylevel_10+"' data-l10n-id='battery-"+batterylevel_10+"' style='display:inline-block;line-height:0.8em;' class='battery'> " + batterylevel + "</i>";
-        }
-
-        tile.id        = 'hour_tile';
-        tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( date )) + "</span> <span class='monthday'>" + date.getDate() + "</span></div>";
-        tile.style     = "background-color:orange;";
+        /* tile background */
+            var tile_bg = document.createElement('div');
+            tile_bg.className = 'tile_bg';
+            tile.appendChild(tile_bg);
+                    
+        /* battery level */
+            var battery = navigator.battery;
+            if (battery) {
+                var batterylevel = Math.round(battery.level * 100) + "%";
+                var batterylevel_10 = Math.round(battery.level * 10) + "%";
+                if (batterylevel_10 > 10) batterylevel_10 = 10;
+                tile.innerHTML += "<i data-icon='battery-"+batterylevel_10+"' data-l10n-id='battery-"+batterylevel_10+"' style='display:inline-block;line-height:0.8em;' class='battery'> "
+                                    + batterylevel + "</i>";
+            }
+            
+        /* date */
+            tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( date )) + "</span>"
+                            + " <span class='monthday'>" + date.getDate() + "</span></div>";
 
         //TODO: refactor all this in aux
-        function success(pos) {
+        function successGeoLoc(pos) {
               /*
                * show here info weather based on geoloc data
                * http://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema
                * http://api.yr.no/weatherapi/weathericon/1.1/documentation
                * -------------------------------------------
                */
-                var weather_info =
-                        U.ajax("http://api.yr.no/weatherapi/locationforecast/1.9/?lat="+ pos.coords.latitude +";lon=" + pos.coords.longitude);
-                document.getElementById("hour_tile").innerHTML +=
-                            // TODO: css this, please
-                                "<span  id='weather-info' style='display:block;position:relative;padding-left:30px;text-align:right;'>"
-                              + ""
-                              + "</span>";
+                var weather_info = U.ajax("http://api.yr.no/weatherapi/locationforecast/1.9/?lat="+ pos.coords.latitude +";lon=" + pos.coords.longitude);
+                document.getElementById("setup-tile").innerHTML += "<div id='weather-info'></div>";
 
         };
 
-        function error(err) {
+        function errorGeoLoc(err) {
           console.warn('ERROR (' + err.code + '): ' + err.message);
         };
 
-        navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
+        navigator.geolocation.getCurrentPosition(successGeoLoc, errorGeoLoc, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
 
 
         parent.insertBefore(tile, parent.children[1]);
@@ -151,19 +155,6 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
             icon_image.then ( img => {
 
                 var name = icon.manifest.name;
-
-                // Callscreen icon
-                /* @FIXME: no funciona bien :(
-                 * this app is different, so this icon needs a custom launch url
-                 * @todo: refactor this in an outer named function
-                 * icon: http://www.iconarchive.com/show/firefox-os-icons-by-vcferreira/dialer-icon.html
-                 *
-                 *
-                 * CAUTION: callscreen is an standalone app from 1 feb 2016
-                 * TODO: Communication apps includes Contacts, which is not handle by now
-                 */
-
-//console.log(icon.manifest.entry_points);
 
                 // end callscreen
                 var wordname = name.split(" ");
@@ -272,7 +263,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
                     request.onsuccess = (e) => {
 
-                      hour_tile();
+                      build_setup_tile();
 
                       // hic sunt render leones
                       R.forEach( render, request.result );
@@ -339,7 +330,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
 
         // options
-        if (this_tile.id == "worded" || this_tile.id == "hour_tile") {
+        if (this_tile.id == "worded" || this_tile.id == "setup-tile") {
            U.show_options(b_transparency, only_big);
         }
 
@@ -364,6 +355,11 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         if (this_tile.id == "show_small") {
             only_big = 0;
             start();
+        }
+
+        /* if clicked the empty space of the options tile */
+        if (this_tile.classList.contains("options")) {
+            build_setup_tile();
         }
 
         // end options

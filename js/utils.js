@@ -9,7 +9,7 @@ var  U = {
     get_color: app  => {
         var obj_color = {};
         obj_color.Communications = "#B2F2FF"; //green 5F9B0A
-        obj_color.Calendar    = "#FF4E00"; //orange
+        obj_color.Calendar    = "#fff587";// yellow   before: "#FF4E00"; //orange
         obj_color['E-Mail']   = "#FF4E00"; //orange
         obj_color['FM Radio'] = "#2C393B"; //grey
         obj_color.Camera      = "#00AACC"; //blue
@@ -75,13 +75,18 @@ var  U = {
 
      show_options: (b_transparency, only_big) => {
 
-         document.getElementById("hour_tile").innerHTML = "";
-         document.getElementById("hour_tile").innerHTML = (b_transparency == 1)?
-            "<div id='hide_trans' class='bt'>hide transparency</div>" :
-            "<div id='set_trans' class='bt'>set transparency</div>"  ;
-         document.getElementById("hour_tile").innerHTML += (only_big == 1)?
-            "<div id='show_small' class='bt'>show small icons</div>" :
-            "<div id='only_big' class='bt'>only big icons</div>"  ;
+        var div_options = document.createElement('div');
+        div_options.className = 'options';
+
+            div_options.innerHTML = (b_transparency == 1)?
+                "<div id='hide_trans' class='bt'>hide transparency</div>" :
+                "<div id='set_trans' class='bt'>set transparency</div>"  ;
+            div_options.innerHTML += (only_big == 1)?
+                "<div id='show_small' class='bt'>show small icons</div>" :
+                "<div id='only_big' class='bt'>only big icons</div>"  ;
+        
+        document.getElementById("setup-tile").innerHTML = '';
+        document.getElementById("setup-tile").appendChild(div_options);
 
      },
 
@@ -166,7 +171,7 @@ var  U = {
         var width_1_col =  window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
         var width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
         var width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
-        /*console.log('-- add_initial_styles');*/
+
         U.add_style('.tile { width: '  + width_2_col +'px; height: '  + width_2_col +'px; }');
         U.add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
         U.add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;}');
