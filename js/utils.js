@@ -47,14 +47,15 @@ var  U = {
         var dock    = document.getElementById("dock");
         dock.className  = "tile t_4_1";
 
-        var print_tiles_in_minidock =  item  => { //onsole.log(  document.childNodes[1].childNodes[3].childNodes[1].childNodes );return;
+        var print_tiles_in_minidock =  item  => { //console.log(  document.childNodes[1].childNodes[3].childNodes[1].childNodes );return;
 
-            var div_copy = document.getElementById(item.label).cloneNode(true);
             var tile = document.createElement("div");
-
             tile.className  = "tile small in-dock";
-            tile.appendChild( div_copy  );
-
+            
+                    /* tile icon */
+                    var tile_ic = document.getElementById(item.label).cloneNode(true);
+                    tile.appendChild( tile_ic  );
+            
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';

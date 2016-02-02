@@ -63,7 +63,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     const HIDDEN_ROLES = [ 'system', 'input', 'homescreen', 'theme', 'addon', 'langpack' ];
 
     var parent = document.getElementById('apps');
-    var iconMap = new WeakMap();
+    var iconMap = {};
     var usage = [];
     var smalls = [];
     var i = 0;
@@ -198,7 +198,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
                 document.getElementById('apps').appendChild(tile);
 
                 /* we associate the tile_ic to the firefox OS icon, because the tile_ic is who get the 'click' event, not the tile container */
-                iconMap.set(tile_ic, icon);
+                iconMap[wordname[0]] = icon;
 
                 /* end tile generation*/
 
@@ -305,13 +305,13 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
     window.addEventListener('click', ev => {
 
         var this_tile = ev.originalTarget;
+        var rel = this_tile.getAttribute('rel');
 
         if ( typeof storage == "string" ) storage = JSON.parse( storage );
-        var i = iconMap.get( ev.target );
 
-        if (i) {
-
-            var rel       = this_tile.getAttribute('rel');
+        if (iconMap[rel]){
+            
+            var i = iconMap[rel];
             var index     =  R.filter( R.propEq("label", rel ), storage )[0].index;
 
             // we add 1 to value of that icon in localStorage ...
