@@ -293,7 +293,12 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         //console.log(ev.value);
     });
 
+    /* the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition */
     window.addEventListener('click', ev => {
+        setTimeout(function(){ event_click(ev); }, 500);}
+    );
+
+    var event_click = ev => {
 
         var this_tile = ev.originalTarget;
         var rel = this_tile.getAttribute('rel');
@@ -364,7 +369,7 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
         // end options
 
-    }); //end window event 'click', document.getElementsByClassName('tile'));
+    }; //end window event 'click', document.getElementsByClassName('tile'));
 
 
     var removeSmall = function (el) {
