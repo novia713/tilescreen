@@ -252,8 +252,11 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
         }
 
 
-        if (only_big != 1)
+        if (only_big != 1) {
             smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
+        } else {
+            smalls = [];
+        }
 
             /**
              * Fetch all apps and render them.
@@ -341,32 +344,30 @@ require(['ramdajs', 'utils', 'tilejs', 'fxos_icons'], ( R, U, Tile ) => {
 
 
         // options
-        if (this_tile.id == "worded" || this_tile.id == "setup-tile") {
-           U.show_options(b_transparency, only_big);
+
+        switch( this_tile.id ) {
+            case "worded":
+            case "setup-tile":
+                U.show_options(b_transparency, only_big);
+                break;
+            case "hide_trans":
+                b_transparency = 0;
+                start();
+                break;
+            case "set_trans":
+                b_transparency = 1;
+                start();
+                break;
+            case "only_big":
+                only_big = 1;
+                start();
+                break;
+            case "show_small":
+                only_big = 0;
+                start();
+                break;
         }
 
-        // TODO:  make me a switch, please
-        if (this_tile.id == "hide_trans") {
-            b_transparency = 0;
-            start();
-        }
-
-        if (this_tile.id == "set_trans") {
-            b_transparency = 1;
-            start();
-        }
-
-        if (this_tile.id == "only_big") {
-            only_big = 1;
-            R.forEach(removeSmall, document.getElementsByClassName("tile"));
-            R.forEach(addSmall, document.getElementsByClassName("in-dock"));
-            start();
-        }
-
-        if (this_tile.id == "show_small") {
-            only_big = 0;
-            start();
-        }
 
         /* if clicked the empty space of the options tile */
         if (this_tile.classList.contains("options")) {
