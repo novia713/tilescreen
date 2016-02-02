@@ -179,6 +179,27 @@ var  U = {
         U.add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
         U.add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;}');
 
-     }
+     },
 
+    show_select_app: () => {
+        var div_popup = document.createElement('div');
+        div_popup.id = 'popup';
+
+            div_popup.innerHTML = "<div class='close_bt'><span onclick='U.close_select_app();'>x</span></div>" ;
+            div_popup.innerHTML += "<h2>Select an app for this tile</h2>";
+            div_popup.innerHTML += "<ul>" ;
+            for (var ii=0; ii<30; ii++)
+                div_popup.innerHTML += "    <li><img src='' /> app " + ii + "</li>" ;
+            div_popup.innerHTML += "</ul>" ;
+        
+        var body = document.body || document.getElementByTagName('body')[0];
+        body.appendChild(div_popup);
+        
+    },
+    
+    close_select_app: () => {
+        var body = document.body || document.getElementByTagName('body')[0];
+        var div_popup = document.getElementById("popup");
+        var garbage = body.removeChild(div_popup);        
+    }
 };
