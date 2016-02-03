@@ -108,6 +108,14 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_add_style">add_style</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_ajax">ajax</a>
+
+                            </li>
                             <li class="index-item method private">
                                 <a href="#method_build_setup_tile">build_setup_tile</a>
 
@@ -117,7 +125,23 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_get_numeric_day">get_numeric_day</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_get_worded_day">get_worded_day</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_is_small">is_small</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_log">log</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_parse_weather_xml">parse_weather_xml</a>
 
                             </li>
                             <li class="index-item method">
@@ -126,6 +150,10 @@
                             </li>
                             <li class="index-item method private">
                                 <a href="#method_print_msg">print_msg</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_show_options">show_options</a>
 
                             </li>
                     </ul>
@@ -138,6 +166,147 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_add_style" class="method item">
+    <h3 class="name"><code>add_style</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>css_string</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_utils.js.html#l161"><code>js&#x2F;internal&#x2F;utils.js:161</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets initial styles for sizes</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">css_string</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_ajax" class="method item">
+    <h3 class="name"><code>ajax</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>url</code>
+                </li>
+                <li class="arg">
+                        <code>mode</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_utils.js.html#l182"><code>js&#x2F;internal&#x2F;utils.js:182</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Performs an asynchronous ajax call</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">url</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>the url to go</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">mode</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>[weather | city]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_build_setup_tile" class="method item private">
     <h3 class="name"><code>build_setup_tile</code></h3>
 
@@ -225,6 +394,223 @@
 
 
 </div>
+<div id="method_get_numeric_day" class="method item">
+    <h3 class="name"><code>get_numeric_day</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>date</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Integer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_utils.js.html#l131"><code>js&#x2F;internal&#x2F;utils.js:131</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Tells the day in number</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">date</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Integer</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_get_worded_day" class="method item">
+    <h3 class="name"><code>get_worded_day</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>day</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_utils.js.html#l141"><code>js&#x2F;internal&#x2F;utils.js:141</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Tells the day in three letters word (sun, thu, fri)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">day</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_is_small" class="method item">
+    <h3 class="name"><code>is_small</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pos</code>
+                </li>
+                <li class="arg">
+                        <code>R</code>
+                </li>
+                <li class="arg">
+                        <code>smalls</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Integer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_utils.js.html#l93"><code>js&#x2F;internal&#x2F;utils.js:93</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Tells if the current position in roster should be small</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pos</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">R</code>
+                        <span class="type">Class</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">smalls</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Integer</span>:
+                    <p>[&gt;0 yes | 0 no]</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_log" class="method item">
     <h3 class="name"><code>log</code></h3>
 
@@ -285,6 +671,70 @@
             <div class="returns-description">
                     <p>mixed</p>
 
+            </div>
+        </div>
+
+
+</div>
+<div id="method_parse_weather_xml" class="method item">
+    <h3 class="name"><code>parse_weather_xml</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>xml</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_utils.js.html#l231"><code>js&#x2F;internal&#x2F;utils.js:231</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Parses an asynchronous ajax call to show the weather info</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">xml</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>the xml to parse</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
             </div>
         </div>
 
@@ -420,6 +870,82 @@
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
                     <p>a div indicating to select this homescreen as default</p>
 
+            </div>
+        </div>
+
+
+</div>
+<div id="method_show_options" class="method item">
+    <h3 class="name"><code>show_options</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>b_transparency</code>
+                </li>
+                <li class="arg">
+                        <code>only_big</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_utils.js.html#l106"><code>js&#x2F;internal&#x2F;utils.js:106</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Shows a div for choosing options</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">b_transparency</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">only_big</code>
+                        <span class="type">Integer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
             </div>
         </div>
 

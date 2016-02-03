@@ -90,9 +90,26 @@ var  U = {
         R.forEach ( print_tiles_in_minidock, R.take (4,  R.reverse(sortByUsage( storage ))));
      },
 
+    /**
+    Tells if the current position in roster should be small
+    @param pos    {Integer}
+    @param R      {Class}
+    @param smalls {Array}
+    @method is_small
+    @return {Integer} [>0 yes | 0 no]
+    */
      is_small: (pos, R, smalls) => {
          return R.indexOf(pos, smalls);
      },
+
+
+    /**
+    Shows a div for choosing options
+    @param b_transparency  {Integer}
+    @param only_big        {Integer}
+    @method show_options
+    @return {String}
+    */
 
      show_options: (b_transparency, only_big) => {
 
@@ -111,10 +128,22 @@ var  U = {
 
      },
 
+    /**
+    Tells the day in number
+    @param date  {Object}
+    @method get_numeric_day
+    @return {Integer}
+    */
      get_numeric_day: date => {
         return date.getDay();
      },
 
+    /**
+    Tells the day in three letters word (sun, thu, fri)
+    @param day  {Integer}
+    @method get_worded_day
+    @return {String}
+    */
      get_worded_day: day => {
         var weekday = new Array(7);
 
@@ -129,7 +158,12 @@ var  U = {
         return weekday[day];
      },
 
-     /* set initial styles for sizes */
+    /**
+    Sets initial styles for sizes
+    @param css_string  {String}
+    @method add_style
+    @return {String}
+    */
      add_style: css_string => {
         var head = document.head || document.getElementsByTagName('head')[0],
             style = document.createElement('style');
@@ -144,6 +178,14 @@ var  U = {
         head.appendChild(style);
      },
 
+
+    /**
+    Performs an asynchronous ajax call
+    @param url  {String} the url to go
+    @param mode {String} [weather | city]
+    @method ajax
+    @return {String}
+    */
      ajax: (url, mode) => {
 
         var xmlhttp;
@@ -186,6 +228,12 @@ var  U = {
         xmlhttp.send();
      },
 
+    /**
+    Parses an asynchronous ajax call to show the weather info
+    @param xml  {String} the xml to parse
+    @method parse_weather_xml
+    @return {String}
+    */
      parse_weather_xml: xml => {
 
         var d = new Date();

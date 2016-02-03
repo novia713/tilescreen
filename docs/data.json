@@ -162,6 +162,159 @@
                 "type": "String"
             },
             "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 93,
+            "description": "Tells if the current position in roster should be small",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "R",
+                    "description": "",
+                    "type": "Class"
+                },
+                {
+                    "name": "smalls",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "itemtype": "method",
+            "name": "is_small",
+            "return": {
+                "description": "[>0 yes | 0 no]",
+                "type": "Integer"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 106,
+            "description": "Shows a div for choosing options",
+            "params": [
+                {
+                    "name": "b_transparency",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "only_big",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "itemtype": "method",
+            "name": "show_options",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 131,
+            "description": "Tells the day in number",
+            "params": [
+                {
+                    "name": "date",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "get_numeric_day",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 141,
+            "description": "Tells the day in three letters word (sun, thu, fri)",
+            "params": [
+                {
+                    "name": "day",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "itemtype": "method",
+            "name": "get_worded_day",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 161,
+            "description": "Sets initial styles for sizes",
+            "params": [
+                {
+                    "name": "css_string",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "add_style",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 182,
+            "description": "Performs an asynchronous ajax call",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url to go",
+                    "type": "String"
+                },
+                {
+                    "name": "mode",
+                    "description": "[weather | city]",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "ajax",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 231,
+            "description": "Parses an asynchronous ajax call to show the weather info",
+            "params": [
+                {
+                    "name": "xml",
+                    "description": "the xml to parse",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "parse_weather_xml",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
         }
     ],
     "warnings": [
