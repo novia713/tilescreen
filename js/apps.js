@@ -96,7 +96,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         /* settings link */
             tile.innerHTML += "<div id='settings_bt' data-icon='settings' data-l10n-id='battery-"+batterylevel_10+"' class='settings'></div>";
-        
+
         /* battery level */
             var battery = navigator.battery;
             if (battery) {
@@ -123,7 +123,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                 document.getElementById("setup-tile").innerHTML += "<div id='weather-info'></div>";
 
                 // city name
-                U.ajax( 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true&key='+ gugle_key, "city" );
+                U.ajax( 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true&key='+ gugle_key, "city" );
         };
 
         function errorGeoLoc(err) {
@@ -399,13 +399,6 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
     // 3, 2, 1 ...
     start();
-    U.call_setup_tile_every_full_hour();
-/*
-console.log("hola");
-console.log(  navigator.mozWifiManager.connection  );
-if (navigator.mozWifiManager.connection.status == "connected"){
-    var network_name = navigator.mozWifiManager.connection.network.ssid;
-    console.log(network_name);
-}
-*/
+    //U.call_setup_tile_every_full_hour();
+
 });
