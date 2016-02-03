@@ -56,6 +56,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
         "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
 */
     const HIDDEN_ROLES = [ 'system', 'input', 'homescreen', 'theme', 'addon', 'langpack' ];
+    const TS_UPD_SETUP_TILE = 3600000;
 
     var parent = document.getElementById('apps');
     var iconMap = {};
@@ -78,7 +79,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
             parent.innerHTML = txt_msg;
      };
 
-     var build_setup_tile = function() {
+     var build_setup_tile = () => {
 
         var oldtile = document.getElementById("setup-tile");
         if ( oldtile )
@@ -134,6 +135,18 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
 
         parent.insertBefore(tile, parent.children[1]);
+
+        // /**************
+        // * recursivity *
+        // **************/
+        //
+        // CAUTION: this inhabilites the console in the WebIDE
+        // for debugging this app, please comment out this setTimeout()
+
+        window.setTimeout(function(){
+            build_setup_tile();
+            }, TS_UPD_SETUP_TILE);
+
      };
 
     /**
@@ -399,6 +412,5 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
     // 3, 2, 1 ...
     start();
-    //U.call_setup_tile_every_full_hour();
 
 });

@@ -218,20 +218,5 @@ var  U = {
         var body = document.body || document.getElementByTagName('body')[0];
         var div_popup = document.getElementById("popup");
         var garbage = body.removeChild(div_popup);
-    },
-
-   call_setup_tile_every_full_hour: () => {
-
-        var now = new Date();
-        var nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, 0);
-        var difference = nextHour - now;
-
-        window.setTimeout(function(){
-
-            start();
-            callEveryFullHour();
-
-        }, difference);
-
     }
 };
