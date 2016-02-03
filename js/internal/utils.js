@@ -256,13 +256,13 @@ var  U = {
 
      add_initial_styles: () => {
 
-        var width_1_col =  window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
-        var width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
-        var width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
+        C.width_1_col =  window.innerWidth; /* not used yet Leandro, it's for the biggest tiles (side to side) */
+        C.width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
+        C.width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
 
-        U.add_style('.tile { width: '  + width_2_col +'px; height: '  + width_2_col +'px; }');
-        U.add_style('.small { width: ' + width_4_col +'px!important; height: ' + width_4_col +'px!important}');
-        U.add_style('.t_4_1 { width: ' + width_1_col +'px!important; height: ' + width_4_col +'px!important; padding:0px;}');
+        U.add_style('.tile { width: '  + C.width_2_col +'px; height: '  + C.width_2_col +'px; }');
+        U.add_style('.small { width: ' + C.width_4_col +'px!important; height: ' + C.width_4_col +'px!important}');
+        U.add_style('.t_4_1 { width: ' + C.width_1_col +'px!important; height: ' + C.width_4_col +'px!important; padding:0px;}');
 
      },
 

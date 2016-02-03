@@ -38,6 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/C.html">C</a></li>
                                 <li><a href="../classes/U.html">U</a></li>
                             </ul>
                 
@@ -113,38 +114,21 @@ requirejs.config({
     paths: {
         &#x27;ramdajs&#x27;   : [&#x27;external/ramda.min&#x27;],
         &#x27;utils&#x27;     : [&#x27;internal/utils&#x27;],
+        &#x27;config&#x27;    : [&#x27;internal/config&#x27;],
         &#x27;fxos_icons&#x27;: &quot;../bower_components/fxos-icons/fxos-icons&quot;
 
 
     },
     shim: {
         &#x27;ramdajs&#x27;: {  exports: &#x27;R&#x27; },
+        &#x27;config&#x27; : {  exports: &#x27;C&#x27; },
         &#x27;utils&#x27;  : {  exports: &#x27;U&#x27; }
     }
 });
 
-require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U ) =&gt; {
+require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_icons&#x27;], ( R, U, C ) =&gt; {
 
-    //CONFIG
-    var only_big       = 0;
-    var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
-    //CONFIG
-
-    const HIDDEN_ROLES = [ &#x27;system&#x27;, &#x27;input&#x27;, &#x27;homescreen&#x27;, &#x27;theme&#x27;, &#x27;addon&#x27;, &#x27;langpack&#x27; ];
-    const TS_UPD_SETUP_TILE = 3600000;
-
-    var parent = document.getElementById(&#x27;apps&#x27;);
-    var iconMap = {};
-    var usage = [];
-    var smalls = [];
     var i = 0;
-    var storage = null;
-    var date = new Date();
-    var width_1_col = 0;
-    var width_2_col = 0;
-    var width_4_col = 0;
-    var gugle_key = &quot;AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0&quot;;
-
 
     /**
     Prints set up message
@@ -155,7 +139,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
      var print_msg = () =&gt; {
         var txt_msg  = &quot;&lt;div style=&#x27;background-color:orange;color:white&#x27;&gt;&lt;h3&gt;Please, set this homescreen your default homescreen in &lt;i&gt;Settings / Homescreens / Change Homescreens&lt;/i&gt;. This homescreen won&#x27;t work if you don&#x27;t do so&lt;/h3&gt;&lt;/div&gt;&quot;;
             txt_msg += &quot;&lt;div style=&#x27;background-color:orange;color:black&#x27;&gt;&lt;h3&gt;Ve a &lt;i&gt;Configuración / Homescreens&lt;/i&gt; y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!&lt;/h3&gt;&lt;/div&gt;&quot;;
-            parent.innerHTML = txt_msg;
+            C.parent.innerHTML = txt_msg;
      };
 
 
@@ -169,7 +153,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
 
         var oldtile = document.getElementById(&quot;setup-tile&quot;);
         if ( oldtile )
-            parent.removeChild( oldtile );
+            C.parent.removeChild( oldtile );
 
         var tile       = document.createElement(&#x27;div&#x27;);
         tile.id        = &#x27;setup-tile&#x27;;
@@ -195,8 +179,8 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
             }
 
         /* date */
-            tile.innerHTML += &quot;&lt;div id=&#x27;worded&#x27;&gt;&lt;span class=&#x27;weekday&#x27;&gt;&quot;+ U.get_worded_day( U.get_numeric_day( date )) + &quot;&lt;/span&gt;&quot;
-                            + &quot; &lt;span class=&#x27;monthday&#x27;&gt;&quot; + date.getDate() + &quot;&lt;/span&gt;&lt;/div&gt;&quot;;
+            tile.innerHTML += &quot;&lt;div id=&#x27;worded&#x27;&gt;&lt;span class=&#x27;weekday&#x27;&gt;&quot;+ U.get_worded_day( U.get_numeric_day( C.date )) + &quot;&lt;/span&gt;&quot;
+                            + &quot; &lt;span class=&#x27;monthday&#x27;&gt;&quot; + C.date.getDate() + &quot;&lt;/span&gt;&lt;/div&gt;&quot;;
 
         //TODO: refactor all this in aux
         function successGeoLoc(pos) {
@@ -211,7 +195,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
                 document.getElementById(&quot;setup-tile&quot;).innerHTML += &quot;&lt;div id=&#x27;weather-info&#x27;&gt;&lt;/div&gt;&quot;;
 
                 // city name
-                U.ajax( &#x27;https://maps.googleapis.com/maps/api/geocode/json?latlng=&#x27;+pos.coords.latitude+&#x27;,&#x27;+pos.coords.longitude+&#x27;&amp;sensor=true&amp;key=&#x27;+ gugle_key, &quot;city&quot; );
+                U.ajax( &#x27;https://maps.googleapis.com/maps/api/geocode/json?latlng=&#x27;+pos.coords.latitude+&#x27;,&#x27;+pos.coords.longitude+&#x27;&amp;sensor=true&amp;key=&#x27;+ C.gugle_key, &quot;city&quot; );
         };
 
         function errorGeoLoc(err) {
@@ -221,7 +205,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
         navigator.geolocation.getCurrentPosition(successGeoLoc, errorGeoLoc, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
 
 
-        parent.insertBefore(tile, parent.children[1]);
+        C.parent.insertBefore(tile, C.parent.children[1]);
 
         // /**************
         // * recursivity *
@@ -232,7 +216,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
 
         window.setTimeout(function(){
             build_setup_tile();
-            }, TS_UPD_SETUP_TILE);
+            }, C.TS_UPD_SETUP_TILE);
      };
 
     /**
@@ -242,10 +226,10 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
 
             // guards
             if (!icon.manifest.icons) return;
-            if ( R.contains ( icon.manifest.role, HIDDEN_ROLES ))  return;
+            if ( R.contains ( icon.manifest.role, C.HIDDEN_ROLES ))  return;
             //end guards
 
-            if ( U.is_small( i, R, smalls ) &gt; -1 ) {
+            if ( U.is_small( i, R, C.smalls ) &gt; -1 ) {
                 var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
             }else{
                 var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
@@ -289,20 +273,20 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
                 document.getElementById(&#x27;apps&#x27;).appendChild(tile);
 
                 /* we associate the tile_ic to the firefox OS icon, because the tile_ic is who get the &#x27;click&#x27; event, not the tile container */
-                iconMap[wordname[0]] = icon;
+                C.iconMap[wordname[0]] = icon;
 
                 /* end tile generation*/
 
                 // array for storing it in JSON for using records
                 var item = { &quot;label&quot;: wordname[0], &quot;index&quot;: i, &quot;order&quot;: 0 };
-                storage = localStorage.getItem(&quot;storage&quot;);
+                C.storage = localStorage.getItem(&quot;storage&quot;);
 
-                if ( !storage ) {
-                    storage = [];
-                    storage[i] = item;
-                    localStorage.setItem( &quot;storage&quot;, JSON.stringify( storage ));
+                if ( !C.storage ) {
+                    C.storage = [];
+                    C.storage[i] = item;
+                    localStorage.setItem( &quot;storage&quot;, JSON.stringify( C.storage ));
                 } else  {
-                    var data = JSON.parse(storage);
+                    var data = JSON.parse( C.storage );
                     data[i] =  item;
                     localStorage.setItem( &quot;storage&quot;, JSON.stringify( data ));
                 }
@@ -310,7 +294,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
 
                 ++i;
 
-                if ( U.is_small( i, R, smalls ) &gt; -1 )  {
+                if ( U.is_small( i, R, C.smalls ) &gt; -1 )  {
                     tile.classList.add(&quot;small&quot;);
                 }
 
@@ -338,22 +322,22 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
         /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
 
         /* empty #apps and add #dock */
-        parent.innerHTML = &#x27;&#x27;;
+        C.parent.innerHTML = &#x27;&#x27;;
             var dock = document.createElement(&#x27;div&#x27;);
             dock.id = &#x27;dock&#x27;;
             apps.appendChild(dock);
 
         /* transparency mode */
-        parent.classList.remove(&#x27;transparent&#x27;);
-        if (b_transparency == 1){
+        C.parent.classList.remove(&#x27;transparent&#x27;);
+        if ( C.b_transparency == 1 ){
             apps.classList.add(&#x27;transparent&#x27;);
         }
 
 
-        if (only_big != 1) {
-            smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
+        if ( C.only_big != 1 ) {
+            C.smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
         } else {
-            smalls = [];
+            C.smalls = [];
         }
 
             /**
@@ -401,7 +385,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
 
         // settings popup only opens for not docked items
         if ( R.contains(&quot;docker&quot;)(tile_ic.classList) == false ) {
-            U.show_tile_settings(tile_ic.parentNode, R, HIDDEN_ROLES);
+            U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
         }
     });
 
@@ -419,25 +403,25 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
 
         /* if clicked a &lt;li&gt; element at tile_settings (so the originalTarget is not a tile, but a &lt;li&gt; element) */
         if (this_tile.classList.contains(&quot;tile_settings_li&quot;)) {
-            return U.set_tile_app(this_tile, iconMap);
+            return U.set_tile_app(this_tile, C.iconMap);
         }
 
         var rel = this_tile.getAttribute(&#x27;rel&#x27;);
 
-        if ( typeof storage == &quot;string&quot; ) storage = JSON.parse( storage );
+        if ( typeof C.storage == &quot;string&quot; ) C.storage = JSON.parse( C.storage );
 
-        if (iconMap[rel]){
+        if ( C.iconMap[rel] ){
 
-            var i = iconMap[rel];
-            var index     =  R.filter( R.propEq(&quot;label&quot;, rel ), storage )[0].index;
+            var i = C.iconMap[rel];
+            var index     =  R.filter( R.propEq(&quot;label&quot;, rel ), C.storage )[0].index;
 
             // we add 1 to value of that icon in localStorage ...
-            storage[index].order +=1;
-            localStorage.setItem( &quot;storage&quot;, JSON.stringify( storage ));
+            C.storage[index].order +=1;
+            localStorage.setItem( &quot;storage&quot;, JSON.stringify( C.storage ));
 
 
             // transpose storage value to DOM elements
-            this_tile.dataset.order = storage[index].order;
+            this_tile.dataset.order = C.storage[index].order;
 
 
             // Callscreen, so dirty :S
@@ -451,7 +435,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
             //TODO; handle launch contacts
 
             i.launch(entry);
-            U.print_dock( R, iconMap, document );
+            U.print_dock( R, C.iconMap, document );
         }
 
 
@@ -461,22 +445,22 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;fxos_icons&#x27;], ( R, U
             case &quot;worded&quot;:
             case &quot;settings_bt&quot;:
             case &quot;setup-tile&quot;:
-                U.show_options(b_transparency, only_big);
+                U.show_options( C.b_transparency, C.only_big );
                 break;
             case &quot;hide_trans&quot;:
-                b_transparency = 0;
+                C.b_transparency = 0;
                 start();
                 break;
             case &quot;set_trans&quot;:
-                b_transparency = 1;
+                C.b_transparency = 1;
                 start();
                 break;
             case &quot;only_big&quot;:
-                only_big = 1;
+                C.only_big = 1;
                 start();
                 break;
             case &quot;show_small&quot;:
-                only_big = 0;
+                C.only_big = 0;
                 start();
                 break;
             case &#x27;close_tile_settings&#x27;:

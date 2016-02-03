@@ -31,38 +31,21 @@ requirejs.config({
     paths: {
         'ramdajs'   : ['external/ramda.min'],
         'utils'     : ['internal/utils'],
+        'config'    : ['internal/config'],
         'fxos_icons': "../bower_components/fxos-icons/fxos-icons"
 
 
     },
     shim: {
         'ramdajs': {  exports: 'R' },
+        'config' : {  exports: 'C' },
         'utils'  : {  exports: 'U' }
     }
 });
 
-require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
+require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
-    //CONFIG
-    var only_big       = 0;
-    var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
-    //CONFIG
-
-    const HIDDEN_ROLES = [ 'system', 'input', 'homescreen', 'theme', 'addon', 'langpack' ];
-    const TS_UPD_SETUP_TILE = 3600000;
-
-    var parent = document.getElementById('apps');
-    var iconMap = {};
-    var usage = [];
-    var smalls = [];
     var i = 0;
-    var storage = null;
-    var date = new Date();
-    var width_1_col = 0;
-    var width_2_col = 0;
-    var width_4_col = 0;
-    var gugle_key = "AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0";
-
 
     /**
     Prints set up message
@@ -73,7 +56,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
      var print_msg = () => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
-            parent.innerHTML = txt_msg;
+            C.parent.innerHTML = txt_msg;
      };
 
 
@@ -87,7 +70,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         var oldtile = document.getElementById("setup-tile");
         if ( oldtile )
-            parent.removeChild( oldtile );
+            C.parent.removeChild( oldtile );
 
         var tile       = document.createElement('div');
         tile.id        = 'setup-tile';
@@ -113,8 +96,8 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
             }
 
         /* date */
-            tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( date )) + "</span>"
-                            + " <span class='monthday'>" + date.getDate() + "</span></div>";
+            tile.innerHTML += "<div id='worded'><span class='weekday'>"+ U.get_worded_day( U.get_numeric_day( C.date )) + "</span>"
+                            + " <span class='monthday'>" + C.date.getDate() + "</span></div>";
 
         //TODO: refactor all this in aux
         function successGeoLoc(pos) {
@@ -129,7 +112,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                 document.getElementById("setup-tile").innerHTML += "<div id='weather-info'></div>";
 
                 // city name
-                U.ajax( 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true&key='+ gugle_key, "city" );
+                U.ajax( 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true&key='+ C.gugle_key, "city" );
         };
 
         function errorGeoLoc(err) {
@@ -139,7 +122,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
         navigator.geolocation.getCurrentPosition(successGeoLoc, errorGeoLoc, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
 
 
-        parent.insertBefore(tile, parent.children[1]);
+        C.parent.insertBefore(tile, C.parent.children[1]);
 
         // /**************
         // * recursivity *
@@ -150,7 +133,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         window.setTimeout(function(){
             build_setup_tile();
-            }, TS_UPD_SETUP_TILE);
+            }, C.TS_UPD_SETUP_TILE);
      };
 
     /**
@@ -160,10 +143,10 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
             // guards
             if (!icon.manifest.icons) return;
-            if ( R.contains ( icon.manifest.role, HIDDEN_ROLES ))  return;
+            if ( R.contains ( icon.manifest.role, C.HIDDEN_ROLES ))  return;
             //end guards
 
-            if ( U.is_small( i, R, smalls ) > -1 ) {
+            if ( U.is_small( i, R, C.smalls ) > -1 ) {
                 var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
             }else{
                 var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
@@ -207,20 +190,20 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                 document.getElementById('apps').appendChild(tile);
 
                 /* we associate the tile_ic to the firefox OS icon, because the tile_ic is who get the 'click' event, not the tile container */
-                iconMap[wordname[0]] = icon;
+                C.iconMap[wordname[0]] = icon;
 
                 /* end tile generation*/
 
                 // array for storing it in JSON for using records
                 var item = { "label": wordname[0], "index": i, "order": 0 };
-                storage = localStorage.getItem("storage");
+                C.storage = localStorage.getItem("storage");
 
-                if ( !storage ) {
-                    storage = [];
-                    storage[i] = item;
-                    localStorage.setItem( "storage", JSON.stringify( storage ));
+                if ( !C.storage ) {
+                    C.storage = [];
+                    C.storage[i] = item;
+                    localStorage.setItem( "storage", JSON.stringify( C.storage ));
                 } else  {
-                    var data = JSON.parse(storage);
+                    var data = JSON.parse( C.storage );
                     data[i] =  item;
                     localStorage.setItem( "storage", JSON.stringify( data ));
                 }
@@ -228,7 +211,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
                 ++i;
 
-                if ( U.is_small( i, R, smalls ) > -1 )  {
+                if ( U.is_small( i, R, C.smalls ) > -1 )  {
                     tile.classList.add("small");
                 }
 
@@ -256,22 +239,22 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
         /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
 
         /* empty #apps and add #dock */
-        parent.innerHTML = '';
+        C.parent.innerHTML = '';
             var dock = document.createElement('div');
             dock.id = 'dock';
             apps.appendChild(dock);
 
         /* transparency mode */
-        parent.classList.remove('transparent');
-        if (b_transparency == 1){
+        C.parent.classList.remove('transparent');
+        if ( C.b_transparency == 1 ){
             apps.classList.add('transparent');
         }
 
 
-        if (only_big != 1) {
-            smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
+        if ( C.only_big != 1 ) {
+            C.smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
         } else {
-            smalls = [];
+            C.smalls = [];
         }
 
             /**
@@ -319,7 +302,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         // settings popup only opens for not docked items
         if ( R.contains("docker")(tile_ic.classList) == false ) {
-            U.show_tile_settings(tile_ic.parentNode, R, HIDDEN_ROLES);
+            U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
         }
     });
 
@@ -337,25 +320,25 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
         if (this_tile.classList.contains("tile_settings_li")) {
-            return U.set_tile_app(this_tile, iconMap);
+            return U.set_tile_app(this_tile, C.iconMap);
         }
 
         var rel = this_tile.getAttribute('rel');
 
-        if ( typeof storage == "string" ) storage = JSON.parse( storage );
+        if ( typeof C.storage == "string" ) C.storage = JSON.parse( C.storage );
 
-        if (iconMap[rel]){
+        if ( C.iconMap[rel] ){
 
-            var i = iconMap[rel];
-            var index     =  R.filter( R.propEq("label", rel ), storage )[0].index;
+            var i = C.iconMap[rel];
+            var index     =  R.filter( R.propEq("label", rel ), C.storage )[0].index;
 
             // we add 1 to value of that icon in localStorage ...
-            storage[index].order +=1;
-            localStorage.setItem( "storage", JSON.stringify( storage ));
+            C.storage[index].order +=1;
+            localStorage.setItem( "storage", JSON.stringify( C.storage ));
 
 
             // transpose storage value to DOM elements
-            this_tile.dataset.order = storage[index].order;
+            this_tile.dataset.order = C.storage[index].order;
 
 
             // Callscreen, so dirty :S
@@ -369,7 +352,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
             //TODO; handle launch contacts
 
             i.launch(entry);
-            U.print_dock( R, iconMap, document );
+            U.print_dock( R, C.iconMap, document );
         }
 
 
@@ -379,22 +362,22 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
             case "worded":
             case "settings_bt":
             case "setup-tile":
-                U.show_options(b_transparency, only_big);
+                U.show_options( C.b_transparency, C.only_big );
                 break;
             case "hide_trans":
-                b_transparency = 0;
+                C.b_transparency = 0;
                 start();
                 break;
             case "set_trans":
-                b_transparency = 1;
+                C.b_transparency = 1;
                 start();
                 break;
             case "only_big":
-                only_big = 1;
+                C.only_big = 1;
                 start();
                 break;
             case "show_small":
-                only_big = 0;
+                C.only_big = 0;
                 start();
                 break;
             case 'close_tile_settings':

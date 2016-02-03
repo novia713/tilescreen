@@ -38,6 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/C.html">C</a></li>
                                 <li><a href="../classes/U.html">U</a></li>
                             </ul>
                 
@@ -152,7 +153,7 @@ var  U = {
         var print_tiles_in_minidock =  item  =&gt; {
 
             var tile = document.createElement(&quot;div&quot;);
-            tile.className  = &quot;tile small container-dock&quot;;
+            tile.className  = &quot;tile small in-dock&quot;;
 
                     /* tile icon */
                     var tile_ic = document.getElementById(item.label).cloneNode(true);
@@ -338,13 +339,13 @@ var  U = {
 
      add_initial_styles: () =&gt; {
 
-        var width_1_col =  window.innerWidth; /* not used yet Leandro, it&#x27;s for the biggest tiles (side to side) */
-        var width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
-        var width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
+        C.width_1_col =  window.innerWidth; /* not used yet Leandro, it&#x27;s for the biggest tiles (side to side) */
+        C.width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
+        C.width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
 
-        U.add_style(&#x27;.tile { width: &#x27;  + width_2_col +&#x27;px; height: &#x27;  + width_2_col +&#x27;px; }&#x27;);
-        U.add_style(&#x27;.small { width: &#x27; + width_4_col +&#x27;px!important; height: &#x27; + width_4_col +&#x27;px!important}&#x27;);
-        U.add_style(&#x27;.t_4_1 { width: &#x27; + width_1_col +&#x27;px!important; height: &#x27; + width_4_col +&#x27;px!important; padding:0px;}&#x27;);
+        U.add_style(&#x27;.tile { width: &#x27;  + C.width_2_col +&#x27;px; height: &#x27;  + C.width_2_col +&#x27;px; }&#x27;);
+        U.add_style(&#x27;.small { width: &#x27; + C.width_4_col +&#x27;px!important; height: &#x27; + C.width_4_col +&#x27;px!important}&#x27;);
+        U.add_style(&#x27;.t_4_1 { width: &#x27; + C.width_1_col +&#x27;px!important; height: &#x27; + C.width_4_col +&#x27;px!important; padding:0px;}&#x27;);
 
      },
 

@@ -13,6 +13,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/internal/config.js": {
+            "name": "js/internal/config.js",
+            "modules": {},
+            "classes": {
+                "C": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "js/internal/utils.js": {
             "name": "js/internal/utils.js",
             "modules": {},
@@ -25,6 +34,17 @@
     },
     "modules": {},
     "classes": {
+        "C": {
+            "name": "C",
+            "shortname": "C",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/internal/config.js",
+            "line": 2
+        },
         "U": {
             "name": "U",
             "shortname": "U",
@@ -56,11 +76,11 @@
             "todo": [
                 "- show wifi network name and telephony provider name\n      - show missed calls"
             ],
-            "class": "U"
+            "class": "C"
         },
         {
             "file": "js/internal/apps.js",
-            "line": 67,
+            "line": 50,
             "description": "Prints set up message",
             "access": "private",
             "tagname": "",
@@ -70,11 +90,11 @@
                 "description": "a div indicating to select this homescreen as default",
                 "type": "String"
             },
-            "class": "U"
+            "class": "C"
         },
         {
             "file": "js/internal/apps.js",
-            "line": 80,
+            "line": 63,
             "description": "Builds the setup-tile",
             "access": "private",
             "tagname": "",
@@ -84,25 +104,120 @@
                 "description": "a div with location and date info",
                 "type": "String"
             },
-            "class": "U"
+            "class": "C"
         },
         {
             "file": "js/internal/apps.js",
-            "line": 122,
+            "line": 105,
             "description": "show here info weather based on geoloc data\nhttp://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema\nhttp://api.yr.no/weatherapi/weathericon/1.1/documentation\n-------------------------------------------",
-            "class": "U"
+            "class": "C"
         },
         {
             "file": "js/internal/apps.js",
-            "line": 156,
+            "line": 139,
             "description": "Renders the icon to the container.",
-            "class": "U"
+            "class": "C"
         },
         {
             "file": "js/internal/apps.js",
-            "line": 277,
+            "line": 260,
             "description": "Fetch all apps and render them.",
-            "class": "U"
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 9,
+            "description": "Value for showing small or big icons",
+            "itemtype": "property",
+            "name": "only_big",
+            "type": "Integer",
+            "default": "0",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 18,
+            "description": "1 = semi-transparent background colors  VS 0 = solid background colors",
+            "itemtype": "property",
+            "name": "b_transparency",
+            "type": "Integer",
+            "default": "1",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 28,
+            "description": "Constant for excluding not interesting apps in roster",
+            "itemtype": "property",
+            "name": "HIDDEN_ROLES",
+            "type": "Array",
+            "readonly": "",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 37,
+            "description": "Time for refresh the setup-tile",
+            "itemtype": "property",
+            "name": "TS_UPD_SETUP_TILE",
+            "type": "Integer",
+            "readonly": "",
+            "default": "3600000 [ 1 hour ]",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 47,
+            "description": "DIV apps container",
+            "itemtype": "property",
+            "name": "parent",
+            "type": "String",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 55,
+            "description": "WeakMap for storing the icons",
+            "itemtype": "property",
+            "name": "iconMap",
+            "type": "WeakMap",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 63,
+            "description": "Array container for small indexes",
+            "itemtype": "property",
+            "name": "smalls",
+            "type": "Array",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 70,
+            "description": "Object for storing in LocalStorage usage of icons",
+            "itemtype": "property",
+            "name": "storage",
+            "type": "Array",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 78,
+            "description": "Date Object",
+            "itemtype": "property",
+            "name": "date",
+            "type": "Class",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 89,
+            "description": "API KEY for Google geolocation",
+            "itemtype": "property",
+            "name": "gugle_key",
+            "type": "String",
+            "class": "C"
         },
         {
             "file": "js/internal/utils.js",
@@ -348,15 +463,15 @@
         },
         {
             "message": "Missing item type\nshow here info weather based on geoloc data\nhttp://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema\nhttp://api.yr.no/weatherapi/weathericon/1.1/documentation\n-------------------------------------------",
-            "line": " js/internal/apps.js:122"
+            "line": " js/internal/apps.js:105"
         },
         {
             "message": "Missing item type\nRenders the icon to the container.",
-            "line": " js/internal/apps.js:156"
+            "line": " js/internal/apps.js:139"
         },
         {
             "message": "Missing item type\nFetch all apps and render them.",
-            "line": " js/internal/apps.js:277"
+            "line": " js/internal/apps.js:260"
         }
     ]
 }
