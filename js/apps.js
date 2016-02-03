@@ -30,7 +30,7 @@ requirejs.config({
     baseUrl: "js",
     paths: {
         'ramdajs': ['ramda.min'],
-        'uitls': "utils",
+        'utils': "utils",
         'fxos_icons': "../bower_components/fxos-icons/fxos-icons"
 
 
@@ -95,7 +95,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
             tile.appendChild(tile_bg);
 
         /* settings link */
-            tile.innerHTML += "<div id='settings_bt' data-icon='settings' data-l10n-id='battery-"+batterylevel_10+"' class='settings'></div>";
+            tile.innerHTML += "<div id='settings_bt' data-icon='settings' data-l10n-id='settings' class='settings'></div>";
         
         /* battery level */
             var battery = navigator.battery;
@@ -162,6 +162,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
                 /* tile generation*/
                 var tile = document.createElement('div');
+                tile.id = 'tile_'+i;
                 tile.className = 'tile';
 
                     /* tile icon */
@@ -295,8 +296,8 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
     /* === show the list with all installed apps for specify a new one for this tile === */
     window.addEventListener('contextmenu', ev => {
-        var tile_rel = ev.originalTarget.getAttribute('rel');
-        U.show_tile_settings();
+        var tile_ic = ev.originalTarget;
+        U.show_tile_settings(tile_ic.parentNode, R, HIDDEN_ROLES);
     });
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
@@ -310,6 +311,12 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     var event_click = ev => {
 
         var this_tile = ev.originalTarget;
+        
+        /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
+        if (this_tile.classList.contains("tile_settings_li")) {
+            return U.set_tile_app(this_tile, iconMap);
+        }
+        
         var rel = this_tile.getAttribute('rel');
 
         if ( typeof storage == "string" ) storage = JSON.parse( storage );

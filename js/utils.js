@@ -136,20 +136,22 @@ var  U = {
                    if ("weather" == mode)
                     U.parse_weather_xml( xmlhttp.responseText );
                    if ("city" == mode){
-                    var data = JSON.parse(xmlhttp.responseText);
-                    var address = data.results[0];
-                    /*
-                     * 1 - street
-                     * 2 - neighborhood
-                     * 3 - locality
-                     * 4 - administrative area
-                     * 5 - country
-                     * 6 - postal code
-                     */
-                    var neighborhood = address.address_components[2].short_name;
-                    var postal_code  = address.address_components[6].short_name;
-                    if (neighborhood && postal_code > 0)
-                        document.getElementById("setup-tile-location").innerHTML = postal_code +" "+ neighborhood;
+                        var data = JSON.parse(xmlhttp.responseText);
+                        var address = data.results[0];
+                        /*
+                         * 1 - street
+                         * 2 - neighborhood
+                         * 3 - locality
+                         * 4 - administrative area
+                         * 5 - country
+                         * 6 - postal code
+                         */
+                        if (address != null && address != 'undefined'){
+                            var neighborhood = address.address_components[2].short_name;
+                            var postal_code  = address.address_components[6].short_name;
+                            if (neighborhood && postal_code > 0)
+                                document.getElementById("setup-tile-location").innerHTML = postal_code +" "+ neighborhood;
+                        }
                    }
                }
                else if(xmlhttp.status == 400) {
@@ -198,20 +200,66 @@ var  U = {
 
      },
 
-    show_tile_settings: () => {
+    show_tile_settings: (tile, R, HIDDEN_ROLES) => {
+        
+        /* delete 'popup' div if it does exist */
+        var el = document.getElementById( 'popup' );
+        if (el != null ) return;
+        
+        var tile_rel = tile.getAttribute('rel');
+        var tile_id = tile.id;
+
+        var html = '';
+        html = "<div id='close_tile_settings' data-icon='close' data-l10n-id='close' class='close_bt'></div>";
+        html += "<h2>Select an app for this tile</h2>";
+        html += "<ul id='ul_apps'></ul>";
+
         var div_popup = document.createElement('div');
         div_popup.id = 'popup';
-
-            div_popup.innerHTML = "<div class='close_bt'><span id='close_tile_settings' class='x_close_bt'>x</span></div>" ;
-            div_popup.innerHTML += "<h2>Select an app for this tile</h2>";
-            div_popup.innerHTML += "<ul>" ;
-            for (var ii=0; ii<30; ii++)
-                div_popup.innerHTML += "    <li><img src='' /> app " + ii + "</li>" ;
-            div_popup.innerHTML += "</ul>" ;
+        div_popup.innerHTML = html;
+        div_popup.setAttribute('rel' , tile_id);
 
         var body = document.body || document.getElementByTagName('body')[0];
         body.appendChild(div_popup);
 
+        /* populate the ul of the div_popup with a <li> foreach app */
+            var request = navigator.mozApps.mgmt.getAll();
+
+            request.onsuccess = (e) => {
+
+                request.result.forEach( function(icon){
+                        // guards
+                            if (!icon.manifest.icons) return;
+                            if ( R.contains ( icon.manifest.role, HIDDEN_ROLES ))  return;
+                        //end guards
+
+                        var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
+                        var icon_name = icon.manifest.name;
+                        var wordname = icon_name.split(" ");
+                        
+                        icon_image.then ( img => {
+                            var div_popup = document.getElementById('ul_apps');
+                            var li = document.createElement('li');
+                                li.className = 'tile_settings_li';
+                                li.setAttribute('rel', wordname[0]);
+                            var imgtag = document.createElement('img');
+                                imgtag.src = window.URL.createObjectURL( img );
+                            li.appendChild(imgtag);
+                            li.appendChild(document.createTextNode(icon_name));
+                            div_popup.appendChild(li);
+                        });
+
+
+                });
+
+
+            };
+
+            request.onerror = (e) => {
+              console.error('Error calling getAll: ' + request.error.name);
+              resolve();
+            };
+            
     },
 
     close_select_app: () => {
@@ -233,5 +281,80 @@ var  U = {
 
         }, difference);
 
+    },
+    
+    set_tile_app: (tile_settings_li, iconMap) => {
+        var app_rel = tile_settings_li.getAttribute('rel');
+        var tile_id = document.getElementById('popup').getAttribute('rel');
+        
+        if (iconMap[app_rel]){
+            
+            var icon = iconMap[app_rel];
+            var icon_name = icon.manifest.name;
+            var wordname = icon_name.split(" ");
+            
+            var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
+            
+            /* when the mozApps API response the answer to our previous request THEN: */
+            icon_image.then ( img => {
+                
+                /* tile generation*/
+                var old_tile = document.getElementById(tile_id);
+                var tile = old_tile.cloneNode();
+                        
+                /* empty the tile */
+                U.empty_elementById(tile_id);
+
+                /* tile icon */
+                var tile_ic = document.createElement('div');
+                tile_ic.className = 'tile_ic';
+                var img_url = window.URL.createObjectURL( img );
+                tile_ic.style.background = 'transparent url(\'' +  img_url + '\') no-repeat';
+
+                // Callscreen icon [ doing things like this is cheese ]
+                if (icon_name == "Communications") { //should be Callscreen
+                    tile_ic.style.background = 'transparent url(/img/dialer-icon.png) no-repeat';
+                }
+
+                tile_ic.setAttribute('rel', wordname[0]);
+                tile_ic.id = wordname[0];
+
+                tile.appendChild(tile_ic);
+
+                /* tile background */
+                var tile_bg = document.createElement('div');
+                tile_bg.className = 'tile_bg';
+                tile_bg.style.backgroundColor = U.get_color(icon_name);
+                
+                tile.appendChild(tile_bg);                
+
+                /* replace the old tile with the new tile */
+                document.getElementById('apps').replaceChild(tile, old_tile);
+                    
+                /* destroy the tile_settings 'popup' */
+                U.destroy_elementById( 'popup' );
+            });
+            
+            
+            /* destroy the tile_settings 'popup' */
+            U.destroy_elementById( 'popup' );
+            
+        }
+        
+    },
+    
+    destroy_elementById: (ele_id) => {
+        var el = document.getElementById( ele_id );
+        if (el == null ) return;
+        /*if (el.parentNode == null ) return;*/
+        el.parentNode.removeChild( el );
+    },
+    
+    empty_elementById: (ele_id) => {
+        var Node = document.getElementById(ele_id);
+        while (Node.firstChild) {
+           Node.removeChild(Node.firstChild);
+        }
     }
+
 };

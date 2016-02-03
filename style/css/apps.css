@@ -206,29 +206,30 @@ body {margin: 0;}
         z-index: 100;
         width: 100%; height: 100%;
         overflow-y: scroll;
-        background-color: rgba(0,0,0,0.8); color: #eee;
+        background-color: #444; color: #eee;
         padding:1rem; padding-bottom:3rem;
     }
-        #popup .close_bt{
-            text-align:right;
-        }
-            #popup span{
-                font-weight:bold;
-                display:inline-block; padding:0;
-                position: relative;
-                line-height: 1.4rem; height:1.5em; width:1.5rem;
-                background-color: rgba(255,255,255,0.7); color: #111;
-                border-radius: 1.5rem;
-                text-align:center;
-                cursor: pointer;
-            }
         #popup h2{
             font-weight: normal;
+            text-align:left;
+            border-bottom:1px #666 solid;
             padding:0; margin:0;
+            padding-bottom:0.5rem;
+            margin-bottom:0.5rem;
+            position: relative;
+        }
+        #popup .close_bt{
+            position: absolute; right:5px;
+            min-width: 3rem; /* for great enought the 'tap' surface of the button */
+            text-align:right;
+            z-index:101;
+            background-color:transparent;
+            cursor:pointer;
         }
         #popup ul{
             list-style-type: none;
-            margin-bottom: 3rem;
+            padding:0;
+            margin-bottom: 1rem;
         }
         #popup li{
             display:block;
@@ -245,5 +246,5 @@ body {margin: 0;}
             #popup li img{
                 display:inline-block;
                 position:absolute; top:3px;left: 10px;
-                max-height:1.5em;
+                max-height:1.1em;
             }
