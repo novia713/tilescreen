@@ -202,7 +202,7 @@ var  U = {
         var div_popup = document.createElement('div');
         div_popup.id = 'popup';
 
-            div_popup.innerHTML = "<div class='close_bt'><span class='x_close_bt'>x</span></div>" ;
+            div_popup.innerHTML = "<div class='close_bt'><span id='close_tile_settings' class='x_close_bt'>x</span></div>" ;
             div_popup.innerHTML += "<h2>Select an app for this tile</h2>";
             div_popup.innerHTML += "<ul>" ;
             for (var ii=0; ii<30; ii++)

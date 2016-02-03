@@ -367,6 +367,9 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                 only_big = 0;
                 start();
                 break;
+            case 'close_tile_settings':
+                U.close_select_app();
+                break;
         }
 
 
