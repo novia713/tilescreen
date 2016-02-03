@@ -296,7 +296,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     /* === show the list with all installed apps for specify a new one for this tile === */
     window.addEventListener('contextmenu', ev => {
         var tile_rel = ev.originalTarget.getAttribute('rel');
-        U.show_select_app();
+        U.show_tile_settings();
     });
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */

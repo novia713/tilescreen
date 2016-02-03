@@ -198,7 +198,7 @@ var  U = {
 
      },
 
-    show_select_app: () => {
+    show_tile_settings: () => {
         var div_popup = document.createElement('div');
         div_popup.id = 'popup';
 
