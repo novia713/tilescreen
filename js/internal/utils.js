@@ -70,7 +70,7 @@ var  U = {
         var print_tiles_in_minidock =  item  => {
 
             var tile = document.createElement("div");
-            tile.className  = "tile small container-dock";
+            tile.className  = "tile small in-dock";
 
                     /* tile icon */
                     var tile_ic = document.getElementById(item.label).cloneNode(true);

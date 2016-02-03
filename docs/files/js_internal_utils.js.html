@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>js/internal/utils.js - Documenting Tilescreen with YUIDoc</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="Documenting Tilescreen with YUIDoc" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/U.html">U</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: js/internal/utils.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;
+/**
+@class U
+*/
+var  U = {
+
+    /**
+    This is used to console.log any value.
+    @method log
+    @param v {mixed} The value to log
+    @return mixed
+    */
+    log: v  =&gt; {
+         console.log( v );
+    },
+
+    /**
+    Colores de cada icono
+    @method get_color
+    @return color {String} The hexadecimal value of the color
+    */
+    get_color: app  =&gt; {
+        var obj_color = {};
+        obj_color.Communications = &quot;#B2F2FF&quot;; //green 5F9B0A
+        obj_color.Calendar    = &quot;#fff587&quot;;// yellow   before: &quot;#FF4E00&quot;; //orange
+        obj_color[&#x27;E-Mail&#x27;]   = &quot;#FF4E00&quot;; //orange
+        obj_color[&#x27;FM Radio&#x27;] = &quot;#2C393B&quot;; //grey
+        obj_color.Camera      = &quot;#00AACC&quot;; //blue
+        obj_color.Clock       = &quot;#333333&quot;; //warm grey
+        obj_color.Gallery     = &quot;#00AACC&quot;; //blue
+        obj_color.Marketplace = &quot;#00AACC&quot;; //blue
+        obj_color.Browser     = &quot;#00AACC&quot;; //blue
+        obj_color.Messages    = &quot;#5F9B0A&quot;; //green
+        obj_color.Video       = &quot;#CD6723&quot;; //brick
+        obj_color.Music       = &quot;#CD6723&quot;; //brick
+        obj_color.Settings    = &quot;#EAEAE7&quot;; //ivory
+
+        obj_color.Twitter     = &quot;#c0deed&quot;;
+        obj_color.Facebook    = &quot;#3b5998&quot;;
+
+        if (obj_color[app]) {
+            return obj_color[app];
+        } else {
+            //random hex color;
+
+            var letters = &#x27;ABCDE&#x27;.split(&#x27;&#x27;);
+            var color = &#x27;#&#x27;;
+            for (var i=0; i&lt;3; i++ ) {
+                color += letters[Math.floor(Math.random() * letters.length)];
+            }
+            return color;
+
+        }
+    },
+
+    /**
+    Prints the upper dock
+    @param R {Class}
+    @param iconMap {WeakMap}
+    @param document {Object}
+    @method print_dock
+    @return {String} Injects HTML in the setup-tile div
+    */
+    print_dock: ( R, iconMap, document ) =&gt; {
+
+        var storage = JSON.parse( localStorage.getItem(  &quot;storage&quot;));
+        var dock    = document.getElementById(&quot;dock&quot;);
+        dock.className  = &quot;tile t_4_1&quot;;
+
+        var print_tiles_in_minidock =  item  =&gt; {
+
+            var tile = document.createElement(&quot;div&quot;);
+            tile.className  = &quot;tile small container-dock&quot;;
+
+                    /* tile icon */
+                    var tile_ic = document.getElementById(item.label).cloneNode(true);
+                    tile_ic.classList.add(&quot;docker&quot;);
+                    tile.appendChild( tile_ic  );
+
+                    /* tile background */
+                    var tile_bg = document.createElement(&#x27;div&#x27;);
+                    tile_bg.className = &#x27;tile_bg&#x27;;
+                    tile.appendChild(tile_bg);
+
+            dock.appendChild(  tile  );
+        };
+
+        dock.innerHTML = &quot;&quot;;
+        var sortByUsage = R.sortBy(R.prop(&quot;order&quot;));
+        R.forEach ( print_tiles_in_minidock, R.take (4,  R.reverse(sortByUsage( storage ))));
+     },
+
+    /**
+    Tells if the current position in roster should be small
+    @param pos    {Integer}
+    @param R      {Class}
+    @param smalls {Array}
+    @method is_small
+    @return {Integer} [&gt;0 yes | 0 no]
+    */
+     is_small: (pos, R, smalls) =&gt; {
+         return R.indexOf(pos, smalls);
+     },
+
+    /**
+    Shows a div for choosing options
+    @param b_transparency  {Integer}
+    @param only_big        {Integer}
+    @method show_options
+    @return {String}
+    */
+     show_options: (b_transparency, only_big) =&gt; {
+
+        var div_options = document.createElement(&#x27;div&#x27;);
+        div_options.className = &#x27;options&#x27;;
+
+            div_options.innerHTML = (b_transparency == 1)?
+                &quot;&lt;div id=&#x27;hide_trans&#x27; class=&#x27;bt&#x27;&gt;hide transparency&lt;/div&gt;&quot; :
+                &quot;&lt;div id=&#x27;set_trans&#x27; class=&#x27;bt&#x27;&gt;set transparency&lt;/div&gt;&quot;  ;
+            div_options.innerHTML += (only_big == 1)?
+                &quot;&lt;div id=&#x27;show_small&#x27; class=&#x27;bt&#x27;&gt;show small icons&lt;/div&gt;&quot; :
+                &quot;&lt;div id=&#x27;only_big&#x27; class=&#x27;bt&#x27;&gt;only big icons&lt;/div&gt;&quot;  ;
+
+        document.getElementById(&quot;setup-tile&quot;).innerHTML = &#x27;&#x27;;
+        document.getElementById(&quot;setup-tile&quot;).appendChild(div_options);
+
+     },
+
+    /**
+    Tells the day in number
+    @param date  {Object}
+    @method get_numeric_day
+    @return {Integer}
+    */
+     get_numeric_day: date =&gt; {
+        return date.getDay();
+     },
+
+    /**
+    Tells the day in three letters word (sun, thu, fri)
+    @param day  {Integer}
+    @method get_worded_day
+    @return {String}
+    */
+     get_worded_day: day =&gt; {
+        var weekday = new Array(7);
+
+        weekday[0]=  &quot;SUN&quot;;
+        weekday[1] = &quot;MON&quot;;
+        weekday[2] = &quot;TUE&quot;;
+        weekday[3] = &quot;WED&quot;;
+        weekday[4] = &quot;THU&quot;;
+        weekday[5] = &quot;FRI&quot;;
+        weekday[6] = &quot;SAT&quot;;
+
+        return weekday[day];
+     },
+
+     /**
+    Sets initial styles for sizes
+    @param css_string  {String}
+    @method add_style
+    @return {String}
+    */
+     add_style: css_string =&gt; {
+        var head = document.head || document.getElementsByTagName(&#x27;head&#x27;)[0],
+            style = document.createElement(&#x27;style&#x27;);
+
+        style.type = &#x27;text/css&#x27;;
+         if (style.styleSheet){
+           style.styleSheet.cssText = css_string;
+         } else {
+           style.appendChild(document.createTextNode(css_string));
+         }
+
+        head.appendChild(style);
+     },
+
+     /**
+    Performs an asynchronous ajax call
+    @param url  {String} the url to go
+    @param mode {String} [weather | city]
+    @method ajax
+    @return {String}
+    */
+     ajax: (url, mode) =&gt; {
+
+        var xmlhttp;
+
+        xmlhttp = new XMLHttpRequest({ mozSystem: true });
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+               if(xmlhttp.status == 200){
+                   //U.log( xmlhttp.responseText  );
+                   if (&quot;weather&quot; == mode)
+                    U.parse_weather_xml( xmlhttp.responseText );
+                   if (&quot;city&quot; == mode){
+                        var data = JSON.parse(xmlhttp.responseText);
+                        var address = data.results[0];
+                        /*
+                         * 1 - street
+                         * 2 - neighborhood
+                         * 3 - locality
+                         * 4 - administrative area
+                         * 5 - country
+                         * 6 - postal code
+                         */
+                        if (address != null &amp;&amp; address != &#x27;undefined&#x27;){
+                            var neighborhood = address.address_components[2].short_name;
+                            var postal_code  = address.address_components[6].short_name;
+                            if (neighborhood &amp;&amp; postal_code &gt; 0)
+                                document.getElementById(&quot;setup-tile-location&quot;).innerHTML = postal_code +&quot; &quot;+ neighborhood;
+                        }
+                   }
+               }
+               else if(xmlhttp.status == 400) {
+                    U.log(&#x27;There was an error 400&#x27;)
+               }
+               else {
+                   U.log(&#x27;code: &#x27; + xmlhttp.status)
+               }
+            }
+        }
+
+        xmlhttp.open(&quot;GET&quot;, url, true);
+        xmlhttp.send();
+     },
+
+    /**
+    Parses an asynchronous ajax call to show the weather info
+    @param xml  {String} the xml to parse
+    @method parse_weather_xml
+    @return {String}
+    */
+     parse_weather_xml: xml =&gt; {
+
+        var d = new Date();
+        var is_night = (d.getHours() &gt; 20 || d.getHours() &lt; 9)?
+                &quot;is_night=1;&quot;:
+                &quot;&quot;;
+        var url_4_weather_icon;
+
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString( xml ,&quot;text/xml&quot;);
+        var weather_icon   =  xmlDoc.getElementsByTagName(&quot;symbol&quot;)[0].getAttribute(&quot;number&quot;);
+        url_4_weather_icon = &quot;http://api.yr.no/weatherapi/weathericon/1.1/?symbol=&quot; + weather_icon + &quot;;&quot; + is_night + &quot;content_type=image/png&quot;;
+
+        var now = new Date();
+
+        document.getElementById(&quot;weather-info&quot;).innerHTML =
+            &quot;&lt;img src=&#x27;&quot;+ url_4_weather_icon +&quot;&#x27;/&gt;&quot; + &quot; &quot; +
+            xmlDoc.getElementsByTagName(&quot;location&quot;)[0].childNodes[1].getAttribute(&quot;value&quot;) + &quot;&amp;deg;&quot;
+            + &quot; &amp;nbsp; &lt;em&gt;&quot; +  (&#x27;0&#x27;+now.getHours()).substr(-2) + &quot;:&quot; + (&#x27;0&#x27;+now.getMinutes()).substr(-2) + &quot;&lt;/em&gt;&quot;;
+     },
+
+     add_initial_styles: () =&gt; {
+
+        var width_1_col =  window.innerWidth; /* not used yet Leandro, it&#x27;s for the biggest tiles (side to side) */
+        var width_2_col = (window.innerWidth / 2).toFixed(0) - 8;
+        var width_4_col = (window.innerWidth / 4).toFixed(0) - 8;
+
+        U.add_style(&#x27;.tile { width: &#x27;  + width_2_col +&#x27;px; height: &#x27;  + width_2_col +&#x27;px; }&#x27;);
+        U.add_style(&#x27;.small { width: &#x27; + width_4_col +&#x27;px!important; height: &#x27; + width_4_col +&#x27;px!important}&#x27;);
+        U.add_style(&#x27;.t_4_1 { width: &#x27; + width_1_col +&#x27;px!important; height: &#x27; + width_4_col +&#x27;px!important; padding:0px;}&#x27;);
+
+     },
+
+    show_tile_settings: (tile, R, HIDDEN_ROLES) =&gt; {
+
+        /* delete &#x27;popup&#x27; div if it does exist */
+        var el = document.getElementById( &#x27;popup&#x27; );
+        if (el != null ) return;
+
+        var tile_rel = tile.getAttribute(&#x27;rel&#x27;);
+        var tile_id = tile.id;
+
+        var html = &#x27;&#x27;;
+        html = &quot;&lt;div id=&#x27;close_tile_settings&#x27; data-icon=&#x27;close&#x27; data-l10n-id=&#x27;close&#x27; class=&#x27;close_bt&#x27;&gt;&lt;/div&gt;&quot;;
+        html += &quot;&lt;h2&gt;Select an app for this tile&lt;/h2&gt;&quot;;
+        html += &quot;&lt;ul id=&#x27;ul_apps&#x27;&gt;&lt;/ul&gt;&quot;;
+
+        var div_popup = document.createElement(&#x27;div&#x27;);
+        div_popup.id = &#x27;popup&#x27;;
+        div_popup.innerHTML = html;
+        div_popup.setAttribute(&#x27;rel&#x27; , tile_id);
+
+        var body = document.body || document.getElementByTagName(&#x27;body&#x27;)[0];
+        body.appendChild(div_popup);
+
+        /* populate the ul of the div_popup with a &lt;li&gt; foreach app */
+            var request = navigator.mozApps.mgmt.getAll();
+
+            request.onsuccess = (e) =&gt; {
+
+                request.result.forEach( function(icon){
+                        // guards
+                            if (!icon.manifest.icons) return;
+                            if ( R.contains ( icon.manifest.role, HIDDEN_ROLES ))  return;
+                        //end guards
+
+                        var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
+                        var icon_name = icon.manifest.name;
+                        var wordname = icon_name.split(&quot; &quot;);
+
+                        icon_image.then ( img =&gt; {
+                            var div_popup = document.getElementById(&#x27;ul_apps&#x27;);
+                            var li = document.createElement(&#x27;li&#x27;);
+                                li.className = &#x27;tile_settings_li&#x27;;
+                                li.setAttribute(&#x27;rel&#x27;, wordname[0]);
+                            var imgtag = document.createElement(&#x27;img&#x27;);
+                                imgtag.src = window.URL.createObjectURL( img );
+                            li.appendChild(imgtag);
+                            li.appendChild(document.createTextNode(icon_name));
+                            div_popup.appendChild(li);
+                        });
+
+
+                });
+
+
+            };
+
+            request.onerror = (e) =&gt; {
+              console.error(&#x27;Error calling getAll: &#x27; + request.error.name);
+              resolve();
+            };
+
+    },
+
+    close_select_app: () =&gt; {
+        var body = document.body || document.getElementByTagName(&#x27;body&#x27;)[0];
+        var div_popup = document.getElementById(&quot;popup&quot;);
+        var garbage = body.removeChild(div_popup);
+    },
+
+    set_tile_app: (tile_settings_li, iconMap) =&gt; {
+        var app_rel = tile_settings_li.getAttribute(&#x27;rel&#x27;);
+        var tile_id = document.getElementById(&#x27;popup&#x27;).getAttribute(&#x27;rel&#x27;);
+
+        if (iconMap[app_rel]){
+
+            var icon = iconMap[app_rel];
+            var icon_name = icon.manifest.name;
+            var wordname = icon_name.split(&quot; &quot;);
+
+            var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
+
+            /* when the mozApps API response the answer to our previous request THEN: */
+            icon_image.then ( img =&gt; {
+
+                /* tile generation*/
+                var old_tile = document.getElementById(tile_id);
+                var tile = old_tile.cloneNode();
+
+                /* empty the tile */
+                U.empty_elementById(tile_id);
+
+                /* tile icon */
+                var tile_ic = document.createElement(&#x27;div&#x27;);
+                tile_ic.className = &#x27;tile_ic&#x27;;
+                var img_url = window.URL.createObjectURL( img );
+                tile_ic.style.background = &#x27;transparent url(\&#x27;&#x27; +  img_url + &#x27;\&#x27;) no-repeat&#x27;;
+
+                // Callscreen icon [ doing things like this is cheese ]
+                if (icon_name == &quot;Communications&quot;) { //should be Callscreen
+                    tile_ic.style.background = &#x27;transparent url(/img/dialer-icon.png) no-repeat&#x27;;
+                }
+
+                tile_ic.setAttribute(&#x27;rel&#x27;, wordname[0]);
+                tile_ic.id = wordname[0];
+
+                tile.appendChild(tile_ic);
+
+                /* tile background */
+                var tile_bg = document.createElement(&#x27;div&#x27;);
+                tile_bg.className = &#x27;tile_bg&#x27;;
+                tile_bg.style.backgroundColor = U.get_color(icon_name);
+
+                tile.appendChild(tile_bg);
+
+                /* replace the old tile with the new tile */
+                document.getElementById(&#x27;apps&#x27;).replaceChild(tile, old_tile);
+
+                /* destroy the tile_settings &#x27;popup&#x27; */
+                U.destroy_elementById( &#x27;popup&#x27; );
+            });
+
+
+            /* destroy the tile_settings &#x27;popup&#x27; */
+            U.destroy_elementById( &#x27;popup&#x27; );
+
+        }
+
+    },
+
+    destroy_elementById: (ele_id) =&gt; {
+        var el = document.getElementById( ele_id );
+        if (el == null ) return;
+        /*if (el.parentNode == null ) return;*/
+        el.parentNode.removeChild( el );
+    },
+
+    empty_elementById: (ele_id) =&gt; {
+        var Node = document.getElementById(ele_id);
+        while (Node.firstChild) {
+           Node.removeChild(Node.firstChild);
+        }
+    }
+
+};
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

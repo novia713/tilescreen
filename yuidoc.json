@@ -1,0 +1,11 @@
+{
+    "name": "Documenting Tilescreen with YUIDoc",
+    "description": "A documentation of this awe some homescreen for #FirefoxOS",
+    "version": "1.0.0",
+    "url": "https://github.com/novia713/tilescreen",
+    "options": {
+        "linkNatives": "true",
+        "outdir": "./docs",
+        "paths": "."
+    }
+}
