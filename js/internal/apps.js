@@ -13,8 +13,8 @@
  * @copyright   leandro713 - 2016
  * @link        https://github.com/novia713/tilescreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @version     1.5
- * @date        20160202
+ * @version     1.6
+ * @date        20160203
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
@@ -29,8 +29,8 @@ requirejs.config({
     appDir: ".",
     baseUrl: "js",
     paths: {
-        'ramdajs': ['ramda.min'],
-        'utils': "utils",
+        'ramdajs'   : ['external/ramda.min'],
+        'utils'     : ['internal/utils'],
         'fxos_icons': "../bower_components/fxos-icons/fxos-icons"
 
 
@@ -48,14 +48,8 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
     //CONFIG
 
-/*
-    const apps_2_exclude = [
-        "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
-        "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
-        "Built-in Keyboard", "Bluetooth Manager", "Communications",
-        "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
-*/
     const HIDDEN_ROLES = [ 'system', 'input', 'homescreen', 'theme', 'addon', 'langpack' ];
+    const TS_UPD_SETUP_TILE = 3600000;
 
     var parent = document.getElementById('apps');
     var iconMap = {};
@@ -69,16 +63,27 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     var width_4_col = 0;
     var gugle_key = "AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0";
 
+
     /**
-     * Prints set up message
-     */
+    Prints set up message
+    @private
+    @method print_msg
+    @return {String} a div indicating to select this homescreen as default
+    */
      var print_msg = () => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
             parent.innerHTML = txt_msg;
      };
 
-     var build_setup_tile = function() {
+
+        /**
+        Builds the setup-tile
+        @private
+        @method build_setup_tile
+        @return {String} a div with location and date info
+        */
+     var build_setup_tile = () => {
 
         var oldtile = document.getElementById("setup-tile");
         if ( oldtile )
@@ -96,7 +101,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         /* settings link */
             tile.innerHTML += "<div id='settings_bt' data-icon='settings' data-l10n-id='settings' class='settings'></div>";
-        
+
         /* battery level */
             var battery = navigator.battery;
             if (battery) {
@@ -113,7 +118,8 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         //TODO: refactor all this in aux
         function successGeoLoc(pos) {
-              /*
+
+              /**
                * show here info weather based on geoloc data
                * http://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema
                * http://api.yr.no/weatherapi/weathericon/1.1/documentation
@@ -123,7 +129,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                 document.getElementById("setup-tile").innerHTML += "<div id='weather-info'></div>";
 
                 // city name
-                U.ajax( 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true&key='+ gugle_key, "city" );
+                U.ajax( 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+pos.coords.latitude+','+pos.coords.longitude+'&sensor=true&key='+ gugle_key, "city" );
         };
 
         function errorGeoLoc(err) {
@@ -134,6 +140,17 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
 
         parent.insertBefore(tile, parent.children[1]);
+
+        // /**************
+        // * recursivity *
+        // **************/
+        //
+        // CAUTION: this inhabilites the console in the WebIDE
+        // for debugging this app, please comment out this setTimeout()
+
+        window.setTimeout(function(){
+            build_setup_tile();
+            }, TS_UPD_SETUP_TILE);
      };
 
     /**
@@ -220,6 +237,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
                 if (4 == i || 3 == i || 2 == i || 9 == i){
                     var firsts_dock = tile.cloneNode(true);
                     firsts_dock.className  = "tile small in-dock";
+                    firsts_dock.children[0].classList.add( "docker" );
                     document.getElementById("dock").appendChild(firsts_dock);
                 }
 
@@ -296,8 +314,13 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
     /* === show the list with all installed apps for specify a new one for this tile === */
     window.addEventListener('contextmenu', ev => {
+
         var tile_ic = ev.originalTarget;
-        U.show_tile_settings(tile_ic.parentNode, R, HIDDEN_ROLES);
+
+        // settings popup only opens for not docked items
+        if ( R.contains("docker")(tile_ic.classList) == false ) {
+            U.show_tile_settings(tile_ic.parentNode, R, HIDDEN_ROLES);
+        }
     });
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
@@ -311,12 +334,12 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     var event_click = ev => {
 
         var this_tile = ev.originalTarget;
-        
+
         /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
         if (this_tile.classList.contains("tile_settings_li")) {
             return U.set_tile_app(this_tile, iconMap);
         }
-        
+
         var rel = this_tile.getAttribute('rel');
 
         if ( typeof storage == "string" ) storage = JSON.parse( storage );
@@ -406,13 +429,5 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
     // 3, 2, 1 ...
     start();
-    U.call_setup_tile_every_full_hour();
-/*
-console.log("hola");
-console.log(  navigator.mozWifiManager.connection  );
-if (navigator.mozWifiManager.connection.status == "connected"){
-    var network_name = navigator.mozWifiManager.connection.network.ssid;
-    console.log(network_name);
-}
-*/
+
 });

@@ -1,11 +1,24 @@
 'use strict'
+/**
+@class U
+*/
 var  U = {
 
+    /**
+    This is used to console.log any value.
+    @method log
+    @param v {mixed} The value to log
+    @return mixed
+    */
     log: v  => {
          console.log( v );
     },
 
-    //colores de cada icono
+    /**
+    Colores de cada icono
+    @method get_color
+    @return color {String} The hexadecimal value of the color
+    */
     get_color: app  => {
         var obj_color = {};
         obj_color.Communications = "#B2F2FF"; //green 5F9B0A
@@ -40,7 +53,14 @@ var  U = {
         }
     },
 
-
+    /**
+    Prints the upper dock
+    @param R {Class}
+    @param iconMap {WeakMap}
+    @param document {Object}
+    @method print_dock
+    @return {String} Injects HTML in the setup-tile div
+    */
     print_dock: ( R, iconMap, document ) => {
 
         var storage = JSON.parse( localStorage.getItem(  "storage"));
@@ -50,10 +70,11 @@ var  U = {
         var print_tiles_in_minidock =  item  => {
 
             var tile = document.createElement("div");
-            tile.className  = "tile small in-dock";
+            tile.className  = "tile small container-dock";
 
                     /* tile icon */
                     var tile_ic = document.getElementById(item.label).cloneNode(true);
+                    tile_ic.classList.add("docker");
                     tile.appendChild( tile_ic  );
 
                     /* tile background */
@@ -69,10 +90,25 @@ var  U = {
         R.forEach ( print_tiles_in_minidock, R.take (4,  R.reverse(sortByUsage( storage ))));
      },
 
+    /**
+    Tells if the current position in roster should be small
+    @param pos    {Integer}
+    @param R      {Class}
+    @param smalls {Array}
+    @method is_small
+    @return {Integer} [>0 yes | 0 no]
+    */
      is_small: (pos, R, smalls) => {
          return R.indexOf(pos, smalls);
      },
 
+    /**
+    Shows a div for choosing options
+    @param b_transparency  {Integer}
+    @param only_big        {Integer}
+    @method show_options
+    @return {String}
+    */
      show_options: (b_transparency, only_big) => {
 
         var div_options = document.createElement('div');
@@ -90,10 +126,22 @@ var  U = {
 
      },
 
+    /**
+    Tells the day in number
+    @param date  {Object}
+    @method get_numeric_day
+    @return {Integer}
+    */
      get_numeric_day: date => {
         return date.getDay();
      },
 
+    /**
+    Tells the day in three letters word (sun, thu, fri)
+    @param day  {Integer}
+    @method get_worded_day
+    @return {String}
+    */
      get_worded_day: day => {
         var weekday = new Array(7);
 
@@ -108,7 +156,12 @@ var  U = {
         return weekday[day];
      },
 
-     /* set initial styles for sizes */
+     /**
+    Sets initial styles for sizes
+    @param css_string  {String}
+    @method add_style
+    @return {String}
+    */
      add_style: css_string => {
         var head = document.head || document.getElementsByTagName('head')[0],
             style = document.createElement('style');
@@ -123,6 +176,13 @@ var  U = {
         head.appendChild(style);
      },
 
+     /**
+    Performs an asynchronous ajax call
+    @param url  {String} the url to go
+    @param mode {String} [weather | city]
+    @method ajax
+    @return {String}
+    */
      ajax: (url, mode) => {
 
         var xmlhttp;
@@ -167,6 +227,12 @@ var  U = {
         xmlhttp.send();
      },
 
+    /**
+    Parses an asynchronous ajax call to show the weather info
+    @param xml  {String} the xml to parse
+    @method parse_weather_xml
+    @return {String}
+    */
      parse_weather_xml: xml => {
 
         var d = new Date();
@@ -201,11 +267,11 @@ var  U = {
      },
 
     show_tile_settings: (tile, R, HIDDEN_ROLES) => {
-        
+
         /* delete 'popup' div if it does exist */
         var el = document.getElementById( 'popup' );
         if (el != null ) return;
-        
+
         var tile_rel = tile.getAttribute('rel');
         var tile_id = tile.id;
 
@@ -236,7 +302,7 @@ var  U = {
                         var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
                         var icon_name = icon.manifest.name;
                         var wordname = icon_name.split(" ");
-                        
+
                         icon_image.then ( img => {
                             var div_popup = document.getElementById('ul_apps');
                             var li = document.createElement('li');
@@ -259,7 +325,7 @@ var  U = {
               console.error('Error calling getAll: ' + request.error.name);
               resolve();
             };
-            
+
     },
 
     close_select_app: () => {
@@ -268,40 +334,25 @@ var  U = {
         var garbage = body.removeChild(div_popup);
     },
 
-   call_setup_tile_every_full_hour: () => {
-
-        var now = new Date();
-        var nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, 0);
-        var difference = nextHour - now;
-
-        window.setTimeout(function(){
-
-            start();
-            callEveryFullHour();
-
-        }, difference);
-
-    },
-    
     set_tile_app: (tile_settings_li, iconMap) => {
         var app_rel = tile_settings_li.getAttribute('rel');
         var tile_id = document.getElementById('popup').getAttribute('rel');
-        
+
         if (iconMap[app_rel]){
-            
+
             var icon = iconMap[app_rel];
             var icon_name = icon.manifest.name;
             var wordname = icon_name.split(" ");
-            
+
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
-            
+
             /* when the mozApps API response the answer to our previous request THEN: */
             icon_image.then ( img => {
-                
+
                 /* tile generation*/
                 var old_tile = document.getElementById(tile_id);
                 var tile = old_tile.cloneNode();
-                        
+
                 /* empty the tile */
                 U.empty_elementById(tile_id);
 
@@ -325,31 +376,31 @@ var  U = {
                 var tile_bg = document.createElement('div');
                 tile_bg.className = 'tile_bg';
                 tile_bg.style.backgroundColor = U.get_color(icon_name);
-                
-                tile.appendChild(tile_bg);                
+
+                tile.appendChild(tile_bg);
 
                 /* replace the old tile with the new tile */
                 document.getElementById('apps').replaceChild(tile, old_tile);
-                    
+
                 /* destroy the tile_settings 'popup' */
                 U.destroy_elementById( 'popup' );
             });
-            
-            
+
+
             /* destroy the tile_settings 'popup' */
             U.destroy_elementById( 'popup' );
-            
+
         }
-        
+
     },
-    
+
     destroy_elementById: (ele_id) => {
         var el = document.getElementById( ele_id );
         if (el == null ) return;
         /*if (el.parentNode == null ) return;*/
         el.parentNode.removeChild( el );
     },
-    
+
     empty_elementById: (ele_id) => {
         var Node = document.getElementById(ele_id);
         while (Node.firstChild) {
