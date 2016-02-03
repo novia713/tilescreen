@@ -1,11 +1,24 @@
 'use strict'
-var  U = {
+/**
+@class U
 
+*/
+var  U = {
+    /**
+    This is used to console.log any value.
+    @method log
+    @param v {mixed} The value to log
+    @return mixed
+    */
     log: v  => {
          console.log( v );
     },
 
-    //colores de cada icono
+    /**
+    Colores de cada icono
+    @method get_color
+    @return color {String} The hexadecimal value of the color
+    */
     get_color: app  => {
         var obj_color = {};
         obj_color.Communications = "#B2F2FF"; //green 5F9B0A
@@ -41,6 +54,14 @@ var  U = {
     },
 
 
+    /**
+    Prints the upper dock
+    @param R {Class}
+    @param iconMap {WeakMap}
+    @param document {Object}
+    @method print_dock
+    @return {String} Injects HTML in the setup-tile div
+    */
     print_dock: ( R, iconMap, document ) => {
 
         var storage = JSON.parse( localStorage.getItem(  "storage"));

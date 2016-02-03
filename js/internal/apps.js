@@ -29,8 +29,8 @@ requirejs.config({
     appDir: ".",
     baseUrl: "js",
     paths: {
-        'ramdajs': ['ramda.min'],
-        'uitls': "utils",
+        'ramdajs'   : ['external/ramda.min'],
+        'utils'     : ['internal/utils'],
         'fxos_icons': "../bower_components/fxos-icons/fxos-icons"
 
 
@@ -48,13 +48,6 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     var b_transparency = 1; /* 1 = semi-transparent background colors  VS 0 = solid background colors */
     //CONFIG
 
-/*
-    const apps_2_exclude = [
-        "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
-        "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
-        "Built-in Keyboard", "Bluetooth Manager", "Communications",
-        "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
-*/
     const HIDDEN_ROLES = [ 'system', 'input', 'homescreen', 'theme', 'addon', 'langpack' ];
     const TS_UPD_SETUP_TILE = 3600000;
 
@@ -70,14 +63,25 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
     var width_4_col = 0;
     var gugle_key = "AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0";
 
+
     /**
-     * Prints set up message
-     */
+    Prints set up message
+    @private
+    @method print_msg
+    @return {String} a div indicating to select this homescreen as default
+    */
      var print_msg = () => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
             parent.innerHTML = txt_msg;
      };
+
+        /**
+        Builds the setup-tile
+        @private
+        @method build_setup_tile
+        @return {String} a div with location and date info
+        */
 
      var build_setup_tile = () => {
 
@@ -114,7 +118,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         //TODO: refactor all this in aux
         function successGeoLoc(pos) {
-              /*
+              /**
                * show here info weather based on geoloc data
                * http://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema
                * http://api.yr.no/weatherapi/weathericon/1.1/documentation
@@ -135,6 +139,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
 
         parent.insertBefore(tile, parent.children[1]);
+
 
         // /**************
         // * recursivity *
