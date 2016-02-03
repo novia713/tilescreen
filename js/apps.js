@@ -94,6 +94,9 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
             tile_bg.className = 'tile_bg';
             tile.appendChild(tile_bg);
 
+        /* settings link */
+            tile.innerHTML += "<div id='settings_bt' data-icon='settings' data-l10n-id='battery-"+batterylevel_10+"' class='settings'></div>";
+        
         /* battery level */
             var battery = navigator.battery;
             if (battery) {
@@ -344,6 +347,7 @@ require(['ramdajs', 'utils', 'fxos_icons'], ( R, U ) => {
 
         switch( this_tile.id ) {
             case "worded":
+            case "settings_bt":
             case "setup-tile":
                 U.show_options(b_transparency, only_big);
                 break;

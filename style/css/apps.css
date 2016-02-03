@@ -93,27 +93,7 @@ body {margin: 0;}
         transition: 0s;
         border-radius: 3px;
     }
-/*
-    .tile_ic:after {
-        content: "";
-        background: orange;
-        display: block;
-        position: absolute;
-        padding-top: 300%;
-        padding-left: 350%;
-        margin-left: -20px!important;
-        margin-top: -120%;
-        opacity: 1;
-        transition: all 0.8s
-    }
-
-    .tile_ic:active:after {
-        padding: 0;
-        margin: 0;
-        opacity: 1;
-        transition: 0s
-    }
-*/
+    
 .tile_bg{
     z-index: -2;
     display:block;
@@ -145,7 +125,16 @@ body {margin: 0;}
         background-color:transparent;
         cursor:pointer;
     }
-
+    #settings_bt{
+        display:block; width:3rem; height:3rem;
+        position:absolute; top:0; left:2px;
+        opacity:0.5;
+        color:#fff;
+        cursor:pointer;
+    }
+    #settings_bt::before{
+        font-size: 3rem!important;
+    }
     #dock .tile_bg{
         background: linear-gradient(0deg, #444 0%, #000 50%, #666 100%)
     }
