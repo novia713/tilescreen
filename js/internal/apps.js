@@ -317,87 +317,35 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
     var event_click = ev => {
 
         var this_tile = ev.originalTarget;
-
-        /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
-        if (this_tile.classList.contains("tile_settings_li")) {
-            return U.set_tile_app(this_tile, C.iconMap);
+        var parent = this_tile.parentNode;
+        
+        /* if clicked an app tile (tile_ic) -most of cases- */
+        if (this_tile.classList.contains("tile_ic")){
+            return U.launch_app(this_tile, R);
         }
-
-        var rel = this_tile.getAttribute('rel');
-
-        if ( typeof C.storage == "string" ) C.storage = JSON.parse( C.storage );
-
-        if ( C.iconMap[rel] ){
-
-            var i = C.iconMap[rel];
-            var index     =  R.filter( R.propEq("label", rel ), C.storage )[0].index;
-
-            // we add 1 to value of that icon in localStorage ...
-            C.storage[index].order +=1;
-            localStorage.setItem( "storage", JSON.stringify( C.storage ));
-
-
-            // transpose storage value to DOM elements
-            this_tile.dataset.order = C.storage[index].order;
-
-
-            // Callscreen, so dirty :S
-            /*
-             * after 1 feb 2016 Callscreen well be decoupled, so this will not be neccessary no more :)
-             *
-             */
-            var entry = null; ;
-            if ( i.manifest.name == "Communications" && i.manifest.entry_points )
-                entry = "dialer";
-            //TODO; handle launch contacts
-
-            i.launch(entry);
-            U.print_dock( R, C.iconMap, document );
-        }
-
-
-        // options
-
-        switch( this_tile.id ) {
-            case "worded":
-            case "settings_bt":
-            case "setup-tile":
-                U.show_options( C.b_transparency, C.only_big );
-                break;
-            case "hide_trans":
-                C.b_transparency = 0;
-                start();
-                break;
-            case "set_trans":
-                C.b_transparency = 1;
-                start();
-                break;
-            case "only_big":
-                C.only_big = 1;
-                start();
-                break;
-            case "show_small":
-                C.only_big = 0;
-                start();
-                break;
-            case 'close_tile_settings':
-                U.close_select_app();
-                break;
-        }
-
 
         /* if clicked the empty space of the options tile */
-        if (this_tile.classList.contains("options")) {
+        else if (this_tile.classList.contains("options") || parent.classList.contains("options")) {
+            /*U.destroy_elementById('options');*/
+            alert('options close');
             build_setup_tile();
         }
 
-        // end options
-
+        /* if clicked any child of the setup-tile */
+        else if (parent.id == 'setup-tile') {
+            return U.show_options( C.b_transparency, C.only_big );
+        }
 
         // button close → onclick() is not allowed by CSP FirefoxOS policy
-        if ( this_tile.classList[0] == "x_close_bt") {
+        else if ( this_tile.classList.contains("close_bt")) {
             U.close_select_app();
         }
+        
+        /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
+        else if (this_tile.classList.contains("tile_settings_li")) {
+            return U.set_tile_app(this_tile, C.iconMap);
+        }
+        
 
     }; //end window event 'click', document.getElementsByClassName('tile'));
 

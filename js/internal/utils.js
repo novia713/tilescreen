@@ -265,12 +265,79 @@ var  U = {
         U.add_style('.t_4_1 { width: ' + C.width_1_col +'px!important; height: ' + C.width_4_col +'px!important; padding:0px;}');
 
      },
+     
+    launch_app: (this_tile, R) => {
+        
+        var rel = this_tile.getAttribute('rel');
+
+        if ( typeof C.storage == "string" ) C.storage = JSON.parse( C.storage );
+
+        if ( C.iconMap[rel] ){
+
+            var i = C.iconMap[rel];
+            var index =  R.filter( R.propEq("label", rel ), C.storage )[0].index;
+
+            // we add 1 to value of that icon in localStorage ...
+            C.storage[index].order +=1;
+            localStorage.setItem( "storage", JSON.stringify( C.storage ));
+
+
+            // transpose storage value to DOM elements
+            this_tile.dataset.order = C.storage[index].order;
+
+
+            // Callscreen, so dirty :S
+            /*
+             * after 1 feb 2016 Callscreen well be decoupled, so this will not be neccessary no more :)
+             *
+             */
+            var entry = null; ;
+            if ( i.manifest.name == "Communications" && i.manifest.entry_points )
+                entry = "dialer";
+            //TODO; handle launch contacts
+
+            i.launch(entry);
+            U.print_dock( R, C.iconMap, document );
+        }
+
+
+        // options
+
+        switch( this_tile.id ) {
+            case "worded":
+            case "settings_bt":
+            case "setup-tile":
+                U.show_options( C.b_transparency, C.only_big );
+                break;
+            case "hide_trans":
+                C.b_transparency = 0;
+                start();
+                break;
+            case "set_trans":
+                C.b_transparency = 1;
+                start();
+                break;
+            case "only_big":
+                C.only_big = 1;
+                start();
+                break;
+            case "show_small":
+                C.only_big = 0;
+                start();
+                break;
+            case 'close_tile_settings':
+                U.close_select_app();
+                break;
+        }
+
+        // end options
+        
+    },
 
     show_tile_settings: (tile, R, HIDDEN_ROLES) => {
 
         /* delete 'popup' div if it does exist */
-        var el = document.getElementById( 'popup' );
-        if (el != null ) return;
+        U.destroy_elementById('popup');
 
         var tile_rel = tile.getAttribute('rel');
         var tile_id = tile.id;
