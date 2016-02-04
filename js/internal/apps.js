@@ -301,7 +301,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         var tile_ic = ev.originalTarget;
 
         // settings popup only opens for not docked items
-        if ( R.contains("docker")(tile_ic.classList) == false ) {
+        if ( R.contains("docker")(tile_ic.classList) == false && tile_ic.parentNode.parentNode.id == 'apps') {
             U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
         }
     });
