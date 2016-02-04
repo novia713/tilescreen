@@ -56,7 +56,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
      var print_msg = () => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
-            C.parent.innerHTML = txt_msg;
+            C.mosaic.innerHTML = txt_msg;
      };
 
 
@@ -70,7 +70,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
         var oldtile = document.getElementById("setup-tile");
         if ( oldtile )
-            C.parent.removeChild( oldtile );
+            C.mosaic.removeChild( oldtile );
 
         var tile       = document.createElement('div');
         tile.id        = 'setup-tile';
@@ -122,7 +122,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         navigator.geolocation.getCurrentPosition(successGeoLoc, errorGeoLoc, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
 
 
-        C.parent.insertBefore(tile, C.parent.children[1]);
+        C.mosaic.insertBefore(tile, C.mosaic.children[1]);
 
         // /**************
         // * recursivity *
@@ -239,13 +239,13 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
 
         /* empty #apps and add #dock */
-        C.parent.innerHTML = '';
+        C.mosaic.innerHTML = '';
             var dock = document.createElement('div');
             dock.id = 'dock';
             apps.appendChild(dock);
 
         /* transparency mode */
-        C.parent.classList.remove('transparent');
+        C.mosaic.classList.remove('transparent');
         if ( C.b_transparency == 1 ){
             apps.classList.add('transparent');
         }
@@ -318,7 +318,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
         var this_tile = ev.originalTarget;
         var parent = this_tile.parentNode;
-        
+
         /* if clicked an app tile (tile_ic) -most of cases- */
         if (this_tile.classList.contains("tile_ic")){
             return U.launch_app(this_tile, R);
@@ -340,12 +340,12 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         else if ( this_tile.classList.contains("close_bt")) {
             U.close_select_app();
         }
-        
+
         /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
         else if (this_tile.classList.contains("tile_settings_li")) {
             return U.set_tile_app(this_tile, C.iconMap);
         }
-        
+
 
     }; //end window event 'click', document.getElementsByClassName('tile'));
 

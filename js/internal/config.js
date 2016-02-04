@@ -4,8 +4,6 @@
 */
 var  C = {
 
-
-    //CONFIG
     /**
      * Value for showing small or big icons
      *
@@ -13,6 +11,7 @@ var  C = {
      * @type Integer
      * @default 0
      */
+
     only_big       : 0,
 
     /**
@@ -22,8 +21,8 @@ var  C = {
      * @type Integer
      * @default 1
      */
+
     b_transparency : 1,
-    //CONFIG
 
     /**
      * Constant for excluding not interesting apps in roster
@@ -32,6 +31,7 @@ var  C = {
      * @type Array
      * @readOnly
      */
+
     HIDDEN_ROLES : [ 'system', 'input', 'homescreen', 'theme', 'addon', 'langpack' ],
 
     /**
@@ -42,22 +42,25 @@ var  C = {
      * @readOnly
      * @default 3600000 [ 1 hour ]
      */
+
     TS_UPD_SETUP_TILE : 3600000,
 
     /**
      * DIV apps container
      *
-     * @property parent
+     * @property mosaic
      * @type String
      */
-    parent : document.getElementById('apps'),
+
+    mosaic : document.getElementById('apps'),
 
     /**
      * WeakMap for storing the icons
      *
      * @property iconMap
-     * @type WeakMap
+     * @type Object
      */
+
     iconMap : {},
 
     /**
@@ -66,13 +69,16 @@ var  C = {
      * @property smalls
      * @type Array
      */
+
     smalls : [],
+
     /**
      * Object for storing in LocalStorage usage of icons
      *
      * @property storage
      * @type Array
      */
+
     storage : null,
 
     /**
@@ -81,6 +87,7 @@ var  C = {
      * @property date
      * @type Class
      */
+
     date : new Date(),
     width_1_col : 0,
     width_2_col : 0,
@@ -92,6 +99,7 @@ var  C = {
      * @property gugle_key
      * @type String
      */
+
     gugle_key : "AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0",
 
 
