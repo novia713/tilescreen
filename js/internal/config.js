@@ -102,5 +102,13 @@ var  C = {
 
     gugle_key : "AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0",
 
+    /**
+     * Unix timestamp of the last longpress event... for avoid to make a click after it
+     *
+     * @property last_longpress
+     * @type integer
+     */
+    last_longpress : 0,
+
 
 };

@@ -102,6 +102,9 @@ body {margin: 0;}
     height:100%;
     border-radius: 2px;
 }
+    #setup-tile *{
+        cursor: pointer;
+    }
     #setup-tile .tile_bg{
         background: linear-gradient(0deg, #c00 0%, #f00 50%, orange 100%);
     }
@@ -226,6 +229,18 @@ body {margin: 0;}
             background-color:transparent;
             cursor:pointer;
         }
+        #popup .save_bt{
+            text-align: right;
+            padding-right: 2rem;
+            position:relative;
+            line-height: 1.6rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+            #popup .save_bt::before{
+                position:absolute; top:0; right:0;
+                
+            }
         #popup ul{
             list-style-type: none;
             padding:0;
@@ -248,3 +263,32 @@ body {margin: 0;}
                 position:absolute; top:3px;left: 0.2rem;
                 max-height:2rem;
             }
+
+/* arrangements of the swtiches.css for this app */
+
+#popup header{
+    display: block;
+    background-color: rgba(255,255,255,0.2);
+    padding: 0.3rem 0.5rem;
+    margin-top: 1rem;
+}
+#popup label{
+    display:block;
+    width: 100%; height:auto;
+    line-height: 1.3rem;
+    margin: 1rem 0;
+    cursor: pointer;
+    padding: 0 0.5rem;
+}
+#popup span::after{
+    top: 0;
+    width: 3rem;
+    height: 1.35rem;
+    margin:0;
+    background-size: 4.6rem 1.35rem;
+    cursor: pointer;
+    background-position: -1.6rem 0rem;
+}
+#popup input:checked ~ span::after{
+    background-position: 0rem 0rem;
+}

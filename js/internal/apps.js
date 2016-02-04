@@ -301,13 +301,19 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         var tile_ic = ev.originalTarget;
 
         // settings popup only opens for not docked items
-        if ( R.contains("docker")(tile_ic.classList) == false ) {
-            U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
+        if ( R.contains("docker")(tile_ic.classList) == false && tile_ic.parentNode.parentNode.id == 'apps') {
+                /*ev.preventDefault();*/
+                C.last_longpress = Date.now();
+                U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
         }
     });
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
     window.addEventListener('click', ev => {
+        
+        /* avoid to follow a click if it's very close to the last longpress event */
+        if ( Date.now() - C.last_longpress < 2000 ) return;
+        
         setTimeout(function(){
             event_click(ev);
         }, 500);}
@@ -333,12 +339,20 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
         /* if clicked any child of the setup-tile */
         else if (parent.id == 'setup-tile') {
-            return U.show_options( C.b_transparency, C.only_big );
+            return U.show_app_settings( C.b_transparency, C.only_big );
         }
 
         // button close → onclick() is not allowed by CSP FirefoxOS policy
         else if ( this_tile.classList.contains("close_bt")) {
-            U.close_select_app();
+            U.destroy_elementById('popup');
+        }
+        
+        // button close → onclick() is not allowed by CSP FirefoxOS policy
+        else if ( this_tile.classList.contains("save_bt")) {
+            C.b_transparency = document.getElementById('input_b_transparency').checked ? 1 : 0;
+            C.only_big = document.getElementById('input_only_big').checked ? 1 : 0;
+            start();
+            U.destroy_elementById('popup');
         }
 
         /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
