@@ -103,28 +103,66 @@ var  U = {
      },
 
     /**
-    Shows a div for choosing options
+    Shows a div for manage app settings
     @param b_transparency  {Integer}
     @param only_big        {Integer}
-    @method show_options
+    @method show_app_settings
     @return {String}
     */
-     show_options: (b_transparency, only_big) => {
+     show_app_settings: (b_transparency, only_big) => {
+         
+        /* prepare HTML content */
+        var html = '';
+        html = "<div data-icon='close' data-l10n-id='close' class='close_bt'></div>"
+             + "<h2>Tilescreen settings</h2>"
+             + "<div data-icon='tick-circle' data-l10n-id='save' class='save_bt'>save</div>"
+             + "<form_ role='dialog' data-type='action' onsubmit='return false;' id='sample-menu'>";
+     
+        /* GRAPHIC options */
+        
+            var checked_transparency = b_transparency == 1 ? 'checked' : '';
+            var checked_onlybig = only_big == 1 ? 'checked' : '';
+            
+        html += "      <article> "
+             +  "        <header>Graphic options</header>"
+             +  "          <div class='active'>"
+             +  "            <label class='pack-switch'>"
+             +  "              <input id='input_b_transparency' type='checkbox' "+checked_transparency+">"
+             +  "              <span>Semi-transparency</span>"
+             +  "            </label>"
+             +  "          </div>"
+             +  "          <div class='active'>"
+             +  "            <label class='pack-switch'>"
+             +  "              <input id='input_only_big' type='checkbox' "+checked_onlybig+">"
+             +  "              <span>Only big icons</span>"
+             +  "            </label>"
+             +  "          </div>"
+             +  "      </article>";
+     
+        /* FUNCTIONAL options (... for later :) */
+        
+        html += "      <br /><article> "
+             +  "        <header>Functional options</header>"
+             +  "          <div>"
+             +  "            <label>...</label>"
+             +  "          </div>"
+             +  "      </article>";
+     
+        html +=  "</form_>";
 
-        var div_options = document.createElement('div');
-        div_options.className = 'options';
+        /* delete 'popup' div if it does exist */
+        U.destroy_elementById('popup');
 
-            div_options.innerHTML = (b_transparency == 1)?
-                "<div id='hide_trans' class='bt'>hide transparency</div>" :
-                "<div id='set_trans' class='bt'>set transparency</div>"  ;
-            div_options.innerHTML += (only_big == 1)?
-                "<div id='show_small' class='bt'>show small icons</div>" :
-                "<div id='only_big' class='bt'>only big icons</div>"  ;
+        /* render popup */
+        var div_popup = document.createElement('div');
+        div_popup.id = 'popup';
+        div_popup.innerHTML = html;
+        div_popup.setAttribute('rel' , 'setup-tile');
 
-        document.getElementById("setup-tile").innerHTML = '';
-        document.getElementById("setup-tile").appendChild(div_options);
+        var body = document.body || document.getElementByTagName('body')[0];
+        body.appendChild(div_popup);
 
-     },
+    },
 
     /**
     Tells the day in number
@@ -307,7 +345,7 @@ var  U = {
             case "worded":
             case "settings_bt":
             case "setup-tile":
-                U.show_options( C.b_transparency, C.only_big );
+                U.show_app_settings( C.b_transparency, C.only_big );
                 break;
             case "hide_trans":
                 C.b_transparency = 0;
@@ -325,9 +363,6 @@ var  U = {
                 C.only_big = 0;
                 start();
                 break;
-            case 'close_tile_settings':
-                U.close_select_app();
-                break;
         }
 
         // end options
@@ -343,7 +378,7 @@ var  U = {
         var tile_id = tile.id;
 
         var html = '';
-        html = "<div id='close_tile_settings' data-icon='close' data-l10n-id='close' class='close_bt'></div>";
+        html = "<div data-icon='close' data-l10n-id='close' class='close_bt'></div>";
         html += "<h2>Select an app for this tile</h2>";
         html += "<ul id='ul_apps'></ul>";
 
@@ -393,12 +428,6 @@ var  U = {
               resolve();
             };
 
-    },
-
-    close_select_app: () => {
-        var body = document.body || document.getElementByTagName('body')[0];
-        var div_popup = document.getElementById("popup");
-        var garbage = body.removeChild(div_popup);
     },
 
     set_tile_app: (tile_settings_li, iconMap) => {
