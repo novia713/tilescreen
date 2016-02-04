@@ -291,6 +291,19 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
     } //end start
 
+    // TODO: addEventListener install/uninstall //untested!
+
+        C.appMgr.addEventListener("install", function (event) {
+            console.log(event.application);
+            setTimeout (function() {
+                start();
+            }, 2000);
+        });
+        C.appMgr.addEventListener("uninstall", function (event) {
+            console.log(event.application);
+            start();
+        });
+
     window.addEventListener('devicelight', ev => {
         //console.log(ev.value);
     });
@@ -310,10 +323,10 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
     window.addEventListener('click', ev => {
-        
+
         /* avoid to follow a click if it's very close to the last longpress event */
         if ( Date.now() - C.last_longpress < 2000 ) return;
-        
+
         setTimeout(function(){
             event_click(ev);
         }, 500);}
@@ -325,9 +338,19 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         var this_tile = ev.originalTarget;
         var parent = this_tile.parentNode;
 
+        /* uninstall */
+        if (ev.id = "btn_uninstall"){
+            if ( this_tile.getAttribute("app_to_uninstall") ) {
+                // TODO: check if it is removable!!
+                console.log(this_tile);
+                // https://developer.mozilla.org/en-US/Apps/Build/JavaScript_API/navigator.mozApps.mgmt.uninstall
+                C.appMgr.uninstall(this_tile);
+            }
+        }
+
         /* if clicked an app tile (tile_ic) -most of cases- */
         if (this_tile.classList.contains("tile_ic")){
-            return U.launch_app(this_tile, R);
+            return U.launch_app(ev, R);
         }
 
         /* if clicked the empty space of the options tile */
@@ -346,7 +369,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         else if ( this_tile.classList.contains("close_bt")) {
             U.destroy_elementById('popup');
         }
-        
+
         // button close → onclick() is not allowed by CSP FirefoxOS policy
         else if ( this_tile.classList.contains("save_bt")) {
             C.b_transparency = document.getElementById('input_b_transparency').checked ? 1 : 0;

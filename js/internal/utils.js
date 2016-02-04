@@ -111,19 +111,19 @@ var  U = {
     @return {String}
     */
      show_app_settings: (b_transparency, only_big) => {
-         
+
         /* prepare HTML content */
         var html = '';
         html = "<div data-icon='close' data-l10n-id='close' class='close_bt'></div>"
              + "<h2>Tilescreen settings</h2>"
              + "<div data-icon='tick-circle' data-l10n-id='save' class='save_bt'>save</div>"
              + "<form_ role='dialog' data-type='action' onsubmit='return false;' id='sample-menu'>";
-     
+
         /* GRAPHIC options */
-        
+
             var checked_transparency = b_transparency == 1 ? 'checked' : '';
             var checked_onlybig = only_big == 1 ? 'checked' : '';
-            
+
         html += "      <article> "
              +  "        <header>Graphic options</header>"
              +  "          <div class='active'>"
@@ -139,16 +139,16 @@ var  U = {
              +  "            </label>"
              +  "          </div>"
              +  "      </article>";
-     
+
         /* FUNCTIONAL options (... for later :) */
-        
+
         html += "      <br /><article> "
              +  "        <header>Functional options</header>"
              +  "          <div>"
              +  "            <label>...</label>"
              +  "          </div>"
              +  "      </article>";
-     
+
         html +=  "</form_>";
 
         /* delete 'popup' div if it does exist */
@@ -304,9 +304,9 @@ var  U = {
         U.add_style('.t_4_1 { width: ' + C.width_1_col +'px!important; height: ' + C.width_4_col +'px!important; padding:0px;}');
 
      },
-     
+
     launch_app: (this_tile, R) => {
-        
+
         var rel = this_tile.getAttribute('rel');
 
         if ( typeof C.storage == "string" ) C.storage = JSON.parse( C.storage );
@@ -367,7 +367,7 @@ var  U = {
         }
 
         // end options
-        
+
     },
 
     show_tile_settings: (tile, R, HIDDEN_ROLES) => {
@@ -379,7 +379,7 @@ var  U = {
         var tile_id = tile.id;
 
         var html = '';
-        html = "<div data-icon='close' data-l10n-id='close' class='close_bt'></div>";
+        html  = "<div data-icon='close' data-l10n-id='close' class='close_bt'></div>";
         html += "<h2>Select an app for this tile</h2>";
         html += "<ul id='ul_apps'></ul>";
 
@@ -415,6 +415,13 @@ var  U = {
                                 imgtag.src = window.URL.createObjectURL( img );
                             li.appendChild(imgtag);
                             li.appendChild(document.createTextNode(icon_name));
+
+                            var btn_uninstall = document.createElement('button');
+                            btn_uninstall.className = "danger";
+                            btn_uninstall.setAttribute("app_to_uninstall", icon_name);
+                            btn_uninstall.innerHTML = 'uninstall '+ icon_name;
+
+                            li.appendChild(btn_uninstall);
                             div_popup.appendChild(li);
                         });
 

@@ -110,5 +110,13 @@ var  C = {
      */
     last_longpress : 0,
 
+    /**
+     * Object mgmt for managing the apps
+     *
+     * @property appMgr
+     * @type object
+     */
+    appMgr: navigator.mozApps.mgmt
+
 
 };
