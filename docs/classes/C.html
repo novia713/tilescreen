@@ -126,6 +126,10 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property">
+                                <a href="#property_appMgr">appMgr</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_b_transparency">b_transparency</a>
 
                             </li>
@@ -146,11 +150,15 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_only_big">only_big</a>
+                                <a href="#property_last_longpress">last_longpress</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_parent">parent</a>
+                                <a href="#property_mosaic">mosaic</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_only_big">only_big</a>
 
                             </li>
                             <li class="index-item property">
@@ -267,6 +275,31 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
+<div id="property_appMgr" class="property item">
+    <h3 class="name"><code>appMgr</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_config.js.html#l113"><code>js&#x2F;internal&#x2F;config.js:113</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Object mgmt for managing the apps</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_b_transparency" class="property item">
     <h3 class="name"><code>b_transparency</code></h3>
     <span class="type">Integer</span>
@@ -278,7 +311,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l18"><code>js&#x2F;internal&#x2F;config.js:18</code></a>
+        <a href="../files/js_internal_config.js.html#l17"><code>js&#x2F;internal&#x2F;config.js:17</code></a>
         </p>
 
 
@@ -304,7 +337,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l78"><code>js&#x2F;internal&#x2F;config.js:78</code></a>
+        <a href="../files/js_internal_config.js.html#l84"><code>js&#x2F;internal&#x2F;config.js:84</code></a>
         </p>
 
 
@@ -329,7 +362,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l89"><code>js&#x2F;internal&#x2F;config.js:89</code></a>
+        <a href="../files/js_internal_config.js.html#l96"><code>js&#x2F;internal&#x2F;config.js:96</code></a>
         </p>
 
 
@@ -354,7 +387,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l28"><code>js&#x2F;internal&#x2F;config.js:28</code></a>
+        <a href="../files/js_internal_config.js.html#l27"><code>js&#x2F;internal&#x2F;config.js:27</code></a>
         </p>
 
 
@@ -370,7 +403,7 @@
 </div>
 <div id="property_iconMap" class="property item">
     <h3 class="name"><code>iconMap</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap" class="crosslink external" target="_blank">WeakMap</a></span>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
 
@@ -379,7 +412,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l55"><code>js&#x2F;internal&#x2F;config.js:55</code></a>
+        <a href="../files/js_internal_config.js.html#l57"><code>js&#x2F;internal&#x2F;config.js:57</code></a>
         </p>
 
 
@@ -387,6 +420,56 @@
 
     <div class="description">
         <p>WeakMap for storing the icons</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_last_longpress" class="property item">
+    <h3 class="name"><code>last_longpress</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_config.js.html#l105"><code>js&#x2F;internal&#x2F;config.js:105</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Unix timestamp of the last longpress event... for avoid to make a click after it</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mosaic" class="property item">
+    <h3 class="name"><code>mosaic</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_internal_config.js.html#l48"><code>js&#x2F;internal&#x2F;config.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>DIV apps container</p>
 
     </div>
 
@@ -404,7 +487,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l9"><code>js&#x2F;internal&#x2F;config.js:9</code></a>
+        <a href="../files/js_internal_config.js.html#l7"><code>js&#x2F;internal&#x2F;config.js:7</code></a>
         </p>
 
 
@@ -419,31 +502,6 @@
 
 
 </div>
-<div id="property_parent" class="property item">
-    <h3 class="name"><code>parent</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/js_internal_config.js.html#l47"><code>js&#x2F;internal&#x2F;config.js:47</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>DIV apps container</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_smalls" class="property item">
     <h3 class="name"><code>smalls</code></h3>
     <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
@@ -455,7 +513,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l63"><code>js&#x2F;internal&#x2F;config.js:63</code></a>
+        <a href="../files/js_internal_config.js.html#l66"><code>js&#x2F;internal&#x2F;config.js:66</code></a>
         </p>
 
 
@@ -480,7 +538,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_internal_config.js.html#l70"><code>js&#x2F;internal&#x2F;config.js:70</code></a>
+        <a href="../files/js_internal_config.js.html#l75"><code>js&#x2F;internal&#x2F;config.js:75</code></a>
         </p>
 
 

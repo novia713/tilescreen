@@ -100,6 +100,7 @@ var  U = {
     /**
     Colores de cada icono
     @method get_color
+    @param app {Object} the app
     @return color {String} The hexadecimal value of the color
     */
     get_color: app  =&gt; {
@@ -186,28 +187,66 @@ var  U = {
      },
 
     /**
-    Shows a div for choosing options
+    Shows a div for manage app settings
     @param b_transparency  {Integer}
     @param only_big        {Integer}
-    @method show_options
+    @method show_app_settings
     @return {String}
     */
-     show_options: (b_transparency, only_big) =&gt; {
+     show_app_settings: (b_transparency, only_big) =&gt; {
 
-        var div_options = document.createElement(&#x27;div&#x27;);
-        div_options.className = &#x27;options&#x27;;
+        /* prepare HTML content */
+        var html = &#x27;&#x27;;
+        html = &quot;&lt;div data-icon=&#x27;close&#x27; data-l10n-id=&#x27;close&#x27; class=&#x27;close_bt&#x27;&gt;&lt;/div&gt;&quot;
+             + &quot;&lt;h2&gt;Tilescreen settings&lt;/h2&gt;&quot;
+             + &quot;&lt;div data-icon=&#x27;tick-circle&#x27; data-l10n-id=&#x27;save&#x27; class=&#x27;save_bt&#x27;&gt;save&lt;/div&gt;&quot;
+             + &quot;&lt;form_ role=&#x27;dialog&#x27; data-type=&#x27;action&#x27; onsubmit=&#x27;return false;&#x27; id=&#x27;sample-menu&#x27;&gt;&quot;;
 
-            div_options.innerHTML = (b_transparency == 1)?
-                &quot;&lt;div id=&#x27;hide_trans&#x27; class=&#x27;bt&#x27;&gt;hide transparency&lt;/div&gt;&quot; :
-                &quot;&lt;div id=&#x27;set_trans&#x27; class=&#x27;bt&#x27;&gt;set transparency&lt;/div&gt;&quot;  ;
-            div_options.innerHTML += (only_big == 1)?
-                &quot;&lt;div id=&#x27;show_small&#x27; class=&#x27;bt&#x27;&gt;show small icons&lt;/div&gt;&quot; :
-                &quot;&lt;div id=&#x27;only_big&#x27; class=&#x27;bt&#x27;&gt;only big icons&lt;/div&gt;&quot;  ;
+        /* GRAPHIC options */
 
-        document.getElementById(&quot;setup-tile&quot;).innerHTML = &#x27;&#x27;;
-        document.getElementById(&quot;setup-tile&quot;).appendChild(div_options);
+            var checked_transparency = b_transparency == 1 ? &#x27;checked&#x27; : &#x27;&#x27;;
+            var checked_onlybig = only_big == 1 ? &#x27;checked&#x27; : &#x27;&#x27;;
 
-     },
+        html += &quot;      &lt;article&gt; &quot;
+             +  &quot;        &lt;header&gt;Graphic options&lt;/header&gt;&quot;
+             +  &quot;          &lt;div class=&#x27;active&#x27;&gt;&quot;
+             +  &quot;            &lt;label class=&#x27;pack-switch&#x27;&gt;&quot;
+             +  &quot;              &lt;input id=&#x27;input_b_transparency&#x27; type=&#x27;checkbox&#x27; &quot;+checked_transparency+&quot;&gt;&quot;
+             +  &quot;              &lt;span&gt;Semi-transparency&lt;/span&gt;&quot;
+             +  &quot;            &lt;/label&gt;&quot;
+             +  &quot;          &lt;/div&gt;&quot;
+             +  &quot;          &lt;div class=&#x27;active&#x27;&gt;&quot;
+             +  &quot;            &lt;label class=&#x27;pack-switch&#x27;&gt;&quot;
+             +  &quot;              &lt;input id=&#x27;input_only_big&#x27; type=&#x27;checkbox&#x27; &quot;+checked_onlybig+&quot;&gt;&quot;
+             +  &quot;              &lt;span&gt;Only big icons&lt;/span&gt;&quot;
+             +  &quot;            &lt;/label&gt;&quot;
+             +  &quot;          &lt;/div&gt;&quot;
+             +  &quot;      &lt;/article&gt;&quot;;
+
+        /* FUNCTIONAL options (... for later :) */
+
+        html += &quot;      &lt;br /&gt;&lt;article&gt; &quot;
+             +  &quot;        &lt;header&gt;Functional options&lt;/header&gt;&quot;
+             +  &quot;          &lt;div&gt;&quot;
+             +  &quot;            &lt;label&gt;...&lt;/label&gt;&quot;
+             +  &quot;          &lt;/div&gt;&quot;
+             +  &quot;      &lt;/article&gt;&quot;;
+
+        html +=  &quot;&lt;/form_&gt;&quot;;
+
+        /* delete &#x27;popup&#x27; div if it does exist */
+        U.destroy_elementById(&#x27;popup&#x27;);
+
+        /* render popup */
+        var div_popup = document.createElement(&#x27;div&#x27;);
+        div_popup.id = &#x27;popup&#x27;;
+        div_popup.innerHTML = html;
+        div_popup.setAttribute(&#x27;rel&#x27; , &#x27;setup-tile&#x27;);
+
+        var body = document.body || document.getElementByTagName(&#x27;body&#x27;)[0];
+        body.appendChild(div_popup);
+
+    },
 
     /**
     Tells the day in number
@@ -349,17 +388,81 @@ var  U = {
 
      },
 
+    launch_app: (this_tile, R) =&gt; {
+
+        var rel = this_tile.getAttribute(&#x27;rel&#x27;);
+
+        if ( typeof C.storage == &quot;string&quot; ) C.storage = JSON.parse( C.storage );
+
+        if ( C.iconMap[rel] ){
+
+            var i = C.iconMap[rel];
+            var index =  R.filter( R.propEq(&quot;label&quot;, rel ), C.storage )[0].index;
+
+            // we add 1 to value of that icon in localStorage ...
+            C.storage[index].order +=1;
+            localStorage.setItem( &quot;storage&quot;, JSON.stringify( C.storage ));
+
+
+            // transpose storage value to DOM elements
+            this_tile.dataset.order = C.storage[index].order;
+
+
+            // Callscreen, so dirty :S
+            /*
+             * after 1 feb 2016 Callscreen well be decoupled, so this will not be neccessary no more :)
+             *
+             */
+            var entry = null; ;
+            if ( i.manifest.name == &quot;Communications&quot; &amp;&amp; i.manifest.entry_points )
+                entry = &quot;dialer&quot;;
+            //TODO; handle launch contacts
+
+            i.launch(entry);
+            U.print_dock( R, C.iconMap, document );
+        }
+
+
+        // options
+
+        switch( this_tile.id ) {
+            case &quot;worded&quot;:
+            case &quot;settings_bt&quot;:
+            case &quot;setup-tile&quot;:
+                U.show_app_settings( C.b_transparency, C.only_big );
+                break;
+            case &quot;hide_trans&quot;:
+                C.b_transparency = 0;
+                start();
+                break;
+            case &quot;set_trans&quot;:
+                C.b_transparency = 1;
+                start();
+                break;
+            case &quot;only_big&quot;:
+                C.only_big = 1;
+                start();
+                break;
+            case &quot;show_small&quot;:
+                C.only_big = 0;
+                start();
+                break;
+        }
+
+        // end options
+
+    },
+
     show_tile_settings: (tile, R, HIDDEN_ROLES) =&gt; {
 
         /* delete &#x27;popup&#x27; div if it does exist */
-        var el = document.getElementById( &#x27;popup&#x27; );
-        if (el != null ) return;
+        U.destroy_elementById(&#x27;popup&#x27;);
 
         var tile_rel = tile.getAttribute(&#x27;rel&#x27;);
         var tile_id = tile.id;
 
         var html = &#x27;&#x27;;
-        html = &quot;&lt;div id=&#x27;close_tile_settings&#x27; data-icon=&#x27;close&#x27; data-l10n-id=&#x27;close&#x27; class=&#x27;close_bt&#x27;&gt;&lt;/div&gt;&quot;;
+        html  = &quot;&lt;div data-icon=&#x27;close&#x27; data-l10n-id=&#x27;close&#x27; class=&#x27;close_bt&#x27;&gt;&lt;/div&gt;&quot;;
         html += &quot;&lt;h2&gt;Select an app for this tile&lt;/h2&gt;&quot;;
         html += &quot;&lt;ul id=&#x27;ul_apps&#x27;&gt;&lt;/ul&gt;&quot;;
 
@@ -395,6 +498,13 @@ var  U = {
                                 imgtag.src = window.URL.createObjectURL( img );
                             li.appendChild(imgtag);
                             li.appendChild(document.createTextNode(icon_name));
+
+                            var btn_uninstall = document.createElement(&#x27;button&#x27;);
+                            btn_uninstall.className = &quot;danger&quot;;
+                            btn_uninstall.setAttribute(&quot;app_to_uninstall&quot;, icon_name);
+                            btn_uninstall.innerHTML = &#x27;uninstall &#x27;+ icon_name;
+
+                            li.appendChild(btn_uninstall);
                             div_popup.appendChild(li);
                         });
 
@@ -409,12 +519,6 @@ var  U = {
               resolve();
             };
 
-    },
-
-    close_select_app: () =&gt; {
-        var body = document.body || document.getElementByTagName(&#x27;body&#x27;)[0];
-        var div_popup = document.getElementById(&quot;popup&quot;);
-        var garbage = body.removeChild(div_popup);
     },
 
     set_tile_app: (tile_settings_li, iconMap) =&gt; {

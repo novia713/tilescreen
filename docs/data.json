@@ -126,7 +126,7 @@
         },
         {
             "file": "js/internal/config.js",
-            "line": 9,
+            "line": 7,
             "description": "Value for showing small or big icons",
             "itemtype": "property",
             "name": "only_big",
@@ -136,7 +136,7 @@
         },
         {
             "file": "js/internal/config.js",
-            "line": 18,
+            "line": 17,
             "description": "1 = semi-transparent background colors  VS 0 = solid background colors",
             "itemtype": "property",
             "name": "b_transparency",
@@ -146,7 +146,7 @@
         },
         {
             "file": "js/internal/config.js",
-            "line": 28,
+            "line": 27,
             "description": "Constant for excluding not interesting apps in roster",
             "itemtype": "property",
             "name": "HIDDEN_ROLES",
@@ -167,25 +167,25 @@
         },
         {
             "file": "js/internal/config.js",
-            "line": 47,
+            "line": 48,
             "description": "DIV apps container",
             "itemtype": "property",
-            "name": "parent",
+            "name": "mosaic",
             "type": "String",
             "class": "C"
         },
         {
             "file": "js/internal/config.js",
-            "line": 55,
+            "line": 57,
             "description": "WeakMap for storing the icons",
             "itemtype": "property",
             "name": "iconMap",
-            "type": "WeakMap",
+            "type": "Object",
             "class": "C"
         },
         {
             "file": "js/internal/config.js",
-            "line": 63,
+            "line": 66,
             "description": "Array container for small indexes",
             "itemtype": "property",
             "name": "smalls",
@@ -194,7 +194,7 @@
         },
         {
             "file": "js/internal/config.js",
-            "line": 70,
+            "line": 75,
             "description": "Object for storing in LocalStorage usage of icons",
             "itemtype": "property",
             "name": "storage",
@@ -203,7 +203,7 @@
         },
         {
             "file": "js/internal/config.js",
-            "line": 78,
+            "line": 84,
             "description": "Date Object",
             "itemtype": "property",
             "name": "date",
@@ -212,11 +212,29 @@
         },
         {
             "file": "js/internal/config.js",
-            "line": 89,
+            "line": 96,
             "description": "API KEY for Google geolocation",
             "itemtype": "property",
             "name": "gugle_key",
             "type": "String",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 105,
+            "description": "Unix timestamp of the last longpress event... for avoid to make a click after it",
+            "itemtype": "property",
+            "name": "last_longpress",
+            "type": "integer",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 113,
+            "description": "Object mgmt for managing the apps",
+            "itemtype": "property",
+            "name": "appMgr",
+            "type": "object",
             "class": "C"
         },
         {
@@ -243,6 +261,13 @@
             "description": "Colores de cada icono",
             "itemtype": "method",
             "name": "get_color",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the app",
+                    "type": "Object"
+                }
+            ],
             "return": {
                 "description": "color  The hexadecimal value of the color",
                 "type": "String"
@@ -251,7 +276,7 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 56,
+            "line": 57,
             "description": "Prints the upper dock",
             "params": [
                 {
@@ -280,7 +305,7 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 93,
+            "line": 94,
             "description": "Tells if the current position in roster should be small",
             "params": [
                 {
@@ -309,8 +334,8 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 105,
-            "description": "Shows a div for choosing options",
+            "line": 106,
+            "description": "Shows a div for manage app settings",
             "params": [
                 {
                     "name": "b_transparency",
@@ -324,7 +349,7 @@
                 }
             ],
             "itemtype": "method",
-            "name": "show_options",
+            "name": "show_app_settings",
             "return": {
                 "description": "",
                 "type": "String"
@@ -333,7 +358,7 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 129,
+            "line": 168,
             "description": "Tells the day in number",
             "params": [
                 {
@@ -352,7 +377,7 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 139,
+            "line": 178,
             "description": "Tells the day in three letters word (sun, thu, fri)",
             "params": [
                 {
@@ -371,7 +396,7 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 159,
+            "line": 198,
             "description": "Sets initial styles for sizes",
             "params": [
                 {
@@ -390,7 +415,7 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 179,
+            "line": 218,
             "description": "Performs an asynchronous ajax call",
             "params": [
                 {
@@ -414,7 +439,7 @@
         },
         {
             "file": "js/internal/utils.js",
-            "line": 230,
+            "line": 269,
             "description": "Parses an asynchronous ajax call to show the weather info",
             "params": [
                 {

@@ -87,8 +87,6 @@
 */
 var  C = {
 
-
-    //CONFIG
     /**
      * Value for showing small or big icons
      *
@@ -96,6 +94,7 @@ var  C = {
      * @type Integer
      * @default 0
      */
+
     only_big       : 0,
 
     /**
@@ -105,8 +104,8 @@ var  C = {
      * @type Integer
      * @default 1
      */
+
     b_transparency : 1,
-    //CONFIG
 
     /**
      * Constant for excluding not interesting apps in roster
@@ -115,6 +114,7 @@ var  C = {
      * @type Array
      * @readOnly
      */
+
     HIDDEN_ROLES : [ &#x27;system&#x27;, &#x27;input&#x27;, &#x27;homescreen&#x27;, &#x27;theme&#x27;, &#x27;addon&#x27;, &#x27;langpack&#x27; ],
 
     /**
@@ -125,22 +125,25 @@ var  C = {
      * @readOnly
      * @default 3600000 [ 1 hour ]
      */
+
     TS_UPD_SETUP_TILE : 3600000,
 
     /**
      * DIV apps container
      *
-     * @property parent
+     * @property mosaic
      * @type String
      */
-    parent : document.getElementById(&#x27;apps&#x27;),
+
+    mosaic : document.getElementById(&#x27;apps&#x27;),
 
     /**
      * WeakMap for storing the icons
      *
      * @property iconMap
-     * @type WeakMap
+     * @type Object
      */
+
     iconMap : {},
 
     /**
@@ -149,13 +152,16 @@ var  C = {
      * @property smalls
      * @type Array
      */
+
     smalls : [],
+
     /**
      * Object for storing in LocalStorage usage of icons
      *
      * @property storage
      * @type Array
      */
+
     storage : null,
 
     /**
@@ -164,6 +170,7 @@ var  C = {
      * @property date
      * @type Class
      */
+
     date : new Date(),
     width_1_col : 0,
     width_2_col : 0,
@@ -175,7 +182,24 @@ var  C = {
      * @property gugle_key
      * @type String
      */
+
     gugle_key : &quot;AIzaSyDg0goaIJCowkjfO0Px7IhLTRWWO-aAtS0&quot;,
+
+    /**
+     * Unix timestamp of the last longpress event... for avoid to make a click after it
+     *
+     * @property last_longpress
+     * @type integer
+     */
+    last_longpress : 0,
+
+    /**
+     * Object mgmt for managing the apps
+     *
+     * @property appMgr
+     * @type object
+     */
+    appMgr: navigator.mozApps.mgmt
 
 
 };

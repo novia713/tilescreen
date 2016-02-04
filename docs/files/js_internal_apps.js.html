@@ -139,7 +139,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_
      var print_msg = () =&gt; {
         var txt_msg  = &quot;&lt;div style=&#x27;background-color:orange;color:white&#x27;&gt;&lt;h3&gt;Please, set this homescreen your default homescreen in &lt;i&gt;Settings / Homescreens / Change Homescreens&lt;/i&gt;. This homescreen won&#x27;t work if you don&#x27;t do so&lt;/h3&gt;&lt;/div&gt;&quot;;
             txt_msg += &quot;&lt;div style=&#x27;background-color:orange;color:black&#x27;&gt;&lt;h3&gt;Ve a &lt;i&gt;Configuración / Homescreens&lt;/i&gt; y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!&lt;/h3&gt;&lt;/div&gt;&quot;;
-            C.parent.innerHTML = txt_msg;
+            C.mosaic.innerHTML = txt_msg;
      };
 
 
@@ -153,7 +153,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_
 
         var oldtile = document.getElementById(&quot;setup-tile&quot;);
         if ( oldtile )
-            C.parent.removeChild( oldtile );
+            C.mosaic.removeChild( oldtile );
 
         var tile       = document.createElement(&#x27;div&#x27;);
         tile.id        = &#x27;setup-tile&#x27;;
@@ -205,7 +205,7 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_
         navigator.geolocation.getCurrentPosition(successGeoLoc, errorGeoLoc, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
 
 
-        C.parent.insertBefore(tile, C.parent.children[1]);
+        C.mosaic.insertBefore(tile, C.mosaic.children[1]);
 
         // /**************
         // * recursivity *
@@ -322,13 +322,13 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_
         /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
 
         /* empty #apps and add #dock */
-        C.parent.innerHTML = &#x27;&#x27;;
+        C.mosaic.innerHTML = &#x27;&#x27;;
             var dock = document.createElement(&#x27;div&#x27;);
             dock.id = &#x27;dock&#x27;;
             apps.appendChild(dock);
 
         /* transparency mode */
-        C.parent.classList.remove(&#x27;transparent&#x27;);
+        C.mosaic.classList.remove(&#x27;transparent&#x27;);
         if ( C.b_transparency == 1 ){
             apps.classList.add(&#x27;transparent&#x27;);
         }
@@ -374,6 +374,19 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_
 
     } //end start
 
+    // TODO: addEventListener install/uninstall //untested!
+
+        C.appMgr.addEventListener(&quot;install&quot;, function (event) {
+            console.log(event.application);
+            setTimeout (function() {
+                start();
+            }, 2000);
+        });
+        C.appMgr.addEventListener(&quot;uninstall&quot;, function (event) {
+            console.log(event.application);
+            start();
+        });
+
     window.addEventListener(&#x27;devicelight&#x27;, ev =&gt; {
         //console.log(ev.value);
     });
@@ -384,13 +397,19 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_
         var tile_ic = ev.originalTarget;
 
         // settings popup only opens for not docked items
-        if ( R.contains(&quot;docker&quot;)(tile_ic.classList) == false ) {
-            U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
+        if ( R.contains(&quot;docker&quot;)(tile_ic.classList) == false &amp;&amp; tile_ic.parentNode.parentNode.id == &#x27;apps&#x27;) {
+                /*ev.preventDefault();*/
+                C.last_longpress = Date.now();
+                U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
         }
     });
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
     window.addEventListener(&#x27;click&#x27;, ev =&gt; {
+
+        /* avoid to follow a click if it&#x27;s very close to the last longpress event */
+        if ( Date.now() - C.last_longpress &lt; 2000 ) return;
+
         setTimeout(function(){
             event_click(ev);
         }, 500);}
@@ -400,87 +419,53 @@ require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_
     var event_click = ev =&gt; {
 
         var this_tile = ev.originalTarget;
+        var parent = this_tile.parentNode;
 
-        /* if clicked a &lt;li&gt; element at tile_settings (so the originalTarget is not a tile, but a &lt;li&gt; element) */
-        if (this_tile.classList.contains(&quot;tile_settings_li&quot;)) {
-            return U.set_tile_app(this_tile, C.iconMap);
+        /* uninstall */
+        if (ev.id = &quot;btn_uninstall&quot;){
+            if ( this_tile.getAttribute(&quot;app_to_uninstall&quot;) ) {
+                // TODO: check if it is removable!!
+                console.log(this_tile);
+                // https://developer.mozilla.org/en-US/Apps/Build/JavaScript_API/navigator.mozApps.mgmt.uninstall
+                C.appMgr.uninstall(this_tile);
+            }
         }
 
-        var rel = this_tile.getAttribute(&#x27;rel&#x27;);
-
-        if ( typeof C.storage == &quot;string&quot; ) C.storage = JSON.parse( C.storage );
-
-        if ( C.iconMap[rel] ){
-
-            var i = C.iconMap[rel];
-            var index     =  R.filter( R.propEq(&quot;label&quot;, rel ), C.storage )[0].index;
-
-            // we add 1 to value of that icon in localStorage ...
-            C.storage[index].order +=1;
-            localStorage.setItem( &quot;storage&quot;, JSON.stringify( C.storage ));
-
-
-            // transpose storage value to DOM elements
-            this_tile.dataset.order = C.storage[index].order;
-
-
-            // Callscreen, so dirty :S
-            /*
-             * after 1 feb 2016 Callscreen well be decoupled, so this will not be neccessary no more :)
-             *
-             */
-            var entry = null; ;
-            if ( i.manifest.name == &quot;Communications&quot; &amp;&amp; i.manifest.entry_points )
-                entry = &quot;dialer&quot;;
-            //TODO; handle launch contacts
-
-            i.launch(entry);
-            U.print_dock( R, C.iconMap, document );
+        /* if clicked an app tile (tile_ic) -most of cases- */
+        if (this_tile.classList.contains(&quot;tile_ic&quot;)){
+            return U.launch_app(ev, R);
         }
-
-
-        // options
-
-        switch( this_tile.id ) {
-            case &quot;worded&quot;:
-            case &quot;settings_bt&quot;:
-            case &quot;setup-tile&quot;:
-                U.show_options( C.b_transparency, C.only_big );
-                break;
-            case &quot;hide_trans&quot;:
-                C.b_transparency = 0;
-                start();
-                break;
-            case &quot;set_trans&quot;:
-                C.b_transparency = 1;
-                start();
-                break;
-            case &quot;only_big&quot;:
-                C.only_big = 1;
-                start();
-                break;
-            case &quot;show_small&quot;:
-                C.only_big = 0;
-                start();
-                break;
-            case &#x27;close_tile_settings&#x27;:
-                U.close_select_app();
-                break;
-        }
-
 
         /* if clicked the empty space of the options tile */
-        if (this_tile.classList.contains(&quot;options&quot;)) {
+        else if (this_tile.classList.contains(&quot;options&quot;) || parent.classList.contains(&quot;options&quot;)) {
+            /*U.destroy_elementById(&#x27;options&#x27;);*/
+            alert(&#x27;options close&#x27;);
             build_setup_tile();
         }
 
-        // end options
-
+        /* if clicked any child of the setup-tile */
+        else if (parent.id == &#x27;setup-tile&#x27;) {
+            return U.show_app_settings( C.b_transparency, C.only_big );
+        }
 
         // button close → onclick() is not allowed by CSP FirefoxOS policy
-        if ( this_tile.classList[0] == &quot;x_close_bt&quot;) {
-            U.close_select_app();
+        else if ( this_tile.classList.contains(&quot;close_bt&quot;)) {
+            U.destroy_elementById(&#x27;popup&#x27;);
         }
+
+        // button close → onclick() is not allowed by CSP FirefoxOS policy
+        else if ( this_tile.classList.contains(&quot;save_bt&quot;)) {
+            C.b_transparency = document.getElementById(&#x27;input_b_transparency&#x27;).checked ? 1 : 0;
+            C.only_big = document.getElementById(&#x27;input_only_big&#x27;).checked ? 1 : 0;
+            start();
+            U.destroy_elementById(&#x27;popup&#x27;);
+        }
+
+        /* if clicked a &lt;li&gt; element at tile_settings (so the originalTarget is not a tile, but a &lt;li&gt; element) */
+        else if (this_tile.classList.contains(&quot;tile_settings_li&quot;)) {
+            return U.set_tile_app(this_tile, C.iconMap);
+        }
+
 
     }; //end window event &#x27;click&#x27;, document.getElementsByClassName(&#x27;tile&#x27;));
 
