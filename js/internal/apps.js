@@ -302,12 +302,18 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
         // settings popup only opens for not docked items
         if ( R.contains("docker")(tile_ic.classList) == false && tile_ic.parentNode.parentNode.id == 'apps') {
-            U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
+                /*ev.preventDefault();*/
+                C.last_longpress = Date.now();
+                U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
         }
     });
 
     /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
     window.addEventListener('click', ev => {
+        
+        /* avoid to follow a click if it's very close to the last longpress event */
+        if ( Date.now() - C.last_longpress < 2000 ) return;
+        
         setTimeout(function(){
             event_click(ev);
         }, 500);}
