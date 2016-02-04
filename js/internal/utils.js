@@ -17,6 +17,7 @@ var  U = {
     /**
     Colores de cada icono
     @method get_color
+    @param app {Object} the app
     @return color {String} The hexadecimal value of the color
     */
     get_color: app  => {

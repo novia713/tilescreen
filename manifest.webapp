@@ -12,19 +12,11 @@
     "homescreen-webapps-manage":{
         "description": "Required for manage icon apps in homescreen"
      },
-     "device-storage:pictures":{ "access": "readwrite" },
-        "mobileid": {},
-        "mobilenetwork": {},
-        "mobileconnection": {},
-        "open-remote-window": {},
-        "telephony": {},
-        "wifi-manage": {},
-        "phonenumberservice": {},
-        "geolocation": {},
-        "systemXHR": {},
-        "camera": {
-            "description": "Required for accessing cameras on the device."
-          }
+    "geolocation": {
+        "description": "Required for showing your Location & Postal Code"},
+    "systemXHR": {
+        "description": "Required for location & weather data"
+        }
   },
   "locales": {
     "en-US": {
