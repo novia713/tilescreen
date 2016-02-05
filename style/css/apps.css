@@ -206,7 +206,7 @@ body {margin: 0;}
 /* === popup window for render options, like the list of apps to select a new one for a tile === */
     #popup{
         position: absolute; top:0; left:0;
-        z-index: 100;
+        z-index: 50;
         width: 100%; height: 100%;
         overflow-y: scroll;
         background-color: #444; color: #eee;
@@ -225,7 +225,7 @@ body {margin: 0;}
             position: absolute; right:5px;
             min-width: 3rem; /* for great enought the 'tap' surface of the button */
             text-align:right;
-            z-index:101;
+            z-index:51;
             background-color:transparent;
             cursor:pointer;
         }
@@ -261,7 +261,25 @@ body {margin: 0;}
             #popup li img{
                 display:inline-block;
                 position:absolute; top:3px;left: 0.2rem;
-                max-height:2rem;
+                height:2rem;
+                border-radius: 50%; /* this convert all app icons to perfect circles ;) */
+            }
+            #popup li .delete_bt{
+                display:inline-block;
+                position:absolute; top:3px;right: 0;
+                height: 2rem; width: 3rem;
+                text-align: right;
+                z-index: 51;
+                color:#c00;
+                cursor: pointer;
+            }
+            #popup li .delete_bt::before{
+                font-size: 1.7rem; line-height: 2rem;
+                margin-right: 0.3rem;
+                
+            }
+            #popup li .delete_bt:hover{
+                color: #000;
             }
 
 /* arrangements of the swtiches.css for this app */
@@ -292,3 +310,17 @@ body {margin: 0;}
 #popup input:checked ~ span::after{
     background-position: 0rem 0rem;
 }
+
+/* status popup mini-window for messages of 4 seconds*/
+
+#status{
+    bottom: 5rem;
+    opacity: 0.9;
+    margin: 0px 2rem;
+    line-height: 2rem;
+    padding: 1rem;
+    transition: all 0.8s;
+}
+    #status.hidden{
+        opacity: 0;
+    }

@@ -380,7 +380,8 @@ var  U = {
 
         var html = '';
         html  = "<div data-icon='close' data-l10n-id='close' class='close_bt'></div>";
-        html += "<h2>Select an app for this tile</h2>";
+        html += "<h2>Tile settings</h2>";
+        html += "<p>Select an app for this tile:</p>";
         html += "<ul id='ul_apps'></ul>";
 
         var div_popup = document.createElement('div');
@@ -416,11 +417,12 @@ var  U = {
                             li.appendChild(imgtag);
                             li.appendChild(document.createTextNode(icon_name));
 
-                            var btn_uninstall = document.createElement('button');
-                            btn_uninstall.className = "danger";
+                            /*"<div data-icon='tick-circle' data-l10n-id='save' class='save_bt'>save</div>"*/
+                            var btn_uninstall = document.createElement('div');
+                            btn_uninstall.className = "delete_bt";
                             btn_uninstall.setAttribute("app_to_uninstall", icon_name);
-                            btn_uninstall.innerHTML = 'uninstall '+ icon_name;
-
+                            btn_uninstall.setAttribute("data-icon", "delete");
+                            btn_uninstall.setAttribute("data-l10n-id", "uninstall");
                             li.appendChild(btn_uninstall);
                             div_popup.appendChild(li);
                         });
@@ -441,7 +443,7 @@ var  U = {
     set_tile_app: (tile_settings_li, iconMap) => {
         var app_rel = tile_settings_li.getAttribute('rel');
         var tile_id = document.getElementById('popup').getAttribute('rel');
-
+        
         if (iconMap[app_rel]){
 
             var icon = iconMap[app_rel];
@@ -488,12 +490,15 @@ var  U = {
 
                 /* destroy the tile_settings 'popup' */
                 U.destroy_elementById( 'popup' );
+                
+                U.show_status_message("Tile successfully updated.");
+                
             });
 
 
             /* destroy the tile_settings 'popup' */
             U.destroy_elementById( 'popup' );
-
+            
         }
 
     },
@@ -510,6 +515,24 @@ var  U = {
         while (Node.firstChild) {
            Node.removeChild(Node.firstChild);
         }
+    },
+    
+    show_status_message: (txt) => {
+        /* empty the existing content */
+        U.empty_elementById('status');
+        
+        /* get the 'status' element and populate it */
+        var status = document.getElementById('status');
+        var txt = document.createTextNode(txt);
+        status.appendChild(txt);
+        
+        /* show it */
+        status.classList.toggle('hidden');
+        
+        /* schedule the hiding of the status after 4 seconds */
+        window.setTimeout(function() {
+            status.classList.toggle('hidden');
+          }, 3000);
     }
 
 };

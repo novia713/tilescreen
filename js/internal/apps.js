@@ -338,53 +338,52 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         var this_tile = ev.originalTarget;
         var parent = this_tile.parentNode;
 
-        /* uninstall */
-        if (ev.id = "btn_uninstall"){
-            if ( this_tile.getAttribute("app_to_uninstall") ) {
+        /* if clicked an app tile (tile_ic) -most of cases- */
+        if (this_tile.classList.contains("delete_bt")){
+            
+                if (!confirm("Are you sure you want to delete this app from the device?")) return;
+                
                 // TODO: check if it is removable!!
-                console.log(this_tile);
                 // https://developer.mozilla.org/en-US/Apps/Build/JavaScript_API/navigator.mozApps.mgmt.uninstall
-                C.appMgr.uninstall(this_tile);
-            }
+                //C.appMgr.uninstall(this_tile);
+                
+                U.show_status_message("App successfully deleted.");
+                return;
+                
+            
         }
 
         /* if clicked an app tile (tile_ic) -most of cases- */
-        if (this_tile.classList.contains("tile_ic")){
-            return U.launch_app(ev, R);
-        }
-
-        /* if clicked the empty space of the options tile */
-        else if (this_tile.classList.contains("options") || parent.classList.contains("options")) {
-            /*U.destroy_elementById('options');*/
-            alert('options close');
-            build_setup_tile();
+        else if (this_tile.classList.contains("tile_ic")){
+            U.launch_app(this_tile, R);
         }
 
         /* if clicked any child of the setup-tile */
         else if (parent.id == 'setup-tile') {
-            return U.show_app_settings( C.b_transparency, C.only_big );
+            U.show_app_settings( C.b_transparency, C.only_big );
         }
 
-        // button close → onclick() is not allowed by CSP FirefoxOS policy
+        /* if clicked any close_bt of a 'popup' modal window  */
         else if ( this_tile.classList.contains("close_bt")) {
             U.destroy_elementById('popup');
         }
 
-        // button close → onclick() is not allowed by CSP FirefoxOS policy
+        /* if clicked the button for save changes at 'app settings'  */
         else if ( this_tile.classList.contains("save_bt")) {
             C.b_transparency = document.getElementById('input_b_transparency').checked ? 1 : 0;
             C.only_big = document.getElementById('input_only_big').checked ? 1 : 0;
             start();
             U.destroy_elementById('popup');
+            U.show_status_message("Settings successfully saved.");
         }
 
         /* if clicked a <li> element at tile_settings (so the originalTarget is not a tile, but a <li> element) */
         else if (this_tile.classList.contains("tile_settings_li")) {
-            return U.set_tile_app(this_tile, C.iconMap);
+            U.set_tile_app(this_tile, C.iconMap);
         }
 
 
-    }; //end window event 'click', document.getElementsByClassName('tile'));
+    }; //end window event 'click'
 
 
     var removeSmall = function (el) {
