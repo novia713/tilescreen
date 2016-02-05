@@ -155,6 +155,8 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
             icon_image.then ( img => {
 
                 var name = icon.manifest.name;
+                var is_small = U.is_small( i, R, C.smalls ) > -1 ? true : false;
+                
 
                 // end callscreen
                 var wordname = name.split(" ");
@@ -187,6 +189,10 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
                     tile_tit.appendChild(tit);
 
                     tile.appendChild(tile_tit);
+                    
+                    if ( (is_small && C.b_smalltiles_tit!=1) || (!is_small && C.b_bigtiles_tit!=1) ){
+                        tile.classList.add('hidden_tit');
+                    }
 
                     /* tile background */
                     var tile_bg = document.createElement('div');
@@ -219,17 +225,15 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
                 ++i;
 
-                if ( U.is_small( i, R, C.smalls ) > -1 )  {
+                if ( is_small )  {
                     tile.classList.add("small");
                 }
 
 
                 // initial dock
                 if (4 == i || 3 == i || 2 == i || 9 == i){
-                    var firsts_dock = tile.cloneNode(true);
-                    firsts_dock.className  = "tile small in-dock";
-                    firsts_dock.children[0].classList.add( "docker" );
-                    document.getElementById("dock").appendChild(firsts_dock);
+                    var tile = U.build_dock_tile( wordname[0] );
+                    document.getElementById("dock").appendChild(tile);
                 }
 
                 //end initial dock
@@ -368,7 +372,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
         /* if clicked any child of the setup-tile */
         else if (parent.id == 'setup-tile') {
-            U.show_app_settings( C.b_transparency, C.only_big );
+            U.show_app_settings();
         }
 
         /* if clicked any close_bt of a 'popup' modal window  */
@@ -380,6 +384,8 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         else if ( this_tile.classList.contains("save_bt")) {
             C.b_transparency = document.getElementById('input_b_transparency').checked ? 1 : 0;
             C.only_big = document.getElementById('input_only_big').checked ? 1 : 0;
+            C.b_bigtiles_tit = document.getElementById('input_b_bigtiles_tit').checked ? 1 : 0;
+            C.b_smalltiles_tit = document.getElementById('input_b_smalltiles_tit').checked ? 1 : 0;
             start();
             U.destroy_elementById('popup');
             U.show_status_message("Settings successfully saved.");

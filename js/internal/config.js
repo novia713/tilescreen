@@ -25,6 +25,26 @@ var  C = {
     b_transparency : 1,
 
     /**
+     * 1 = render app name on big tile  VS 0 = NOT render app name on big tile
+     *
+     * @property b_bigtiles_tit
+     * @type Integer
+     * @default 1
+     */
+
+    b_bigtiles_tit : 1,
+
+    /**
+     * 1 = render app name on small tile  VS 0 = NOT render app name on small tile
+     *
+     * @property b_smalltiles_tit
+     * @type Integer
+     * @default 0
+     */
+
+    b_smalltiles_tit : 0,
+
+    /**
      * Constant for excluding not interesting apps in roster
      *
      * @property HIDDEN_ROLES

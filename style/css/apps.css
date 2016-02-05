@@ -63,7 +63,7 @@ body {margin: 0;}
 }
 
     /* this will change once we develop the new grid system... so it's temporal */
-    .t_4_1 .tile{ margin-left:0px; margin-right:8px; }
+    .t_4_1 .tile{ margin:0px; margin-right:8px; }
 
 .tile_ic{
     z-index: -1;
@@ -73,9 +73,13 @@ body {margin: 0;}
     height:100%;
     border-radius: 2px;
     background-size: 60%!important;
-    background-position: center center!important;
+    background-position: center 35%!important;
     cursor:pointer;
 }
+    .hidden_tit .tile_ic{
+        background-position: center center!important;
+    }
+        
     .tile_ic:after {
         content: "";
         background: rgba(255,255,255,0.5);
@@ -95,21 +99,24 @@ body {margin: 0;}
     }
     
 .tile_tit{
-    z-index: -1;
-    display:block; width:100%;
-    position:absolute; bottom:0.2rem; left:0;
+    z-index: -2;
+    display:block; width:90%;
+    position:absolute; bottom:0.2rem; left:5%;
     text-align:center;
     font-size: 1rem;
     overflow:hidden;
     opacity: 0.8;
 }
     .small .tile_tit{
-        bottom:0rem; 
+        bottom: 0.1rem; 
         font-size: 0.8rem;
+    }
+    .hidden_tit .tile_tit{
+        display:none;
     }
 
 .tile_bg{
-    z-index: -2;
+    z-index: -3;
     display:block;
     position:absolute; top:0; left:0;
     width:100%;

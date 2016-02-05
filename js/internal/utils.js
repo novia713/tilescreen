@@ -70,20 +70,9 @@ var  U = {
 
         var print_tiles_in_minidock =  item  => {
 
-            var tile = document.createElement("div");
-            tile.className  = "tile small in-dock";
-
-                    /* tile icon */
-                    var tile_ic = document.getElementById(item.label).cloneNode(true);
-                    tile_ic.classList.add("docker");
-                    tile.appendChild( tile_ic  );
-
-                    /* tile background */
-                    var tile_bg = document.createElement('div');
-                    tile_bg.className = 'tile_bg';
-                    tile.appendChild(tile_bg);
-
+            var tile = U.build_dock_tile( item.label );
             dock.appendChild(  tile  );
+            
         };
 
         dock.innerHTML = "";
@@ -91,6 +80,46 @@ var  U = {
         R.forEach ( print_tiles_in_minidock, R.take (4,  R.reverse(sortByUsage( storage ))));
      },
 
+    /**
+    Prints the upper dock
+    @param R {Class}
+    @param iconMap {WeakMap}
+    @param document {Object}
+    @method print_dock
+    @return {String} Injects HTML in the setup-tile div
+    */
+    build_dock_tile: ( label ) => {
+        
+        var tile = document.createElement("div");
+        tile.className  = "tile small in-dock";
+
+            /* tile icon */
+            var tile_ic = document.getElementById(label).cloneNode(true);
+            tile_ic.classList.add("docker");
+            tile.appendChild( tile_ic  );
+
+            /* tile title */
+            var tile_tit = document.createElement('div');
+            tile_tit.className = 'tile_tit';
+            var tit = document.createTextNode(label);
+            tile_tit.appendChild(tit);
+
+            tile.appendChild(tile_tit);
+
+            if (C.b_smalltiles_tit == 1){
+                tile.classList.remove('hidden_tit');
+            }else{
+                tile.classList.add('hidden_tit');
+            }
+
+            /* tile background */
+            var tile_bg = document.createElement('div');
+            tile_bg.className = 'tile_bg';
+            tile.appendChild(tile_bg);
+        
+        return tile;
+    },
+    
     /**
     Tells if the current position in roster should be small
     @param pos    {Integer}
@@ -110,7 +139,7 @@ var  U = {
     @method show_app_settings
     @return {String}
     */
-     show_app_settings: (b_transparency, only_big) => {
+     show_app_settings: () => {
 
         /* prepare HTML content */
         var html = '';
@@ -121,8 +150,11 @@ var  U = {
 
         /* GRAPHIC options */
 
-            var checked_transparency = b_transparency == 1 ? 'checked' : '';
-            var checked_onlybig = only_big == 1 ? 'checked' : '';
+            var checked_transparency = C.b_transparency == 1 ? 'checked' : '';
+            var checked_onlybig = C.only_big == 1 ? 'checked' : '';
+            var checked_bigtiles_tit = C.b_bigtiles_tit == 1 ? 'checked' : '';
+            var checked_smalltiles_tit = C.b_smalltiles_tit == 1 ? 'checked' : '';
+            
 
         html += "      <article> "
              +  "        <header>Graphic options</header>"
@@ -136,6 +168,18 @@ var  U = {
              +  "            <label class='pack-switch'>"
              +  "              <input id='input_only_big' type='checkbox' "+checked_onlybig+">"
              +  "              <span>Only big icons</span>"
+             +  "            </label>"
+             +  "          </div>"
+             +  "          <div class='active'>"
+             +  "            <label class='pack-switch'>"
+             +  "              <input id='input_b_bigtiles_tit' type='checkbox' "+checked_bigtiles_tit+">"
+             +  "              <span>Show app name on <em>big</em> tiles</span>"
+             +  "            </label>"
+             +  "          </div>"
+             +  "          <div class='active'>"
+             +  "            <label class='pack-switch'>"
+             +  "              <input id='input_b_smalltiles_tit' type='checkbox' "+checked_smalltiles_tit+">"
+             +  "              <span>Show app name on <em>small</em> tiles</span>"
              +  "            </label>"
              +  "          </div>"
              +  "      </article>";
@@ -346,7 +390,7 @@ var  U = {
             case "worded":
             case "settings_bt":
             case "setup-tile":
-                U.show_app_settings( C.b_transparency, C.only_big );
+                U.show_app_settings();
                 break;
             case "hide_trans":
                 C.b_transparency = 0;
