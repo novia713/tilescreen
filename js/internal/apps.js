@@ -180,6 +180,14 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
                     tile.appendChild(tile_ic);
 
+                    /* tile title */
+                    var tile_tit = document.createElement('div');
+                    tile_tit.className = 'tile_tit';
+                    var tit = document.createTextNode(wordname);
+                    tile_tit.appendChild(tit);
+
+                    tile.appendChild(tile_tit);
+
                     /* tile background */
                     var tile_bg = document.createElement('div');
                     tile_bg.className = 'tile_bg';
