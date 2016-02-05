@@ -72,7 +72,7 @@ var  U = {
 
             var tile = U.build_dock_tile( item.label );
             dock.appendChild(  tile  );
-            
+
         };
 
         dock.innerHTML = "";
@@ -89,7 +89,7 @@ var  U = {
     @return {String} Injects HTML in the setup-tile div
     */
     build_dock_tile: ( label ) => {
-        
+
         var tile = document.createElement("div");
         tile.className  = "tile small in-dock";
 
@@ -116,10 +116,10 @@ var  U = {
             var tile_bg = document.createElement('div');
             tile_bg.className = 'tile_bg';
             tile.appendChild(tile_bg);
-        
+
         return tile;
     },
-    
+
     /**
     Tells if the current position in roster should be small
     @param pos    {Integer}
@@ -154,7 +154,7 @@ var  U = {
             var checked_onlybig = C.only_big == 1 ? 'checked' : '';
             var checked_bigtiles_tit = C.b_bigtiles_tit == 1 ? 'checked' : '';
             var checked_smalltiles_tit = C.b_smalltiles_tit == 1 ? 'checked' : '';
-            
+
 
         html += "      <article> "
              +  "        <header>Graphic options</header>"
@@ -414,7 +414,7 @@ var  U = {
 
     },
 
-    show_tile_settings: (tile, R, HIDDEN_ROLES) => {
+    show_tile_settings: (tile, R, HIDDEN_ROLES, C) => {
 
         /* delete 'popup' div if it does exist */
         U.destroy_elementById('popup');
@@ -437,7 +437,7 @@ var  U = {
         body.appendChild(div_popup);
 
         /* populate the ul of the div_popup with a <li> foreach app */
-            var request = navigator.mozApps.mgmt.getAll();
+            var request = C.appMgr.getAll();
 
             request.onsuccess = (e) => {
 
@@ -447,7 +447,7 @@ var  U = {
                             if ( R.contains ( icon.manifest.role, HIDDEN_ROLES ))  return;
                         //end guards
 
-                        var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
+                        var icon_image = C.appMgr.getIcon(icon, 32);
                         var icon_name = icon.manifest.name;
                         var wordname = icon_name.split(" ");
 
@@ -467,7 +467,11 @@ var  U = {
                             btn_uninstall.setAttribute("app_to_uninstall", icon_name);
                             btn_uninstall.setAttribute("data-icon", "delete");
                             btn_uninstall.setAttribute("data-l10n-id", "uninstall");
-                            li.appendChild(btn_uninstall);
+                            btn_uninstall.setAttribute("origin", icon.origin);
+
+                            if ( ( "The Gaia Team" != icon.manifest.developer.name  && "Mozilla" != icon.manifest.developer.name ) ) {
+                                li.appendChild(btn_uninstall);
+                            }
                             div_popup.appendChild(li);
                         });
 
@@ -487,7 +491,7 @@ var  U = {
     set_tile_app: (tile_settings_li, iconMap) => {
         var app_rel = tile_settings_li.getAttribute('rel');
         var tile_id = document.getElementById('popup').getAttribute('rel');
-        
+
         if (iconMap[app_rel]){
 
             var icon = iconMap[app_rel];
@@ -534,15 +538,15 @@ var  U = {
 
                 /* destroy the tile_settings 'popup' */
                 U.destroy_elementById( 'popup' );
-                
+
                 U.show_status_message("Tile successfully updated.");
-                
+
             });
 
 
             /* destroy the tile_settings 'popup' */
             U.destroy_elementById( 'popup' );
-            
+
         }
 
     },
@@ -560,19 +564,19 @@ var  U = {
            Node.removeChild(Node.firstChild);
         }
     },
-    
+
     show_status_message: (txt) => {
         /* empty the existing content */
         U.empty_elementById('status');
-        
+
         /* get the 'status' element and populate it */
         var status = document.getElementById('status');
         var txt = document.createTextNode(txt);
         status.appendChild(txt);
-        
+
         /* show it */
         status.classList.toggle('hidden');
-        
+
         /* schedule the hiding of the status after 4 seconds */
         window.setTimeout(function() {
             status.classList.toggle('hidden');

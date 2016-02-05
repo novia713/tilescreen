@@ -156,7 +156,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
                 var name = icon.manifest.name;
                 var is_small = U.is_small( i, R, C.smalls ) > -1 ? true : false;
-                
+
 
                 // end callscreen
                 var wordname = name.split(" ");
@@ -189,7 +189,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
                     tile_tit.appendChild(tit);
 
                     tile.appendChild(tile_tit);
-                    
+
                     if ( (is_small && C.b_smalltiles_tit!=1) || (!is_small && C.b_bigtiles_tit!=1) ){
                         tile.classList.add('hidden_tit');
                     }
@@ -329,7 +329,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         if ( R.contains("docker")(tile_ic.classList) == false && tile_ic.parentNode.parentNode.id == 'apps') {
                 /*ev.preventDefault();*/
                 C.last_longpress = Date.now();
-                U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
+                U.show_tile_settings( tile_ic.parentNode, R, C.HIDDEN_ROLES, C );
         }
     });
 
@@ -352,17 +352,16 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
         /* if clicked an app tile (tile_ic) -most of cases- */
         if (this_tile.classList.contains("delete_bt")){
-            
+
                 if (!confirm("Are you sure you want to delete this app from the device?")) return;
-                
-                // TODO: check if it is removable!!
+
                 // https://developer.mozilla.org/en-US/Apps/Build/JavaScript_API/navigator.mozApps.mgmt.uninstall
-                //C.appMgr.uninstall(this_tile);
-                
+                navigator.mozApps.mgmt.uninstall( this_tile.getAttribute("origin") );
+
                 U.show_status_message("App successfully deleted.");
                 return;
-                
-            
+
+
         }
 
         /* if clicked an app tile (tile_ic) -most of cases- */
