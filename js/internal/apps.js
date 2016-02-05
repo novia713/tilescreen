@@ -185,7 +185,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
                     /* tile title */
                     var tile_tit = document.createElement('div');
                     tile_tit.className = 'tile_tit';
-                    var tit = document.createTextNode(wordname);
+                    var tit = document.createTextNode(name);
                     tile_tit.appendChild(tit);
 
                     tile.appendChild(tile_tit);
