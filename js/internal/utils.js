@@ -453,7 +453,7 @@ var  U = {
                             btn_uninstall.setAttribute("app_to_uninstall", icon_name);
                             btn_uninstall.setAttribute("data-icon", "delete");
                             btn_uninstall.setAttribute("data-l10n-id", "uninstall");
-                            btn_uninstall.setAttribute("origin", icon.origin);
+                            btn_uninstall.setAttribute("rel", wordname[0]);
 
                             if ( ( "The Gaia Team" != icon.manifest.developer.name  && "Mozilla" != icon.manifest.developer.name ) ) {
                                 li.appendChild(btn_uninstall);

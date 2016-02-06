@@ -370,11 +370,12 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         /* if clicked an app tile (tile_ic) -most of cases- */
         if (this_tile.classList.contains("delete_bt")){
 
-                if (!confirm("Are you sure you want to delete this app from the device?")) return;
-
                 // https://developer.mozilla.org/en-US/Apps/Build/JavaScript_API/navigator.mozApps.mgmt.uninstall
-                navigator.mozApps.mgmt.uninstall( this_tile.getAttribute("origin") );
+                var rel = this_tile.getAttribute("rel");
+                var app = C.iconMap[rel];
+                navigator.mozApps.mgmt.uninstall( app  );
 
+                U.close_popup();
                 U.show_status_message("App successfully deleted.");
                 return;
 
