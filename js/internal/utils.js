@@ -195,18 +195,11 @@ var  U = {
 
         html +=  "</form_>";
 
-        /* delete 'popup' div if it does exist */
-        U.destroy_elementById('popup');
-
         /* render popup */
-        var div_popup = document.createElement('div');
-        div_popup.id = 'popup';
+        var div_popup = document.getElementById('popup');
         div_popup.innerHTML = html;
         div_popup.setAttribute('rel' , 'setup-tile');
-
-        var body = document.body || document.getElementByTagName('body')[0];
-        body.appendChild(div_popup);
-
+        div_popup.classList.remove('hidden');
     },
 
     /**
@@ -416,9 +409,6 @@ var  U = {
 
     show_tile_settings: (tile, R, HIDDEN_ROLES, C) => {
 
-        /* delete 'popup' div if it does exist */
-        U.destroy_elementById('popup');
-
         var tile_rel = tile.getAttribute('rel');
         var tile_id = tile.id;
 
@@ -428,13 +418,9 @@ var  U = {
         html += "<p>Select an app for this tile:</p>";
         html += "<ul id='ul_apps'></ul>";
 
-        var div_popup = document.createElement('div');
-        div_popup.id = 'popup';
+        var div_popup = document.getElementById('popup');
         div_popup.innerHTML = html;
         div_popup.setAttribute('rel' , tile_id);
-
-        var body = document.body || document.getElementByTagName('body')[0];
-        body.appendChild(div_popup);
 
         /* populate the ul of the div_popup with a <li> foreach app */
             var request = C.appMgr.getAll();
@@ -477,7 +463,8 @@ var  U = {
 
 
                 });
-
+                
+                div_popup.classList.remove('hidden');
 
             };
 
@@ -537,7 +524,7 @@ var  U = {
                 document.getElementById('apps').replaceChild(tile, old_tile);
 
                 /* destroy the tile_settings 'popup' */
-                U.destroy_elementById( 'popup' );
+                U.close_popup();
 
                 U.show_status_message("Tile successfully updated.");
 
@@ -545,10 +532,15 @@ var  U = {
 
 
             /* destroy the tile_settings 'popup' */
-            U.destroy_elementById( 'popup' );
+            U.close_popup();
 
         }
 
+    },
+    
+    close_popup: () => {
+        document.getElementById('popup').classList.add('hidden');
+        U.empty_elementById('popup');
     },
 
     destroy_elementById: (ele_id) => {

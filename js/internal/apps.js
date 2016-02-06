@@ -320,30 +320,47 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
         //console.log(ev.value);
     });
 
-    /* === show the list with all installed apps for specify a new one for this tile === */
-    window.addEventListener('contextmenu', ev => {
+    /* === access to modal window 'tile settings' after longpress a tile === */
+    var mosaic = document.getElementById('apps');
+    mosaic.addEventListener('contextmenu', ev => {
 
         var tile_ic = ev.originalTarget;
+        
+        C.last_longpress = Date.now();
 
         // settings popup only opens for not docked items
-        if ( R.contains("docker")(tile_ic.classList) == false && tile_ic.parentNode.parentNode.id == 'apps') {
-                /*ev.preventDefault();*/
-                C.last_longpress = Date.now();
-                U.show_tile_settings( tile_ic.parentNode, R, C.HIDDEN_ROLES, C );
+        if (tile_ic.parentNode.id == 'setup-tile') {
+            U.show_app_settings();
+        }
+        
+        // settings popup only opens for not docked items
+        else if ( R.contains("docker")(tile_ic.classList) == false && tile_ic.parentNode.parentNode.id == 'apps') {
+            /*ev.preventDefault();*/
+            U.show_tile_settings( tile_ic.parentNode, R, C.HIDDEN_ROLES, C );
         }
     });
 
-    /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
-    window.addEventListener('click', ev => {
+    /* === process click over elements on main window 'apps' === */
+    var mosaic = document.getElementById('apps');
+    mosaic.addEventListener('click', ev => {
 
-        /* avoid to follow a click if it's very close to the last longpress event */
-        if ( Date.now() - C.last_longpress < 2000 ) return;
-
+        /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
         setTimeout(function(){
             event_click(ev);
-        }, 500);}
+        }, 500);
 
-    );
+    });
+
+    /* === process click over elements on modal window 'popup' === */
+    var popup = document.getElementById('popup');
+    popup.addEventListener('click', ev => {
+
+        /* avoid to follow a click if it's very close to the last longpress event */
+        if ( Date.now() - C.last_longpress > 2000 ){
+            event_click(ev);
+        }
+
+    });
 
     var event_click = ev => {
 
@@ -376,7 +393,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
 
         /* if clicked any close_bt of a 'popup' modal window  */
         else if ( this_tile.classList.contains("close_bt")) {
-            U.destroy_elementById('popup');
+            U.close_popup();
         }
 
         /* if clicked the button for save changes at 'app settings'  */
@@ -386,7 +403,7 @@ require(['ramdajs', 'utils', 'config', 'fxos_icons'], ( R, U, C ) => {
             C.b_bigtiles_tit = document.getElementById('input_b_bigtiles_tit').checked ? 1 : 0;
             C.b_smalltiles_tit = document.getElementById('input_b_smalltiles_tit').checked ? 1 : 0;
             start();
-            U.destroy_elementById('popup');
+            U.close_popup();
             U.show_status_message("Settings successfully saved.");
         }
 
