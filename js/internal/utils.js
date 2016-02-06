@@ -513,6 +513,14 @@ var  U = {
 
                 tile.appendChild(tile_ic);
 
+                /* tile title */
+                var tile_tit = document.createElement('div');
+                tile_tit.className = 'tile_tit';
+                var tit = document.createTextNode(icon_name);
+                tile_tit.appendChild(tit);
+
+                tile.appendChild(tile_tit);
+                    
                 /* tile background */
                 var tile_bg = document.createElement('div');
                 tile_bg.className = 'tile_bg';
