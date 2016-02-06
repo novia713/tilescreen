@@ -42,7 +42,7 @@ var  C = {
      * @default 0
      */
 
-    b_smalltiles_tit : 0,
+    b_smalltiles_tit : 1,
 
     /**
      * Constant for excluding not interesting apps in roster
