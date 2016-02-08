@@ -12,16 +12,11 @@
     "homescreen-webapps-manage":{
         "description": "Required for manage icon apps in homescreen"
      },
-     "device-storage:pictures":{ "access": "readwrite" },
-        "mobileid": {},
-        "mobilenetwork": {},
-        "mobileconnection": {},
-        "open-remote-window": {},
-        "telephony": {},
-        "wifi-manage": {},
-        "phonenumberservice": {},
-        "geolocation": {},
-        "systemXHR": {}
+    "geolocation": {
+        "description": "Required for showing your Location & Postal Code"},
+    "systemXHR": {
+        "description": "Required for location & weather data"
+        }
   },
   "locales": {
     "en-US": {
@@ -53,5 +48,6 @@
   "orientation": "portrait-primary",
   "activities": {},
   "messages": [],
-  "version": "1.4.22"
+  "origin": "app://tilescreen.leandro.org",
+  "version": "1.6"
 }

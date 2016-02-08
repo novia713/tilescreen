@@ -1,0 +1,502 @@
+{
+    "project": {
+        "name": "Documenting Tilescreen with YUIDoc",
+        "description": "A documentation of this awe some homescreen for #FirefoxOS",
+        "version": "1.0.0",
+        "url": "https://github.com/novia713/tilescreen"
+    },
+    "files": {
+        "js/internal/apps.js": {
+            "name": "js/internal/apps.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/internal/config.js": {
+            "name": "js/internal/config.js",
+            "modules": {},
+            "classes": {
+                "C": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/internal/utils.js": {
+            "name": "js/internal/utils.js",
+            "modules": {},
+            "classes": {
+                "U": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "C": {
+            "name": "C",
+            "shortname": "C",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/internal/config.js",
+            "line": 2
+        },
+        "U": {
+            "name": "U",
+            "shortname": "U",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/internal/utils.js",
+            "line": 2
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "js/internal/apps.js",
+            "line": 3,
+            "description": ".·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.\n.·' H O M E S C R E E N S F O R A L L'·.  by leandro713\n.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.\n\n Tilescreen\n (c)  [ leandro@leandro.org, sergio.cero@gmail.com ]\n GPL v3 license",
+            "author": "leandro713 <leandro@leandro.org>",
+            "copyright": "leandro713 - 2016",
+            "link": "https://github.com/novia713/tilescreen",
+            "license": "http://www.gnu.org/licenses/gpl-3.0.en.html",
+            "version": "1.6",
+            "date": "20160203",
+            "see": [
+                "https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen"
+            ],
+            "thanks": "to @CodingFree for his tireless support and benevolent friendship",
+            "todo": [
+                "- show wifi network name and telephony provider name\n      - show missed calls"
+            ],
+            "class": "C"
+        },
+        {
+            "file": "js/internal/apps.js",
+            "line": 50,
+            "description": "Prints set up message",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "print_msg",
+            "return": {
+                "description": "a div indicating to select this homescreen as default",
+                "type": "String"
+            },
+            "class": "C"
+        },
+        {
+            "file": "js/internal/apps.js",
+            "line": 63,
+            "description": "Builds the setup-tile",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "build_setup_tile",
+            "return": {
+                "description": "a div with location and date info",
+                "type": "String"
+            },
+            "class": "C"
+        },
+        {
+            "file": "js/internal/apps.js",
+            "line": 105,
+            "description": "show here info weather based on geoloc data\nhttp://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema\nhttp://api.yr.no/weatherapi/weathericon/1.1/documentation\n-------------------------------------------",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/apps.js",
+            "line": 139,
+            "description": "Renders the icon to the container.",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/apps.js",
+            "line": 260,
+            "description": "Fetch all apps and render them.",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 7,
+            "description": "Value for showing small or big icons",
+            "itemtype": "property",
+            "name": "only_big",
+            "type": "Integer",
+            "default": "0",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 17,
+            "description": "1 = semi-transparent background colors  VS 0 = solid background colors",
+            "itemtype": "property",
+            "name": "b_transparency",
+            "type": "Integer",
+            "default": "1",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 27,
+            "description": "Constant for excluding not interesting apps in roster",
+            "itemtype": "property",
+            "name": "HIDDEN_ROLES",
+            "type": "Array",
+            "readonly": "",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 37,
+            "description": "Time for refresh the setup-tile",
+            "itemtype": "property",
+            "name": "TS_UPD_SETUP_TILE",
+            "type": "Integer",
+            "readonly": "",
+            "default": "3600000 [ 1 hour ]",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 48,
+            "description": "DIV apps container",
+            "itemtype": "property",
+            "name": "mosaic",
+            "type": "String",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 57,
+            "description": "WeakMap for storing the icons",
+            "itemtype": "property",
+            "name": "iconMap",
+            "type": "Object",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 66,
+            "description": "Array container for small indexes",
+            "itemtype": "property",
+            "name": "smalls",
+            "type": "Array",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 75,
+            "description": "Object for storing in LocalStorage usage of icons",
+            "itemtype": "property",
+            "name": "storage",
+            "type": "Array",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 84,
+            "description": "Date Object",
+            "itemtype": "property",
+            "name": "date",
+            "type": "Class",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 96,
+            "description": "API KEY for Google geolocation",
+            "itemtype": "property",
+            "name": "gugle_key",
+            "type": "String",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 105,
+            "description": "Unix timestamp of the last longpress event... for avoid to make a click after it",
+            "itemtype": "property",
+            "name": "last_longpress",
+            "type": "integer",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/config.js",
+            "line": 113,
+            "description": "Object mgmt for managing the apps",
+            "itemtype": "property",
+            "name": "appMgr",
+            "type": "object",
+            "class": "C"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 7,
+            "description": "This is used to console.log any value.",
+            "itemtype": "method",
+            "name": "log",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "The value to log",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "mixed"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 17,
+            "description": "Colores de cada icono",
+            "itemtype": "method",
+            "name": "get_color",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the app",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "color  The hexadecimal value of the color",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 57,
+            "description": "Prints the upper dock",
+            "params": [
+                {
+                    "name": "R",
+                    "description": "",
+                    "type": "Class"
+                },
+                {
+                    "name": "iconMap",
+                    "description": "",
+                    "type": "WeakMap"
+                },
+                {
+                    "name": "document",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "print_dock",
+            "return": {
+                "description": "Injects HTML in the setup-tile div",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 94,
+            "description": "Tells if the current position in roster should be small",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "R",
+                    "description": "",
+                    "type": "Class"
+                },
+                {
+                    "name": "smalls",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "itemtype": "method",
+            "name": "is_small",
+            "return": {
+                "description": "[>0 yes | 0 no]",
+                "type": "Integer"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 106,
+            "description": "Shows a div for manage app settings",
+            "params": [
+                {
+                    "name": "b_transparency",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "only_big",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "itemtype": "method",
+            "name": "show_app_settings",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 168,
+            "description": "Tells the day in number",
+            "params": [
+                {
+                    "name": "date",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "get_numeric_day",
+            "return": {
+                "description": "",
+                "type": "Integer"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 178,
+            "description": "Tells the day in three letters word (sun, thu, fri)",
+            "params": [
+                {
+                    "name": "day",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "itemtype": "method",
+            "name": "get_worded_day",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 198,
+            "description": "Sets initial styles for sizes",
+            "params": [
+                {
+                    "name": "css_string",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "add_style",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 218,
+            "description": "Performs an asynchronous ajax call",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "the url to go",
+                    "type": "String"
+                },
+                {
+                    "name": "mode",
+                    "description": "[weather | city]",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "ajax",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        },
+        {
+            "file": "js/internal/utils.js",
+            "line": 269,
+            "description": "Parses an asynchronous ajax call to show the weather info",
+            "params": [
+                {
+                    "name": "xml",
+                    "description": "the xml to parse",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "parse_weather_xml",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "U"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: copyright",
+            "line": " js/internal/apps.js:3"
+        },
+        {
+            "message": "unknown tag: link",
+            "line": " js/internal/apps.js:3"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " js/internal/apps.js:3"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " js/internal/apps.js:3"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " js/internal/apps.js:3"
+        },
+        {
+            "message": "unknown tag: thanks",
+            "line": " js/internal/apps.js:3"
+        },
+        {
+            "message": "Missing item type\n.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.\n.·' H O M E S C R E E N S F O R A L L'·.  by leandro713\n.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.\n\n Tilescreen\n (c)  [ leandro@leandro.org, sergio.cero@gmail.com ]\n GPL v3 license",
+            "line": " js/internal/apps.js:3"
+        },
+        {
+            "message": "Missing item type\nshow here info weather based on geoloc data\nhttp://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema\nhttp://api.yr.no/weatherapi/weathericon/1.1/documentation\n-------------------------------------------",
+            "line": " js/internal/apps.js:105"
+        },
+        {
+            "message": "Missing item type\nRenders the icon to the container.",
+            "line": " js/internal/apps.js:139"
+        },
+        {
+            "message": "Missing item type\nFetch all apps and render them.",
+            "line": " js/internal/apps.js:260"
+        }
+    ]
+}

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>js/internal/apps.js - Documenting Tilescreen with YUIDoc</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="Documenting Tilescreen with YUIDoc" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/C.html">C</a></li>
+                                <li><a href="../classes/U.html">U</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: js/internal/apps.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;
+
+/**
+ *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
+ *          .·&#x27; H O M E S C R E E N S F O R A L L&#x27;·.  by leandro713
+ *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
+ *
+ * Tilescreen
+ * (c)  [ leandro@leandro.org, sergio.cero@gmail.com ]
+ * GPL v3 license
+ *
+ * @author      leandro713 &lt;leandro@leandro.org&gt;
+ * @copyright   leandro713 - 2016
+ * @link        https://github.com/novia713/tilescreen
+ * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
+ * @version     1.6
+ * @date        20160203
+ *
+ * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
+ * @thanks      to @CodingFree for his tireless support and benevolent friendship
+ * @todo
+ *      - show wifi network name and telephony provider name
+ *      - show missed calls
+ *
+ */
+
+
+requirejs.config({
+    appDir: &quot;.&quot;,
+    baseUrl: &quot;js&quot;,
+    paths: {
+        &#x27;ramdajs&#x27;   : [&#x27;external/ramda.min&#x27;],
+        &#x27;utils&#x27;     : [&#x27;internal/utils&#x27;],
+        &#x27;config&#x27;    : [&#x27;internal/config&#x27;],
+        &#x27;fxos_icons&#x27;: &quot;../bower_components/fxos-icons/fxos-icons&quot;
+
+
+    },
+    shim: {
+        &#x27;ramdajs&#x27;: {  exports: &#x27;R&#x27; },
+        &#x27;config&#x27; : {  exports: &#x27;C&#x27; },
+        &#x27;utils&#x27;  : {  exports: &#x27;U&#x27; }
+    }
+});
+
+require([&#x27;ramdajs&#x27;, &#x27;utils&#x27;, &#x27;config&#x27;, &#x27;fxos_icons&#x27;], ( R, U, C ) =&gt; {
+
+    var i = 0;
+
+    /**
+    Prints set up message
+    @private
+    @method print_msg
+    @return {String} a div indicating to select this homescreen as default
+    */
+     var print_msg = () =&gt; {
+        var txt_msg  = &quot;&lt;div style=&#x27;background-color:orange;color:white&#x27;&gt;&lt;h3&gt;Please, set this homescreen your default homescreen in &lt;i&gt;Settings / Homescreens / Change Homescreens&lt;/i&gt;. This homescreen won&#x27;t work if you don&#x27;t do so&lt;/h3&gt;&lt;/div&gt;&quot;;
+            txt_msg += &quot;&lt;div style=&#x27;background-color:orange;color:black&#x27;&gt;&lt;h3&gt;Ve a &lt;i&gt;Configuración / Homescreens&lt;/i&gt; y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!&lt;/h3&gt;&lt;/div&gt;&quot;;
+            C.mosaic.innerHTML = txt_msg;
+     };
+
+
+        /**
+        Builds the setup-tile
+        @private
+        @method build_setup_tile
+        @return {String} a div with location and date info
+        */
+     var build_setup_tile = () =&gt; {
+
+        var oldtile = document.getElementById(&quot;setup-tile&quot;);
+        if ( oldtile )
+            C.mosaic.removeChild( oldtile );
+
+        var tile       = document.createElement(&#x27;div&#x27;);
+        tile.id        = &#x27;setup-tile&#x27;;
+        tile.className = &#x27;tile&#x27;;
+        tile.innerHTML = &quot;&lt;span id=&#x27;setup-tile-location&#x27; class=&#x27;location&#x27;&gt;&lt;/span&gt;&quot;;
+
+        /* tile background */
+            var tile_bg = document.createElement(&#x27;div&#x27;);
+            tile_bg.className = &#x27;tile_bg&#x27;;
+            tile.appendChild(tile_bg);
+
+        /* settings link */
+            tile.innerHTML += &quot;&lt;div id=&#x27;settings_bt&#x27; data-icon=&#x27;settings&#x27; data-l10n-id=&#x27;settings&#x27; class=&#x27;settings&#x27;&gt;&lt;/div&gt;&quot;;
+
+        /* battery level */
+            var battery = navigator.battery;
+            if (battery) {
+                var batterylevel = Math.round(battery.level * 100) + &quot;%&quot;;
+                var batterylevel_10 = Math.round(battery.level * 10) + &quot;%&quot;;
+                if (batterylevel_10 &gt; 10) batterylevel_10 = 10;
+                tile.innerHTML += &quot;&lt;i data-icon=&#x27;battery-&quot;+batterylevel_10+&quot;&#x27; data-l10n-id=&#x27;battery-&quot;+batterylevel_10+&quot;&#x27; style=&#x27;display:inline-block;line-height:0.8em;&#x27; class=&#x27;battery&#x27;&gt; &quot;
+                                    + batterylevel + &quot;&lt;/i&gt;&quot;;
+            }
+
+        /* date */
+            tile.innerHTML += &quot;&lt;div id=&#x27;worded&#x27;&gt;&lt;span class=&#x27;weekday&#x27;&gt;&quot;+ U.get_worded_day( U.get_numeric_day( C.date )) + &quot;&lt;/span&gt;&quot;
+                            + &quot; &lt;span class=&#x27;monthday&#x27;&gt;&quot; + C.date.getDate() + &quot;&lt;/span&gt;&lt;/div&gt;&quot;;
+
+        //TODO: refactor all this in aux
+        function successGeoLoc(pos) {
+
+              /**
+               * show here info weather based on geoloc data
+               * http://api.yr.no/weatherapi/locationforecast/1.9/documentation#schema
+               * http://api.yr.no/weatherapi/weathericon/1.1/documentation
+               * -------------------------------------------
+               */
+                var weather_info = U.ajax(&quot;http://api.yr.no/weatherapi/locationforecast/1.9/?lat=&quot;+ pos.coords.latitude +&quot;;lon=&quot; + pos.coords.longitude, &quot;weather&quot;);
+                document.getElementById(&quot;setup-tile&quot;).innerHTML += &quot;&lt;div id=&#x27;weather-info&#x27;&gt;&lt;/div&gt;&quot;;
+
+                // city name
+                U.ajax( &#x27;https://maps.googleapis.com/maps/api/geocode/json?latlng=&#x27;+pos.coords.latitude+&#x27;,&#x27;+pos.coords.longitude+&#x27;&amp;sensor=true&amp;key=&#x27;+ C.gugle_key, &quot;city&quot; );
+        };
+
+        function errorGeoLoc(err) {
+          console.warn(&#x27;ERROR (&#x27; + err.code + &#x27;): &#x27; + err.message);
+        };
+
+        navigator.geolocation.getCurrentPosition(successGeoLoc, errorGeoLoc, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
+
+
+        C.mosaic.insertBefore(tile, C.mosaic.children[1]);
+
+        // /**************
+        // * recursivity *
+        // **************/
+        //
+        // CAUTION: this inhabilites the console in the WebIDE
+        // for debugging this app, please comment out this setTimeout()
+
+        window.setTimeout(function(){
+            build_setup_tile();
+            }, C.TS_UPD_SETUP_TILE);
+     };
+
+    /**
+     * Renders the icon to the container.
+     */
+    var render = icon =&gt; {
+
+            // guards
+            if (!icon.manifest.icons) return;
+            if ( R.contains ( icon.manifest.role, C.HIDDEN_ROLES ))  return;
+            //end guards
+
+            if ( U.is_small( i, R, C.smalls ) &gt; -1 ) {
+                var icon_image = navigator.mozApps.mgmt.getIcon(icon, 32);
+            }else{
+                var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
+            }
+
+            icon_image.then ( img =&gt; {
+
+                var name = icon.manifest.name;
+
+                // end callscreen
+                var wordname = name.split(&quot; &quot;);
+                var firstchar = name.charAt(0);
+
+                /* tile generation*/
+                var tile = document.createElement(&#x27;div&#x27;);
+                tile.id = &#x27;tile_&#x27;+i;
+                tile.className = &#x27;tile&#x27;;
+
+                    /* tile icon */
+                    var tile_ic = document.createElement(&#x27;div&#x27;);
+                    tile_ic.className = &#x27;tile_ic&#x27;;
+                    tile_ic.style.background = &#x27;transparent url(&#x27; + window.URL.createObjectURL( img ) + &#x27;) no-repeat&#x27;;
+
+                    // Callscreen icon [ doing things like this is cheese ]
+                    if (name == &quot;Communications&quot;) { //should be Callscreen
+                        tile_ic.style.background = &#x27;transparent url(/img/dialer-icon.png) no-repeat&#x27;;
+                    }
+
+                    tile_ic.setAttribute(&#x27;rel&#x27;, wordname[0]);
+                    tile_ic.id = wordname[0];
+
+                    tile.appendChild(tile_ic);
+
+                    /* tile background */
+                    var tile_bg = document.createElement(&#x27;div&#x27;);
+                    tile_bg.className = &#x27;tile_bg&#x27;;
+                    tile_bg.style.backgroundColor = U.get_color(name);
+
+                    tile.appendChild(tile_bg);
+
+                document.getElementById(&#x27;apps&#x27;).appendChild(tile);
+
+                /* we associate the tile_ic to the firefox OS icon, because the tile_ic is who get the &#x27;click&#x27; event, not the tile container */
+                C.iconMap[wordname[0]] = icon;
+
+                /* end tile generation*/
+
+                // array for storing it in JSON for using records
+                var item = { &quot;label&quot;: wordname[0], &quot;index&quot;: i, &quot;order&quot;: 0 };
+                C.storage = localStorage.getItem(&quot;storage&quot;);
+
+                if ( !C.storage ) {
+                    C.storage = [];
+                    C.storage[i] = item;
+                    localStorage.setItem( &quot;storage&quot;, JSON.stringify( C.storage ));
+                } else  {
+                    var data = JSON.parse( C.storage );
+                    data[i] =  item;
+                    localStorage.setItem( &quot;storage&quot;, JSON.stringify( data ));
+                }
+
+
+                ++i;
+
+                if ( U.is_small( i, R, C.smalls ) &gt; -1 )  {
+                    tile.classList.add(&quot;small&quot;);
+                }
+
+
+                // initial dock
+                if (4 == i || 3 == i || 2 == i || 9 == i){
+                    var firsts_dock = tile.cloneNode(true);
+                    firsts_dock.className  = &quot;tile small in-dock&quot;;
+                    firsts_dock.children[0].classList.add( &quot;docker&quot; );
+                    document.getElementById(&quot;dock&quot;).appendChild(firsts_dock);
+                }
+
+                //end initial dock
+
+            });
+
+            if (typeof icon_image == undefined) return;
+    }
+
+    /* fires up the painting */
+    var start = () =&gt; {
+
+        i = 0;
+
+        /* https://developer.mozilla.org/en-US/docs/Web/API/Element/classList */
+
+        /* empty #apps and add #dock */
+        C.mosaic.innerHTML = &#x27;&#x27;;
+            var dock = document.createElement(&#x27;div&#x27;);
+            dock.id = &#x27;dock&#x27;;
+            apps.appendChild(dock);
+
+        /* transparency mode */
+        C.mosaic.classList.remove(&#x27;transparent&#x27;);
+        if ( C.b_transparency == 1 ){
+            apps.classList.add(&#x27;transparent&#x27;);
+        }
+
+
+        if ( C.only_big != 1 ) {
+            C.smalls = [ 2, 3 ,4 ,5, 7, 8 ,9 ,10, 15, 16, 17, 18 ];
+        } else {
+            C.smalls = [];
+        }
+
+            /**
+             * Fetch all apps and render them.
+             */
+            var myApps = new Promise((resolve, reject) =&gt; {
+                    var request = navigator.mozApps.mgmt.getAll();
+
+                    request.onsuccess = (e) =&gt; {
+
+                      build_setup_tile();
+
+                      // hic sunt render leones
+                      R.forEach( render, request.result );
+
+                    };
+
+                    request.onerror = (e) =&gt; {
+                      console.error(&#x27;Error calling getAll: &#x27; + request.error.name);
+                      resolve();
+                    };
+            });
+
+            myApps.then(
+                v =&gt; {
+
+                }, v =&gt; {
+                    print_msg();
+                }
+            );
+
+
+            U.add_initial_styles();
+
+    } //end start
+
+    // TODO: addEventListener install/uninstall //untested!
+
+        C.appMgr.addEventListener(&quot;install&quot;, function (event) {
+            console.log(event.application);
+            setTimeout (function() {
+                start();
+            }, 2000);
+        });
+        C.appMgr.addEventListener(&quot;uninstall&quot;, function (event) {
+            console.log(event.application);
+            start();
+        });
+
+    window.addEventListener(&#x27;devicelight&#x27;, ev =&gt; {
+        //console.log(ev.value);
+    });
+
+    /* === show the list with all installed apps for specify a new one for this tile === */
+    window.addEventListener(&#x27;contextmenu&#x27;, ev =&gt; {
+
+        var tile_ic = ev.originalTarget;
+
+        // settings popup only opens for not docked items
+        if ( R.contains(&quot;docker&quot;)(tile_ic.classList) == false &amp;&amp; tile_ic.parentNode.parentNode.id == &#x27;apps&#x27;) {
+                /*ev.preventDefault();*/
+                C.last_longpress = Date.now();
+                U.show_tile_settings(tile_ic.parentNode, R, C.HIDDEN_ROLES);
+        }
+    });
+
+    /* === the processement of the click is taken after 500 milliseconds after the click, for give time to CSS transition === */
+    window.addEventListener(&#x27;click&#x27;, ev =&gt; {
+
+        /* avoid to follow a click if it&#x27;s very close to the last longpress event */
+        if ( Date.now() - C.last_longpress &lt; 2000 ) return;
+
+        setTimeout(function(){
+            event_click(ev);
+        }, 500);}
+
+    );
+
+    var event_click = ev =&gt; {
+
+        var this_tile = ev.originalTarget;
+        var parent = this_tile.parentNode;
+
+        /* uninstall */
+        if (ev.id = &quot;btn_uninstall&quot;){
+            if ( this_tile.getAttribute(&quot;app_to_uninstall&quot;) ) {
+                // TODO: check if it is removable!!
+                console.log(this_tile);
+                // https://developer.mozilla.org/en-US/Apps/Build/JavaScript_API/navigator.mozApps.mgmt.uninstall
+                C.appMgr.uninstall(this_tile);
+            }
+        }
+
+        /* if clicked an app tile (tile_ic) -most of cases- */
+        if (this_tile.classList.contains(&quot;tile_ic&quot;)){
+            return U.launch_app(ev, R);
+        }
+
+        /* if clicked the empty space of the options tile */
+        else if (this_tile.classList.contains(&quot;options&quot;) || parent.classList.contains(&quot;options&quot;)) {
+            /*U.destroy_elementById(&#x27;options&#x27;);*/
+            alert(&#x27;options close&#x27;);
+            build_setup_tile();
+        }
+
+        /* if clicked any child of the setup-tile */
+        else if (parent.id == &#x27;setup-tile&#x27;) {
+            return U.show_app_settings( C.b_transparency, C.only_big );
+        }
+
+        // button close → onclick() is not allowed by CSP FirefoxOS policy
+        else if ( this_tile.classList.contains(&quot;close_bt&quot;)) {
+            U.destroy_elementById(&#x27;popup&#x27;);
+        }
+
+        // button close → onclick() is not allowed by CSP FirefoxOS policy
+        else if ( this_tile.classList.contains(&quot;save_bt&quot;)) {
+            C.b_transparency = document.getElementById(&#x27;input_b_transparency&#x27;).checked ? 1 : 0;
+            C.only_big = document.getElementById(&#x27;input_only_big&#x27;).checked ? 1 : 0;
+            start();
+            U.destroy_elementById(&#x27;popup&#x27;);
+        }
+
+        /* if clicked a &lt;li&gt; element at tile_settings (so the originalTarget is not a tile, but a &lt;li&gt; element) */
+        else if (this_tile.classList.contains(&quot;tile_settings_li&quot;)) {
+            return U.set_tile_app(this_tile, C.iconMap);
+        }
+
+
+    }; //end window event &#x27;click&#x27;, document.getElementsByClassName(&#x27;tile&#x27;));
+
+
+    var removeSmall = function (el) {
+        el.classList.remove(&quot;small&quot;);
+    }
+
+    var addSmall = function (el) {
+        el.classList.add(&quot;small&quot;);
+    }
+
+    // 3, 2, 1 ...
+    start();
+
+});
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

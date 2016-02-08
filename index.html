@@ -21,8 +21,10 @@
     <link href="/style/css/switches.css" rel="stylesheet" type="text/css">
     <link href="/style/css/buttons.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="bower_components/gaia-fonts/style.css"></link>
+    <link rel="stylesheet" type="text/css" href="style/buttons.css"></link>
+    <link href="/style/css/status.css" rel="stylesheet" type="text/css">
     <!-- https://libraries.io/npm/fxos-lib-mozapps -->
-    <script data-main="js/apps" src="js/require.min.js"></script>
+    <script data-main="js/internal/apps" src="js/require.min.js"></script>
 
 </head>
 
@@ -32,7 +34,10 @@
         <div id="dock"></div>
     </div>
 
-
+    <div id="popup" class='hidden'></div>
+    
+    <section id="status" role='status' class='hidden'></section>
+    
 </body>
 
 </html>

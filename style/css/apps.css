@@ -3,12 +3,13 @@
     *, *:before, *:after { box-sizing: inherit;}
     html { box-sizing: border-box;}
 
-html, body { height: 100%; }
+html, body { height: 100%; overflow-x: hidden;}
 
 body {margin: 0;}
 
 #apps {
     overflow-y:scroll;
+    overflow-x: hidden;
     color: #fff;
     color: rgba(255,255,255,0.85);
     background-color: #000;
@@ -60,19 +61,10 @@ body {margin: 0;}
     overflow: hidden;
     z-index:1;
 }
-.tile_bg{
-    z-index: -2;
-    display:block;
-    position:absolute; top:0; left:0;
-    width:100%;
-    height:100%;
-    border-radius: 2px;
-}
-    #dock .tile_bg{
-        /* background-color: #000; */
-        background-color: linear-gradient(0deg, #444 0%, #000 52%, #666 100%)
-    }
-    
+
+    /* this will change once we develop the new grid system... so it's temporal */
+    .t_4_1 .tile{ margin:0px; margin-right:8px; }
+
 .tile_ic{
     z-index: -1;
     display:block;
@@ -81,8 +73,97 @@ body {margin: 0;}
     height:100%;
     border-radius: 2px;
     background-size: 60%!important;
-    background-position: center center!important;
+    background-position: center 35%!important;
+    cursor:pointer;
 }
+    .hidden_tit .tile_ic{
+        background-position: center center!important;
+    }
+        
+    .tile_ic:after {
+        content: "";
+        background: rgba(255,255,255,0.5);
+        display: block;
+        position: absolute; top:50%; left:50%;
+        width: 1px; height: 1px;
+        opacity: 0;
+        transition: all 0.5s;
+    }
+
+    .tile_ic:active:after {
+        width: 100%; height: 100%;
+        top: 0; left:0;
+        opacity: 1;
+        transition: 0s;
+        border-radius: 3px;
+    }
+    
+.tile_tit{
+    z-index: -2;
+    display: block; width: 90%; height: 1.2em;
+    position:absolute; bottom:0.2rem; left:5%;
+    text-align:center;
+    font-size: 1rem;
+    text-shadow: 0px 0px 2px rgb(85, 85, 85);
+    overflow:hidden;
+    opacity: 0.8;
+}
+    .small .tile_tit{
+        bottom: 0.1rem; 
+        font-size: 0.8rem;
+    }
+    .hidden_tit .tile_tit{
+        display:none;
+    }
+
+.tile_bg{
+    z-index: -3;
+    display:block;
+    position:absolute; top:0; left:0;
+    width:100%;
+    height:100%;
+    border-radius: 2px;
+}
+    #setup-tile *{
+        cursor: pointer;
+    }
+    #setup-tile .tile_bg{
+        background: linear-gradient(0deg, #c00 0%, #f00 50%, orange 100%);
+    }
+    #weather-info {
+        line-height: 1.5rem;
+        position:absolute; bottom:0;
+        padding-left:27px;
+        text-align:left;
+    }
+        #weather-info img{
+            display:inline-block;
+            position: absolute; top:0; left:0;
+            max-height:1.5rem;
+        }
+        #weather-info em{
+            opacity: 0.6;
+        }
+    #setup-tile .options{
+        padding:0px;
+        height:100%;
+        background-color:transparent;
+        cursor:pointer;
+    }
+    #settings_bt{
+        display:block; width:3rem; height:3rem;
+        position:absolute; top:0; left:2px;
+        opacity:0.5;
+        color:#fff;
+        cursor:pointer;
+    }
+    #settings_bt::before{
+        font-size: 3rem!important;
+    }
+    #dock .tile_bg{
+        background: linear-gradient(0deg, #444 0%, #000 50%, #666 100%)
+    }
+
 .small {
     display: inline-block;
     padding: 3%;
@@ -144,7 +225,130 @@ body {margin: 0;}
     font-style: italic;
 }
 
-#weather-info {
-    text-align: left !important;
-    padding-left: 0px !important;
+/* === popup window for render options, like the list of apps to select a new one for a tile === */
+    #popup{
+        position: absolute; top:0; left:0;
+        z-index: 50;
+        width: 100%; height: 100%;
+        overflow-y: scroll;
+        background-color: #444; color: #eee;
+        padding:1rem; padding-bottom:3rem;
+    }
+        #popup.hidden{
+            opacity: 0;
+            z-index: -99;
+        }
+        #popup h2{
+            font-weight: normal;
+            text-align:left;
+            border-bottom:1px #666 solid;
+            padding:0; margin:0;
+            padding-bottom:0.5rem;
+            margin-bottom:0.5rem;
+            position: relative;
+        }
+        #popup .close_bt{
+            position: absolute; right:5px;
+            min-width: 3rem; /* for great enought the 'tap' surface of the button */
+            text-align:right;
+            z-index:51;
+            background-color:transparent;
+            cursor:pointer;
+        }
+        #popup .save_bt{
+            text-align: right;
+            padding-right: 2rem;
+            position:relative;
+            line-height: 1.6rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+            #popup .save_bt::before{
+                position:absolute; top:0; right:0;
+                
+            }
+        #popup ul{
+            list-style-type: none;
+            padding:0;
+            margin-bottom: 1rem;
+        }
+        #popup li{
+            display:block;
+            position: relative;
+            margin:0.4rem 0; padding-left: 2.5rem;
+            line-height: 2.4rem; height:2.35rem;
+            background-color: rgba(255,255,255,0.7); color: #111;
+            border-radius: 1.5em;
+            cursor: pointer;
+        }
+            #popup li:hover{
+                background-color: rgba(255,255,255,0.9);
+            }
+            #popup li img{
+                display:inline-block;
+                position:absolute; top:3px;left: 0.2rem;
+                height:2rem;
+                border-radius: 50%; /* this convert all app icons to perfect circles ;) */
+            }
+            #popup li .delete_bt{
+                display:inline-block;
+                position:absolute; top:3px;right: 0;
+                height: 2rem; width: 3rem;
+                text-align: right;
+                z-index: 51;
+                color:#c00;
+                cursor: pointer;
+            }
+            #popup li .delete_bt::before{
+                font-size: 1.7rem; line-height: 2rem;
+                margin-right: 0.3rem;
+                
+            }
+            #popup li .delete_bt:hover{
+                color: #000;
+            }
+
+    /* arrangements of the swtiches.css for this app */
+
+    #popup header{
+        display: block;
+        background-color: rgba(255,255,255,0.2);
+        padding: 0.3rem 0.5rem;
+        margin-top: 1rem;
+    }
+    #popup label{
+        display:block;
+        width: 100%; height:auto;
+        line-height: 1.3rem;
+        margin: 1rem 0;
+        cursor: pointer;
+        padding: 0 0.5rem;
+    }
+    #popup span::after{
+        top: 0;
+        width: 3rem;
+        height: 1.35rem;
+        margin:0;
+        background-size: 4.6rem 1.35rem;
+        cursor: pointer;
+        background-position: -1.6rem 0rem;
+    }
+    #popup input:checked ~ span::after{
+        background-position: 0rem 0rem;
+    }
+
+/* status popup mini-window for messages of 4 seconds*/
+
+#status{
+    bottom: 3rem;
+    opacity: 0.9;
+    margin: 0px 2rem;
+    line-height: 2rem;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.8s;
+    z-index:99;
 }
+    #status.hidden, .hidden{
+        opacity: 0; z-index:-99;
+    }
